@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO META TAGS -->
+  <title>GetsyBuy Gift — Discover Perfect Gifts for Every Occasion</title>
+  <meta name="description" content="GetsyBuy Gift curates the finest Amazon gift ideas for birthdays, anniversaries, and special occasions. Luxury gifts, premium selection, delivered to your door." />
+  <meta name="keywords" content="luxury gifts, amazon gifts, birthday gifts, anniversary gifts, gift ideas, online gift store India" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="GetsyBuy Gift" />
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GetsyBuy Gift — Discover Perfect Gifts for Every Occasion" />
+  <meta property="og:description" content="Curated luxury gift ideas for every special moment. Find the perfect gift on Amazon through GetsyBuy Gift." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=1200&h=630&fit=crop" />
+  <meta property="og:url" content="https://getsybuy.vercel.app" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GetsyBuy Gift" />
+  <meta name="twitter:description" content="Luxury curated gifts for every occasion." />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://getsybuy.vercel.app" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "GetsyBuy Gift",
+    "description": "Luxury curated gift store with Amazon affiliate products",
+    "url": "https://getsybuy.vercel.app",
+    "logo": "🎁"
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- PARTICLES CANVAS -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+    <button class="mobile-menu-close" id="mobileClose" aria-label="Close menu">✕</button>
+    <a href="#home">Home</a>
+    <a href="#whatsapp">Order</a>
+    <a href="#products">Gifts</a>
+    <a href="#about">About</a>
+    <a href="admin.html" style="font-size:1rem; color: var(--gold)">⚙ Admin</a>
+  </div>
+
+  <!-- ============ NAVIGATION ============ -->
+  <nav id="mainNav" role="navigation" aria-label="Main navigation">
+    <a href="#home" class="nav-logo" aria-label="GetsyBuy Gift Home">
+      🎁 <span>GetsyBuy</span> Gift
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#whatsapp">Order</a></li>
+      <li><a href="#products">Gifts</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+
+    <div class="nav-search">
+      <input
+        type="search"
+        class="search-input"
+        id="searchInput"
+        placeholder="Search gifts..."
+        autocomplete="off"
+        aria-label="Search gifts"
+        aria-expanded="false"
+        aria-controls="searchResults"
+      />
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="Search suggestions"></div>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ============ HERO SECTION ============ -->
+  <section class="hero" id="home" aria-label="Hero">
+    <div>
+      <div class="hero-badge">✦ Curated Luxury Gifts</div>
+
+      <h1 class="hero-title">
+        <span class="line">Find <span class="gold-text">Perfect</span></span>
+        <span class="line">Gifts</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Trending Amazon gift ideas curated for birthdays,
+        anniversaries and special occasions.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#products" class="btn-primary">
+          🎁 Explore Gifts
+        </a>
+        <a href="#whatsapp" class="btn-secondary">
+          💬 Order on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ============ STATS BAR ============ -->
+  <div class="stats-bar" id="about">
+    <div class="stat-item fade-up">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Gift Ideas</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.1s">
+      <div class="stat-num">50K+</div>
+      <div class="stat-label">Happy Customers</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.2s">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Amazon Verified</div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:0.3s">
+      <div class="stat-num">4.8★</div>
+      <div class="stat-label">Avg. Rating</div>
+    </div>
+  </div>
+
+  <!-- ============ WHATSAPP SECTION ============ -->
+  <section class="whatsapp-section" id="whatsapp">
+    <div class="section-label">💬 WhatsApp Orders</div>
+    <h2 class="section-title fade-up">Order on WhatsApp</h2>
+    <p class="section-subtitle fade-up">
+      Personalized gift ordering launching soon.
+    </p>
+
+    <div class="whatsapp-cards">
+
+      <div class="whatsapp-card fade-up">
+        <div class="card-glow"></div>
+        <div class="card-icon">🎂</div>
+        <h3 class="card-title">Birthday Gifts</h3>
+        <p class="card-desc">
+          Celebrate every birthday with a perfectly curated gift. From luxury hampers to personalized keepsakes — we'll find the right one.
+        </p>
+        <div class="btn-coming-soon">
+          <span class="dot"></span>
+          Coming Soon
+        </div>
+      </div>
+
+      <div class="whatsapp-card fade-up" style="transition-delay:0.1s">
+        <div class="card-glow"></div>
+        <div class="card-icon">💍</div>
+        <h3 class="card-title">Anniversary Gifts</h3>
+        <p class="card-desc">
+          Make every anniversary unforgettable. Premium jewelry, spa sets, and romantic gift boxes — tailored just for you.
+        </p>
+        <div class="btn-coming-soon">
+          <span class="dot"></span>
+          Coming Soon
+        </div>
+      </div>
+
+      <div class="whatsapp-card fade-up" style="transition-delay:0.2s">
+        <div class="card-glow"></div>
+        <div class="card-icon">✨</div>
+        <h3 class="card-title">Custom Gifts</h3>
+        <p class="card-desc">
+          Have something special in mind? Tell us the occasion, budget, and personality — we'll create a bespoke gift experience.
+        </p>
+        <div class="btn-coming-soon">
+          <span class="dot"></span>
+          Coming Soon
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ PRODUCTS SECTION ============ -->
+  <section class="products-section" id="products" aria-label="Gift Products">
+    <div style="text-align:center; margin-bottom: 48px;">
+      <div class="section-label">🎁 Curated Collection</div>
+      <h2 class="section-title fade-up">Trending Gift Ideas</h2>
+      <p class="section-subtitle fade-up">
+        Hand-picked Amazon gifts for every budget and every soul.
+      </p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar" role="group" aria-label="Filter by category">
+      <button class="filter-btn active" data-category="All Gifts">All Gifts</button>
+      <button class="filter-btn" data-category="Electronics">Electronics</button>
+      <button class="filter-btn" data-category="Food & Drink">Food & Drink</button>
+      <button class="filter-btn" data-category="Beauty">Beauty</button>
+      <button class="filter-btn" data-category="Home Decor">Home Decor</button>
+      <button class="filter-btn" data-category="Fashion">Fashion</button>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div class="products-grid" id="productsGrid" aria-live="polite" aria-label="Gift products grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="footer-logo">🎁 <span>GetsyBuy</span> Gift</a>
+        <p class="footer-desc">
+          Discover curated luxury gifts for every occasion — from birthdays to anniversaries, we help you find the perfect present on Amazon.
+        </p>
+        <p class="footer-affiliate">
+          <strong>Affiliate Disclosure:</strong> GetsyBuy Gift participates in the Amazon Associates Program. As an Amazon Associate we earn from qualifying purchases at no extra cost to you.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#whatsapp">WhatsApp Orders</a></li>
+          <li><a href="#products">Gift Collection</a></li>
+          <li><a href="#about">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="affiliate.html">Affiliate Disclosure</a></li>
+          <li><a href="admin.html" style="color:var(--gold-dim)">Admin Panel</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © 2024 <span>GetsyBuy Gift</span>. All rights reserved.
+      </p>
+      <p class="footer-copy">
+        Made with ♥ for gift lovers
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ SCRIPTS ============ -->
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- App Scripts -->
+  <script src="supabase.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
