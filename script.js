@@ -22,7 +22,7 @@ const searchResults = document.getElementById('searchResults');
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
   initCursor();
-  initNav();
+  initNav();full script.js do
   initHeroAnimations();
   initScrollAnimations();
   initMobileMenu();
