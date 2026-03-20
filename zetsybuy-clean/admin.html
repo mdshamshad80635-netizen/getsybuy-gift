@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZetsyBuy Gift Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--r:#e8416f;--g:linear-gradient(135deg,#e8416f,#f7a548);--dk:#1a0a14;--cr:#fff8f0;--bd:#f0dde8;--mt:#2d1a24;--mu:#9a7888;--green:#27ae60;--blue:#3498db;--purple:#9b59b6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:#f0f4ff;color:var(--mt);min-height:100vh}
+#loginScreen{position:fixed;inset:0;background:var(--dk);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.lc{background:#fff;border-radius:24px;padding:2.5rem 2rem;width:100%;max-width:360px;text-align:center}
+.ll{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.2rem}
+.ls{color:var(--mu);font-size:.82rem;margin-bottom:1.6rem}
+.li{width:100%;padding:.72rem 1rem;border-radius:10px;border:2px solid var(--bd);font-family:inherit;font-size:.92rem;outline:none;background:var(--cr);margin-bottom:.5rem;transition:border-color .2s}
+.li:focus{border-color:var(--r)}
+.le{color:var(--r);font-size:.78rem;margin-bottom:.7rem;display:none}
+.lb{width:100%;padding:.78rem;border-radius:10px;background:var(--g);color:#fff;border:none;font-family:inherit;font-size:.98rem;font-weight:700;cursor:pointer}
+.lh{color:var(--mu);font-size:.7rem;margin-top:.7rem}
+#app{display:none;min-height:100vh}
+.sb{width:220px;background:var(--dk);min-height:100vh;position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column;z-index:100;transition:transform .3s}
+.sb.hidden{transform:translateX(-100%)}
+.sb-logo{padding:1.2rem 1.3rem .8rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-lt{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-ls{color:rgba(255,255,255,.28);font-size:.65rem;margin-top:.1rem}
+.sb-nav{flex:1;padding:.6rem 0}
+.ni{display:flex;align-items:center;gap:.6rem;padding:.58rem 1.3rem;color:rgba(255,255,255,.42);font-size:.8rem;font-weight:700;cursor:pointer;border-left:3px solid transparent;transition:all .2s;user-select:none}
+.ni:hover{color:#fff;background:rgba(255,255,255,.05)}
+.ni.on{color:#fff;background:rgba(232,65,111,.18);border-left-color:var(--r)}
+.ni .ic{font-size:.95rem;flex-shrink:0}
+.sb-ft{padding:.8rem 1.3rem;border-top:1px solid rgba(255,255,255,.07)}
+.sbb{display:block;width:100%;padding:.45rem;border-radius:7px;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;text-align:center;border:none;margin-bottom:.4rem}
+.main{margin-left:220px;padding:1.3rem;transition:margin .3s}
+.main.full{margin-left:0}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.3rem;gap:1rem;flex-wrap:wrap}
+.topbar h1{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:900}
+.topbar p{color:var(--mu);font-size:.8rem;margin-top:.12rem}
+.mob-btn{display:none;background:var(--dk);color:#fff;border:none;padding:.45rem .75rem;border-radius:8px;cursor:pointer;font-size:1rem}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem;margin-bottom:1.3rem}
+.sc{background:#fff;border-radius:14px;padding:1rem;border:2px solid var(--bd);text-align:center}
+.sc-i{font-size:1.7rem;margin-bottom:.3rem}
+.sc-n{font-size:1.8rem;font-weight:900;margin-bottom:.1rem}
+.sc-l{font-size:.7rem;color:var(--mu);font-weight:600}
+.card{background:#fff;border-radius:14px;padding:1.1rem;border:2px solid var(--bd);margin-bottom:1.1rem}
+.ct{font-weight:800;font-size:.92rem;margin-bottom:.85rem;display:flex;align-items:center;gap:.4rem}
+.ct span{font-size:1rem}
+.btn{padding:.44rem .95rem;border-radius:8px;border:none;font-family:inherit;font-size:.76rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem}
+.btn:hover{opacity:.85}
+.bp{background:var(--g);color:#fff}
+.bd{background:rgba(232,65,111,.12);color:var(--r)}
+.bs{background:rgba(39,174,96,.12);color:var(--green)}
+.bi{background:rgba(52,152,219,.12);color:var(--blue)}
+.bdk{background:var(--dk);color:#fff}
+.bsm{padding:.28rem .65rem;font-size:.7rem}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--cr);padding:.58rem .75rem;text-align:left;font-weight:800;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mu);border-bottom:2px solid var(--bd);white-space:nowrap}
+td{padding:.58rem .75rem;border-bottom:1px solid var(--bd);vertical-align:middle}
+tr:hover td{background:rgba(232,65,111,.02)}
+.bg{display:inline-block;padding:.16rem .55rem;border-radius:50px;font-size:.63rem;font-weight:800;text-transform:uppercase}
+.bg-act{background:rgba(39,174,96,.15);color:var(--green)}
+.bg-off{background:rgba(232,65,111,.12);color:var(--r)}
+.bg-ft{background:rgba(247,183,49,.2);color:#b8860b}
+.bg-ct{background:rgba(155,89,182,.12);color:var(--purple)}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem}
+.mo.open{display:flex}
+.mw{background:#fff;border-radius:18px;padding:1.4rem;width:100%;max-width:560px;max-height:92vh;overflow-y:auto}
+.mt{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:1.1rem;display:flex;align-items:center;justify-content:space-between}
+.mc{background:rgba(0,0,0,.07);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.9rem}
+.fg label{display:block;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);margin-bottom:.3rem}
+.fi{width:100%;padding:.58rem .75rem;border-radius:8px;border:2px solid var(--bd);font-family:inherit;font-size:.82rem;color:var(--mt);background:var(--cr);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--r)}
+select.fi{cursor:pointer}
+textarea.fi{resize:none;min-height:65px;line-height:1.5}
+.fck{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;font-weight:600;margin-top:.3rem}
+.fa{display:flex;gap:.55rem;margin-top:.9rem;flex-wrap:wrap}
+.al{padding:.75rem .95rem;border-radius:10px;font-size:.8rem;font-weight:600;margin-bottom:.85rem;display:flex;align-items:center;gap:.45rem}
+.al-i{background:rgba(52,152,219,.1);color:var(--blue);border:1.5px solid rgba(52,152,219,.22)}
+.al-w{background:rgba(247,183,49,.1);color:#b8860b;border:1.5px solid rgba(247,183,49,.28)}
+.al-s{background:rgba(39,174,96,.1);color:var(--green);border:1.5px solid rgba(39,174,96,.22)}
+.frame-preview{width:80px;height:80px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}
+.cb-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}
+.cbtn{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s;flex-shrink:0}
+.cbtn.on{transform:scale(1.3);border-color:var(--dk)}
+input[type=color]{width:38px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:2px}
+.bbar{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem}
+.bbar .btn{flex:1;justify-content:center}
+.sync-note{background:rgba(39,174,96,.1);border:2px solid rgba(39,174,96,.25);border-radius:10px;padding:.7rem .9rem;font-size:.78rem;font-weight:600;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dk);color:#fff;padding:.65rem 1.1rem;border-radius:12px;font-size:.8rem;font-weight:600;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.toast.show{opacity:1}
+@media(max-width:768px){.sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}.main{margin-left:0;padding:.9rem}.mob-btn{display:block}.sgrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<!-- ═══ SUPABASE ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPABASE_URL = 'https://kwndsjpxhvfanuzsxpeg.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt3bmRzanB4aHZmYW51enNweGVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDM4MzYsImV4cCI6MjA4OTUxOTgzNn0.KVzuYkxTa5ZO0KsS1OKNB7hn7ku8xSF6rkoh2kL6Mus';
+var _sb = null;
+
+function initSB() {
+  try {
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase) {
+      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      var ind = document.getElementById('sbStatus');
+      if (ind) { ind.textContent = '🟢 Supabase Connected'; ind.style.color = '#27ae60'; }
+      return true;
+    }
+  } catch(e) {}
+  var ind = document.getElementById('sbStatus');
+  if (ind) { ind.textContent = '🔴 Supabase Not Connected (localStorage mode)'; ind.style.color = '#e8416f'; }
+  return false;
+}
+
+// ── SAVE PRODUCT to Supabase ───────────────────────────────────────────
+async function saveProdToDB(prod) {
+  if (!_sb) return;
+  try {
+    var row = { id: prod.id, name: prod.n, emoji: prod.em, price: prod.p,
+                mrp: prod.mrp, category: prod.cat, link: prod.l,
+                active: prod.active, featured: prod.featured };
+    await _sb.from('products').upsert([row], { onConflict: 'id' });
+  } catch(e) { console.log('DB save error:', e); }
+}
+
+// ── DELETE PRODUCT from Supabase ──────────────────────────────────────
+async function deleteProdFromDB(id) {
+  if (!_sb) return;
+  try { await _sb.from('products').delete().eq('id', id); } catch(e) {}
+}
+
+// ── SAVE FRAME to Supabase ────────────────────────────────────────────
+async function saveFrameToDB(frame) {
+  if (!_sb) return;
+  try {
+    var row = { id: frame.id, category: frame.cat, label: frame.lbl,
+                emoji: frame.em, color1: frame.c1, color2: frame.c2,
+                banner: frame.top, decoration: frame.dec,
+                border_style: frame.bdr||'gradient', is_custom: true };
+    await _sb.from('frames').upsert([row], { onConflict: 'id' });
+  } catch(e) {}
+}
+
+// ── SAVE SETTINGS to Supabase ─────────────────────────────────────────
+async function saveSettingsToDB(settings) {
+  if (!_sb) return;
+  try {
+    await _sb.from('settings').upsert([{ key: 'main', value: JSON.stringify(settings) }], { onConflict: 'key' });
+  } catch(e) {}
+}
+
+// ── LOAD EID USERS from Supabase ─────────────────────────────────────
+async function loadEidUsersFromDB() {
+  if (!_sb) return null;
+  try {
+    var res = await _sb.from('eid_users').select('*').order('created_at', { ascending: false }).limit(500);
+    return res.data || null;
+  } catch(e) { return null; }
+}
+
+window.addEventListener('load', function() { initSB(); });
+</script>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="lc">
+    <div class="ll">🎀 ZetsyBuy Gift</div>
+    <div class="ls">Admin Dashboard — Secure Login</div>
+    <input class="li" id="pwInput" type="password" placeholder="Admin Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="le" id="loginErr">❌ Wrong password! Try again.</div>
+    <button class="lb" onclick="doLogin()">Login to Dashboard →</button>
+    <div class="lh">Default: zetsybuy@admin2024</div>
+  </div>
+</div>
+
+<div id="app">
+<div class="sb" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-lt">🎀 ZetsyBuy Gift</div>
+    <div class="sb-ls">Admin Panel v2.0</div>
+  </div>
+  <div class="sb-nav">
+    <div class="ni on" onclick="showView('overview',this)"><span class="ic">📊</span>Overview</div>
+    <div class="ni" onclick="showView('products',this)"><span class="ic">🛍️</span>Products</div>
+    <div class="ni" onclick="showView('frames',this)"><span class="ic">🖼️</span>Frame Templates</div>
+    <div class="ni" onclick="showView('categories',this)"><span class="ic">🏷️</span>Categories</div>
+    <div class="ni" onclick="showView('quotes',this)"><span class="ic">💬</span>Quotes</div>
+    <div class="ni" onclick="showView('analytics',this)"><span class="ic">📈</span>Analytics</div>
+    <div class="ni" onclick="showView('settings',this)"><span class="ic">⚙️</span>Settings</div>
+    <div class="ni" onclick="showView('coupons',this)"><span class="ic">🎟️</span>Coupons</div>
+    <div class="ni" onclick="showView('eid_users',this)"><span class="ic">🌙</span>Eid Users</div>
+    <div class="ni" onclick="showView('legal',this)"><span class="ic">📋</span>Legal</div>
+  </div>
+  <div class="sb-ft">
+    <a href="index.html" target="_blank" style="text-decoration:none"><button class="sbb" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)">🌐 View Site</button></a>
+    <button class="sbb" style="background:rgba(232,65,111,.15);color:#e8416f" onclick="doLogout()">← Logout</button>
+  </div>
+</div>
+
+<div class="main" id="mainArea">
+  <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;padding:.3rem 0">
+    <button class="mob-btn" onclick="toggleSB()">☰</button>
+    <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.05rem">ZetsyBuy Gift Admin</div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="view-overview">
+    <div class="topbar">
+      <div><h1>Dashboard Overview 📊</h1><p id="greet">Welcome back!</p></div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn bi" onclick="exportCSV()">📥 Export CSV</button>
+        <button class="btn bp" onclick="openAddProd()">+ Add Product</button>
+      </div>
+    </div>
+    <div class="sync-note">🔄 Admin changes auto-sync to main site! Jab bhi product ya frame update karo, main site automatically update ho jaata hai.</div>
+    <div class="sgrid" id="statsGrid"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem">
+      <div class="card"><div class="ct"><span>🛍️</span>Recent Products</div><div id="recentProds"></div></div>
+      <div class="card"><div class="ct"><span>🖼️</span>Recent Frames</div><div id="recentFrames"></div></div>
+      <div class="card"><div class="ct"><span>⚡</span>Quick Actions</div>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <button class="btn bp" onclick="openAddProd()" style="width:100%;justify-content:center">➕ Add New Product</button>
+          <button class="btn" style="background:rgba(99,102,241,.12);color:#6366f1;width:100%;justify-content:center" onclick="openAddFrame()">🖼️ Add New Frame Template</button>
+          <button class="btn bi" onclick="exportCSV()" style="width:100%;justify-content:center">📥 Export Products CSV</button>
+          <button class="btn bs" onclick="backupData()" style="width:100%;justify-content:center">💾 Backup All Data</button>
+          <button class="btn bs" onclick="restoreDefaults()" style="width:100%;justify-content:center;background:rgba(247,183,49,.12);color:#b8860b">🔄 Restore Default Frames</button>
+          <a href="index.html" target="_blank" style="text-decoration:none"><button class="btn bdk" style="width:100%;justify-content:center">🌐 Preview Main Site</button></a>
+        </div>
+      </div>
+      <div class="card"><div class="ct"><span>📈</span>Categories Breakdown</div><div id="catChart"></div></div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div id="view-products" style="display:none">
+    <div class="topbar">
+      <div><h1>Products Manager 🛍️</h1><p>Amazon affiliate products add, edit, delete karo</p></div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn bi" onclick="exportCSV()">📥 CSV</button>
+        <button class="btn bp" onclick="openAddProd()">+ Add Product</button>
+      </div>
+    </div>
+    <div class="al al-i">ℹ️ Products update hone par main site <strong>automatically</strong> sync ho jaata hai — page reload ki zaroorat nahi!</div>
+    <div class="bbar" id="prodFilterBar"></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tw">
+        <table>
+          <thead><tr><th>Product</th><th>Price</th><th>Category</th><th>Status</th><th>Featured</th><th>Actions</th></tr></thead>
+          <tbody id="prodTBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRAMES -->
+  <div id="view-frames" style="display:none">
+    <div class="topbar">
+      <div><h1>Frame Templates 🖼️</h1><p>50+ frames manage karo — admin se naye frames add karo!</p></div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn" style="background:rgba(39,174,96,.12);color:var(--green)" onclick="restoreDefaults()">🔄 Restore Defaults</button>
+        <button class="btn bp" onclick="openAddFrame()">+ Add Frame</button>
+      </div>
+    </div>
+    <div class="al al-s">✅ Frames update hone par main site pe immediately reflect ho jaata hai! New frames "NEW" badge ke saath dikhte hain.</div>
+    <div class="bbar" id="frameFilterBar"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.9rem" id="framesGrid"></div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div id="view-categories" style="display:none">
+    <div class="topbar"><div><h1>Categories 🏷️</h1><p>11 occasions — frame & product stats</p></div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.9rem" id="catGrid"></div>
+  </div>
+
+  <!-- QUOTES -->
+  <div id="view-quotes" style="display:none">
+    <div class="topbar"><div><h1>Quotes Manager 💬</h1><p>100+ quotes by category</p></div></div>
+    <div class="bbar" id="quoteFilterBar"></div>
+    <div class="card" id="quotesView"></div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div id="view-analytics" style="display:none">
+    <div class="topbar">
+      <div><h1>Analytics 📈</h1><p>Real-time site statistics</p></div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn bi" onclick="exportAnalyticsCSV()">📥 Export</button>
+        <button class="btn bs" onclick="resetAnalytics()">🔄 Reset</button>
+      </div>
+    </div>
+    <!-- Stats Grid -->
+    <div class="sgrid" id="analyticsSt" style="margin-bottom:1.1rem"></div>
+    <!-- AFFILIATE ANALYTICS -->
+    <div class="card" style="margin-bottom:1rem"><div class="ct"><span>💰</span>Affiliate Performance</div><div id="affStats"><div style="color:var(--mu);font-size:.8rem;padding:.5rem">Loading...</div></div></div>
+    <!-- Charts Row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1rem">
+      <div class="card">
+        <div class="ct"><span>📅</span>Daily Activity (Last 7 Days)</div>
+        <canvas id="dailyChart" height="160"></canvas>
+      </div>
+      <div class="card">
+        <div class="ct"><span>🖼️</span>Template Usage</div>
+        <canvas id="tmplChart" height="160"></canvas>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+      <div class="card">
+        <div class="ct"><span>🔥</span>Popular Occasions</div>
+        <div id="occChart"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><span>🌙</span>Eid Users This Week</div>
+        <div id="eidWeekChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="view-settings" style="display:none">
+    <div class="topbar"><div><h1>Settings ⚙️</h1><p>Site aur affiliate configuration</p></div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem">
+      <div class="card">
+        <div class="ct"><span>🌐</span>Site Info</div>
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Site Name</label>
+        <input class="fi" id="st-name" value="ZetsyBuy Gift" style="margin-bottom:.7rem">
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Site URL</label>
+        <input class="fi" id="st-url" placeholder="https://yourdomain.com" style="margin-bottom:.7rem">
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Contact Email</label>
+        <input class="fi" id="st-email" placeholder="hello@zetsybuy.in" style="margin-bottom:.7rem">
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">WhatsApp Number</label>
+        <input class="fi" id="st-wa" placeholder="919999999999">
+      </div>
+      <div class="card">
+        <div class="ct"><span>🛍️</span>Amazon Affiliate</div>
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Amazon Associate Tag</label>
+        <input class="fi" id="st-tag" value="YOURID-21" style="margin-bottom:.7rem">
+        <div class="al al-w" style="margin-bottom:.7rem">⚠️ Tag change karne ke baad products ki links bhi update karo!</div>
+        <p style="font-size:.78rem;color:var(--mu);line-height:1.7">Amazon Associates:<br><a href="https://affiliate-program.amazon.in" target="_blank" rel="noopener" style="color:var(--r)">affiliate-program.amazon.in</a></p>
+      </div>
+      <div class="card">
+        <div class="ct"><span>🔐</span>Change Password</div>
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Current Password</label>
+        <input class="fi" id="st-old" type="password" placeholder="Current password" style="margin-bottom:.7rem">
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">New Password</label>
+        <input class="fi" id="st-new" type="password" placeholder="New password" style="margin-bottom:.7rem">
+        <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Confirm New Password</label>
+        <input class="fi" id="st-cf" type="password" placeholder="Confirm password" style="margin-bottom:.7rem">
+        <button class="btn bp" onclick="changePass()">🔐 Change Password</button>
+      </div>
+      <div class="card">
+        <div class="ct"><span>🗑️</span>Data Management</div>
+        <button class="btn bp" onclick="saveSettings()" style="width:100%;justify-content:center;margin-bottom:.5rem">💾 Save All Settings</button>
+        <button class="btn bs" onclick="backupData()" style="width:100%;justify-content:center;margin-bottom:.5rem">💾 Download Backup</button>
+        <button class="btn bd" onclick="if(confirm('Reset ALL data to defaults? This cannot be undone!')){localStorage.clear();showToast('Data reset!');location.reload();}" style="width:100%;justify-content:center">🗑️ Reset All Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUPONS -->
+  <div id="view-coupons" style="display:none">
+    <div class="topbar">
+      <div><h1>Coupons 🎟️</h1><p>Discount coupons manage karo</p></div>
+      <button class="btn bp" onclick="openCouponModal()">+ New Coupon</button>
+    </div>
+    <div class="card" id="couponStats" style="margin-bottom:1rem"></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="tw">
+        <table>
+          <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Uses</th><th>Expiry</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="couponTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- COUPON MODAL -->
+  <div id="couponModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#fff;border-radius:18px;padding:1.4rem;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h3 style="font-size:.95rem;font-weight:800">🎟️ New Coupon</h3>
+        <button onclick="closeCouponModal()" style="background:#f5f5f5;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer">✕</button>
+      </div>
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Coupon Code *</label>
+      <input class="fi" id="cp-code" placeholder="e.g. EID2025, SAVE20" style="margin-bottom:.65rem;text-transform:uppercase">
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Discount Type</label>
+      <div style="display:flex;gap:.5rem;margin-bottom:.65rem">
+        <button id="cpTypeFlat" class="btn bp" onclick="setCpType('flat',this)" style="flex:1;justify-content:center">₹ Flat</button>
+        <button id="cpTypePct" class="btn bs" onclick="setCpType('percent',this)" style="flex:1;justify-content:center">% Percent</button>
+      </div>
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Discount Value *</label>
+      <input class="fi" id="cp-value" type="number" placeholder="e.g. 50 (for ₹50 or 10%)" style="margin-bottom:.65rem">
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Max Uses (0 = unlimited)</label>
+      <input class="fi" id="cp-maxuses" type="number" value="0" style="margin-bottom:.65rem">
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Expiry Date</label>
+      <input class="fi" id="cp-expiry" type="date" style="margin-bottom:.65rem">
+      <label style="font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--mu);display:block;margin-bottom:.3rem">Description (optional)</label>
+      <input class="fi" id="cp-desc" placeholder="e.g. Eid special offer" style="margin-bottom:.9rem">
+      <button class="btn bp" onclick="saveCoupon()" style="width:100%;justify-content:center">💾 Save Coupon</button>
+    </div>
+  </div>
+
+  <!-- LEGAL -->
+
+  <div id="view-legal" style="display:none">
+    <div class="topbar"><div><h1>Legal Pages 📋</h1><p>Amazon Associates required pages</p></div></div>
+    <div class="al al-w">⚠️ Amazon Associates approval ke liye sab pages accurate hone chahiye!</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+      <div class="card"><div class="ct"><span>🔒</span>Privacy Policy</div><p style="font-size:.8rem;color:var(--mu);line-height:1.6;margin-bottom:.8rem">Photo processing, cookies, data collection policy.</p><div style="display:flex;gap:.4rem"><button class="btn bi bsm" onclick="window.open('privacy.html','_blank')">👁 View</button><span class="bg bg-act">✅ Active</span></div></div>
+      <div class="card"><div class="ct"><span>📜</span>Terms of Service</div><p style="font-size:.8rem;color:var(--mu);line-height:1.6;margin-bottom:.8rem">Service use, intellectual property, disclaimer.</p><div style="display:flex;gap:.4rem"><button class="btn bi bsm" onclick="window.open('terms.html','_blank')">👁 View</button><span class="bg bg-act">✅ Active</span></div></div>
+      <div class="card"><div class="ct"><span>💰</span>Affiliate Disclosure</div><p style="font-size:.8rem;color:var(--mu);line-height:1.6;margin-bottom:.8rem">FTC compliance, Amazon Associates disclosure.</p><div style="display:flex;gap:.4rem"><button class="btn bi bsm" onclick="window.open('affiliate.html','_blank')">👁 View</button><span class="bg bg-act">✅ Active</span></div></div>
+      <div class="card"><div class="ct"><span>🍪</span>Cookie Policy</div><p style="font-size:.8rem;color:var(--mu);line-height:1.6;margin-bottom:.8rem">Cookie usage, localStorage, analytics.</p><div style="display:flex;gap:.4rem"><button class="btn bi bsm" onclick="window.open('cookie.html','_blank')">👁 View</button><span class="bg bg-act">✅ Active</span></div></div>
+    </div>
+    <div class="card" style="margin-top:.1rem"><div class="ct"><span>✅</span>Amazon Associates Checklist</div><div id="checkList"></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ADD/EDIT PRODUCT MODAL -->
+<div class="mo" id="prodModal">
+  <div class="mw">
+    <div class="mt"><span id="prodModalTitle">➕ Add New Product</span><button class="mc" onclick="closeProdModal()">✕</button></div>
+    <div class="fg">
+      <div><label>Product Name *</label><input class="fi" id="m-n" placeholder="e.g. Birthday Gift Box"></div>
+      <div><label>Emoji Icon</label><input class="fi" id="m-em" placeholder="🎁" maxlength="4"></div>
+      <div><label>Price (₹) *</label><input class="fi" id="m-p" type="number" placeholder="599"></div>
+      <div><label>MRP (₹) *</label><input class="fi" id="m-mrp" type="number" placeholder="999"></div>
+      <div><label>Category *</label><select class="fi" id="m-cat" style="width:100%"></select></div>
+      <div><label>Status</label><select class="fi" id="m-st"><option value="active">✅ Active</option><option value="inactive">⛔ Inactive</option></select></div>
+    </div>
+    <div style="margin-top:.8rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Amazon Affiliate Link *</label><input class="fi" id="m-l" placeholder="https://www.amazon.in/dp/XXXXX?tag=YOURID-21"></div>
+    <div style="margin-top:.5rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Description (optional)</label><textarea class="fi" id="m-desc" placeholder="Short description..."></textarea></div>
+    <label class="fck" style="margin-top:.6rem"><input type="checkbox" id="m-ft"> ⭐ Featured — homepage pe prominently dikhao</label>
+    <div class="fa">
+      <button class="btn bp" onclick="saveProd()">💾 Save Product</button>
+      <button class="btn" style="border:2px solid var(--bd);background:transparent;color:var(--mu)" onclick="closeProdModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT FRAME MODAL -->
+<div class="mo" id="frameModal">
+  <div class="mw">
+    <div class="mt"><span id="frameModalTitle">🖼️ Add New Frame Template</span><button class="mc" onclick="closeFrameModal()">✕</button></div>
+    <div class="fg">
+      <div><label>Frame Name *</label><input class="fi" id="f-n" placeholder="e.g. Golden Glow"></div>
+      <div><label>Emoji Icon *</label><input class="fi" id="f-em" placeholder="✨" maxlength="4"></div>
+      <div><label>Category *</label><select class="fi" id="f-cat" style="width:100%"></select></div>
+      <div><label>Border Style</label>
+        <select class="fi" id="f-border">
+          <option value="gradient">Gradient Border</option>
+          <option value="double">Double Border</option>
+          <option value="glow">Glow Border</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:.8rem">
+      <div><label>Color 1 (Start)</label>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <input type="color" id="f-c1" value="#FF6B6B">
+          <span style="font-size:.78rem;color:var(--mu)">Left/Top color</span>
+        </div>
+      </div>
+      <div><label>Color 2 (End)</label>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <input type="color" id="f-c2" value="#FFD93D">
+          <span style="font-size:.78rem;color:var(--mu)">Right/Bottom color</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:.8rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Banner Text (top of frame) *</label><input class="fi" id="f-top" placeholder="e.g. 🎂 Happy Birthday! 🎂"></div>
+    <div style="margin-top:.6rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.4rem">Corner Decoration Style</label>
+      <select class="fi" id="f-dec">
+        <option value="confetti">🎉 Confetti</option>
+        <option value="stars">⭐ Stars</option>
+        <option value="sparkle">✨ Sparkle</option>
+        <option value="flowers">🌸 Flowers</option>
+        <option value="hearts">❤️ Hearts</option>
+        <option value="balloons">🎈 Balloons</option>
+      </select>
+    </div>
+    <label class="fck" style="margin-top:.6rem"><input type="checkbox" id="f-glow"> ✨ Inner Glow Effect</label>
+    <!-- Preview -->
+    <div style="margin-top:.9rem">
+      <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.4rem">Preview</label>
+      <canvas id="framePreviewCv" width="200" height="200" style="border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.15);display:block;max-width:100%"></canvas>
+      <button class="btn bi" onclick="updateFramePreview()" style="margin-top:.5rem">🔄 Update Preview</button>
+    </div>
+    <div class="fa">
+      <button class="btn bp" onclick="saveFrame()">💾 Save Frame</button>
+      <button class="btn" style="border:2px solid var(--bd);background:transparent;color:var(--mu)" onclick="closeFrameModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// ZetsyBuy Gift Shared Data — Loads from Admin (localStorage) or defaults
+// Both index.html and admin.html load this file
+// ═══════════════════════════════════════════════════════════════════
+
+var GC = window.GC || {};
+
+// ── DEFAULT FRAMES (50 total) ─────────────────────────────────────────────────
+GC.DEFAULT_FRAMES = [
+  // BIRTHDAY (8)
+  {id:'b1',cat:'birthday',lbl:'Classic 🎂',em:'🎂',pro:false,c1:'#FF6B6B',c2:'#FFD93D',top:'🎂 Happy Birthday! 🎂',dec:'confetti',border:'gradient',innerGlow:false},
+  {id:'b2',cat:'birthday',lbl:'Party 🎉',em:'🎉',pro:false,c1:'#a855f7',c2:'#f97316',top:'🎉 Let\'s Celebrate! 🎉',dec:'stars',border:'gradient',innerGlow:true},
+  {id:'b3',cat:'birthday',lbl:'Golden ⭐',em:'⭐',pro:false,c1:'#B8860B',c2:'#FFD700',top:'⭐ Wishing You The Best! ⭐',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'b4',cat:'birthday',lbl:'Floral 🌺',em:'🌺',pro:false,c1:'#e91e63',c2:'#9c27b0',top:'🌺 Birthday Wishes 🌺',dec:'flowers',border:'gradient',innerGlow:false},
+  {id:'b5',cat:'birthday',lbl:'Sky 🎈',em:'🎈',pro:false,c1:'#2196F3',c2:'#00BCD4',top:'🎈 Happy Birthday! 🎈',dec:'balloons',border:'gradient',innerGlow:false},
+  {id:'b6',cat:'birthday',lbl:'Royal 👑',em:'👑',pro:false,c1:'#1a0a14',c2:'#8B0000',top:'👑 The Birthday Royale 👑',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'b7',cat:'birthday',lbl:'Neon 🌈',em:'🌈',pro:false,c1:'#00E5FF',c2:'#E040FB',top:'🌈 Neon Birthday! 🌈',dec:'stars',border:'glow',innerGlow:true},
+  {id:'b8',cat:'birthday',lbl:'Pastel 🍭',em:'🍭',pro:false,c1:'#F48FB1',c2:'#CE93D8',top:'🍭 Sweet Birthday! 🍭',dec:'confetti',border:'gradient',innerGlow:false},
+  // LOVE (7)
+  {id:'l1',cat:'love',lbl:'Rose ❤️',em:'❤️',pro:false,c1:'#e8416f',c2:'#ff6b9d',top:'❤️ With All My Love ❤️',dec:'hearts',border:'gradient',innerGlow:false},
+  {id:'l2',cat:'love',lbl:'Valentine 💕',em:'💕',pro:false,c1:'#c0392b',c2:'#e91e63',top:'💕 Valentine Special 💕',dec:'hearts',border:'gradient',innerGlow:true},
+  {id:'l3',cat:'love',lbl:'Luxury 💎',em:'💎',pro:false,c1:'#8B0000',c2:'#C41E3A',top:'💎 Forever & Always 💎',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'l4',cat:'love',lbl:'Dreamy 🌙',em:'🌙',pro:false,c1:'#4a0e8f',c2:'#e91e63',top:'🌙 You Are My Dream 🌙',dec:'stars',border:'glow',innerGlow:true},
+  {id:'l5',cat:'love',lbl:'Warm 🤍',em:'🤍',pro:false,c1:'#795548',c2:'#e91e63',top:'🤍 Made for Each Other 🤍',dec:'hearts',border:'gradient',innerGlow:false},
+  {id:'l6',cat:'love',lbl:'Sunset 🌅',em:'🌅',pro:false,c1:'#FF6F00',c2:'#E91E63',top:'🌅 My Sunshine 🌅',dec:'sparkle',border:'gradient',innerGlow:false},
+  {id:'l7',cat:'love',lbl:'Pearl 🌸',em:'🌸',pro:false,c1:'#880E4F',c2:'#F48FB1',top:'🌸 You Are My Everything 🌸',dec:'flowers',border:'double',innerGlow:true},
+  // MOM (5)
+  {id:'m1',cat:'mom',lbl:'Pink 🌸',em:'🌸',pro:false,c1:'#9b59b6',c2:'#e91e63',top:'🌸 Best Mom Ever 🌸',dec:'flowers',border:'gradient',innerGlow:false},
+  {id:'m2',cat:'mom',lbl:'Queen 👑',em:'👑',pro:false,c1:'#8B4513',c2:'#DAA520',top:'👑 Queen of My Heart 👑',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'m3',cat:'mom',lbl:'Tulip 🌷',em:'🌷',pro:false,c1:'#E91E63',c2:'#FF9800',top:'🌷 Thank You Mom 🌷',dec:'flowers',border:'gradient',innerGlow:false},
+  {id:'m4',cat:'mom',lbl:'Purple 💜',em:'💜',pro:false,c1:'#7B1FA2',c2:'#AB47BC',top:'💜 You Are My World 💜',dec:'hearts',border:'gradient',innerGlow:true},
+  {id:'m5',cat:'mom',lbl:"Mother's 💐",em:'💐',pro:false,c1:'#388E3C',c2:'#F06292',top:"💐 Happy Mother's Day 💐",dec:'flowers',border:'gradient',innerGlow:false},
+  // ANNIVERSARY (5)
+  {id:'a1',cat:'anniversary',lbl:'Classic 💍',em:'💍',pro:false,c1:'#8B0000',c2:'#FFD700',top:'💍 Happy Anniversary 💍',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'a2',cat:'anniversary',lbl:'Royal 👫',em:'👫',pro:false,c1:'#1A237E',c2:'#C62828',top:'👫 Together Forever 👫',dec:'stars',border:'gradient',innerGlow:true},
+  {id:'a3',cat:'anniversary',lbl:'Roses 🌹',em:'🌹',pro:false,c1:'#B71C1C',c2:'#880E4F',top:'🌹 Years of Pure Love 🌹',dec:'hearts',border:'gradient',innerGlow:false},
+  {id:'a4',cat:'anniversary',lbl:'Champagne 🥂',em:'🥂',pro:false,c1:'#5D4037',c2:'#C8A951',top:'🥂 Cheers to Us! 🥂',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'a5',cat:'anniversary',lbl:'Eternal ♾️',em:'♾️',pro:false,c1:'#212121',c2:'#9E9E9E',top:'♾️ Eternal Love ♾️',dec:'stars',border:'glow',innerGlow:true},
+  // FRIENDSHIP (4)
+  {id:'fr1',cat:'friendship',lbl:'BFF 🤝',em:'🤝',pro:false,c1:'#3498db',c2:'#2ecc71',top:'🤝 Best Friends Forever 🤝',dec:'stars',border:'gradient',innerGlow:false},
+  {id:'fr2',cat:'friendship',lbl:'Sunny ☀️',em:'☀️',pro:false,c1:'#F57F17',c2:'#1976D2',top:'☀️ You Brighten My Life ☀️',dec:'stars',border:'gradient',innerGlow:false},
+  {id:'fr3',cat:'friendship',lbl:'Neon 🌈',em:'🌈',pro:false,c1:'#00BCD4',c2:'#E91E63',top:"🌈 Life's Better With You 🌈",dec:'confetti',border:'glow',innerGlow:true},
+  {id:'fr4',cat:'friendship',lbl:'Memories 📸',em:'📸',pro:false,c1:'#5C6BC0',c2:'#7E57C2',top:'📸 Unforgettable Memories 📸',dec:'sparkle',border:'double',innerGlow:false},
+  // FESTIVAL (6)
+  {id:'fv1',cat:'festival',lbl:'Diwali 🪔',em:'🪔',pro:false,c1:'#f39c12',c2:'#e74c3c',top:'🪔 Shubh Deepawali 🪔',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'fv2',cat:'festival',lbl:'Holi 🎨',em:'🎨',pro:false,c1:'#E91E63',c2:'#4CAF50',top:'🎨 Happy Holi! 🎨',dec:'confetti',border:'gradient',innerGlow:false},
+  {id:'fv3',cat:'festival',lbl:'Eid 🌙',em:'🌙',pro:false,c1:'#1B5E20',c2:'#827717',top:'🌙 Eid Mubarak 🌙',dec:'stars',border:'gradient',innerGlow:false},
+  {id:'fv4',cat:'festival',lbl:'Christmas 🎄',em:'🎄',pro:false,c1:'#B71C1C',c2:'#1B5E20',top:'🎄 Merry Christmas 🎄',dec:'stars',border:'double',innerGlow:true},
+  {id:'fv5',cat:'festival',lbl:'Navratri 🪷',em:'🪷',pro:false,c1:'#FF6F00',c2:'#D81B60',top:'🪷 Happy Navratri 🪷',dec:'flowers',border:'gradient',innerGlow:true},
+  {id:'fv6',cat:'festival',lbl:'Rakhi 🧡',em:'🧡',pro:false,c1:'#E65100',c2:'#F9A825',top:'🧡 Happy Raksha Bandhan 🧡',dec:'sparkle',border:'double',innerGlow:false},
+  // KIDS (4)
+  {id:'k1',cat:'kids',lbl:'Cartoon 🧸',em:'🧸',pro:false,c1:'#FF9800',c2:'#FFEB3B',top:'🧸 Super Kid! 🧸',dec:'balloons',border:'gradient',innerGlow:false},
+  {id:'k2',cat:'kids',lbl:'Rainbow 🌈',em:'🌈',pro:false,c1:'#E91E63',c2:'#2196F3',top:'🌈 You Are Amazing! 🌈',dec:'confetti',border:'gradient',innerGlow:false},
+  {id:'k3',cat:'kids',lbl:'Stars ⭐',em:'⭐',pro:false,c1:'#3F51B5',c2:'#9C27B0',top:'⭐ Shine Bright! ⭐',dec:'stars',border:'glow',innerGlow:true},
+  {id:'k4',cat:'kids',lbl:'Candy 🍭',em:'🍭',pro:false,c1:'#E91E63',c2:'#FF9800',top:'🍭 So Sweet! 🍭',dec:'confetti',border:'gradient',innerGlow:false},
+  // WEDDING (4)
+  {id:'w1',cat:'wedding',lbl:'Classic 💒',em:'💒',pro:false,c1:'#8B0000',c2:'#FFD700',top:'💒 Congratulations! 💒',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'w2',cat:'wedding',lbl:'Elegant 🥂',em:'🥂',pro:false,c1:'#1A1A2E',c2:'#C8A951',top:'🥂 A Beautiful Journey Begins 🥂',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'w3',cat:'wedding',lbl:'Floral 🌸',em:'🌸',pro:false,c1:'#E91E63',c2:'#9C27B0',top:'🌸 Happily Ever After 🌸',dec:'flowers',border:'gradient',innerGlow:false},
+  {id:'w4',cat:'wedding',lbl:'Royal 👑',em:'👑',pro:false,c1:'#2C0E37',c2:'#FFD700',top:'👑 Together Forever 👑',dec:'stars',border:'glow',innerGlow:true},
+  // GRADUATION (3)
+  {id:'g1',cat:'graduation',lbl:'Classic 🎓',em:'🎓',pro:false,c1:'#1A237E',c2:'#FFD700',top:'🎓 Congratulations Graduate! 🎓',dec:'confetti',border:'double',innerGlow:true},
+  {id:'g2',cat:'graduation',lbl:'Success 🏆',em:'🏆',pro:false,c1:'#4CAF50',c2:'#FFD700',top:'🏆 You Did It! 🏆',dec:'stars',border:'gradient',innerGlow:false},
+  {id:'g3',cat:'graduation',lbl:'Future 🚀',em:'🚀',pro:false,c1:'#0D47A1',c2:'#7B1FA2',top:'🚀 Shoot For The Stars! 🚀',dec:'sparkle',border:'glow',innerGlow:true},
+  // GET WELL (3)
+  {id:'gw1',cat:'getwell',lbl:'Warm 🌻',em:'🌻',pro:false,c1:'#FF9800',c2:'#FFEB3B',top:'🌻 Get Well Soon! 🌻',dec:'flowers',border:'gradient',innerGlow:false},
+  {id:'gw2',cat:'getwell',lbl:'Soft 💊',em:'💊',pro:false,c1:'#4CAF50',c2:'#8BC34A',top:'💊 Wishing You A Speedy Recovery 💊',dec:'sparkle',border:'gradient',innerGlow:false},
+  {id:'gw3',cat:'getwell',lbl:'Love 🤗',em:'🤗',pro:false,c1:'#E91E63',c2:'#FF9800',top:'🤗 Sending Love & Healing 🤗',dec:'hearts',border:'gradient',innerGlow:true},
+  // NEW YEAR (3)
+  {id:'ny1',cat:'newyear',lbl:'Firework 🎆',em:'🎆',pro:false,c1:'#0D47A1',c2:'#FFD700',top:'🎆 Happy New Year! 🎆',dec:'sparkle',border:'double',innerGlow:true},
+  {id:'ny2',cat:'newyear',lbl:'Midnight 🌙',em:'🌙',pro:false,c1:'#1A1A2E',c2:'#E91E63',top:'🌙 New Year New You! 🌙',dec:'stars',border:'glow',innerGlow:true},
+  {id:'ny3',cat:'newyear',lbl:'Colorful 🎉',em:'🎉',pro:false,c1:'#E91E63',c2:'#FF9800',top:'🎉 Wishing You An Amazing Year! 🎉',dec:'confetti',border:'gradient',innerGlow:false},
+];
+
+// ── DEFAULT PRODUCTS ──────────────────────────────────────────────────────────
+GC.DEFAULT_PRODUCTS = [
+  {id:'p1',n:'Personalized Photo Frame',em:'🖼️',p:599,mrp:999,cat:'birthday',l:'https://www.amazon.in/s?k=personalized+photo+frame&tag=YOURID-21',active:true,featured:true,desc:'Premium quality personalized frame'},
+  {id:'p2',n:'Scented Candle Gift Set',em:'🕯️',p:849,mrp:1299,cat:'love',l:'https://www.amazon.in/s?k=scented+candle+gift+set&tag=YOURID-21',active:true,featured:true,desc:'Luxury aromatherapy candles'},
+  {id:'p3',n:'Spa & Pamper Hamper for Mom',em:'🛁',p:1199,mrp:1799,cat:'mom',l:'https://www.amazon.in/s?k=spa+gift+hamper+mom&tag=YOURID-21',active:true,featured:true,desc:'Complete spa experience at home'},
+  {id:'p4',n:'Luxury Belgian Chocolate Box',em:'🍫',p:699,mrp:999,cat:'birthday',l:'https://www.amazon.in/s?k=luxury+chocolate+gift+box&tag=YOURID-21',active:true,featured:false,desc:'Premium imported chocolates'},
+  {id:'p5',n:'Couple Cushion Gift Set',em:'🛋️',p:799,mrp:1200,cat:'anniversary',l:'https://www.amazon.in/s?k=couple+cushion+gift&tag=YOURID-21',active:true,featured:false,desc:'Personalized couple cushions'},
+  {id:'p6',n:'LED Star Galaxy Night Lamp',em:'🌟',p:1099,mrp:1599,cat:'birthday',l:'https://www.amazon.in/s?k=star+projector+lamp&tag=YOURID-21',active:true,featured:true,desc:'Romantic galaxy projector'},
+  {id:'p7',n:'Kids Creative Art & Craft Kit',em:'🎨',p:549,mrp:799,cat:'kids',l:'https://www.amazon.in/s?k=kids+art+craft+kit&tag=YOURID-21',active:true,featured:false,desc:'Complete art kit for kids'},
+  {id:'p8',n:'Floral Perfume Gift Set',em:'🌺',p:1499,mrp:2199,cat:'mom',l:'https://www.amazon.in/s?k=floral+perfume+gift+set&tag=YOURID-21',active:true,featured:true,desc:'Premium floral fragrance set'},
+  {id:'p9',n:'Anniversary Scrapbook Kit',em:'📖',p:649,mrp:899,cat:'anniversary',l:'https://www.amazon.in/s?k=anniversary+scrapbook&tag=YOURID-21',active:true,featured:false,desc:'Create memories together'},
+  {id:'p10',n:'XL Soft Teddy Bear',em:'🧸',p:749,mrp:1099,cat:'kids',l:'https://www.amazon.in/s?k=large+teddy+bear&tag=YOURID-21',active:true,featured:false,desc:'Super soft premium teddy'},
+  {id:'p11',n:'Wedding Gift Hamper',em:'💒',p:2499,mrp:3499,cat:'wedding',l:'https://www.amazon.in/s?k=wedding+gift+hamper&tag=YOURID-21',active:true,featured:true,desc:'Premium wedding gift set'},
+  {id:'p12',n:'Graduation Photo Frame',em:'🎓',p:799,mrp:1199,cat:'graduation',l:'https://www.amazon.in/s?k=graduation+photo+frame&tag=YOURID-21',active:true,featured:false,desc:'Celebrate achievement'},
+  {id:'p13',n:'Get Well Soon Basket',em:'🌻',p:999,mrp:1499,cat:'getwell',l:'https://www.amazon.in/s?k=get+well+soon+gift+basket&tag=YOURID-21',active:true,featured:false,desc:'Healing care package'},
+  {id:'p14',n:'New Year Gift Box',em:'🎆',p:1199,mrp:1799,cat:'newyear',l:'https://www.amazon.in/s?k=new+year+gift+box&tag=YOURID-21',active:true,featured:false,desc:'Ring in the new year'},
+  {id:'p15',n:'Friendship Band Set',em:'🤝',p:399,mrp:599,cat:'friendship',l:'https://www.amazon.in/s?k=friendship+band+bracelet&tag=YOURID-21',active:true,featured:false,desc:'BFF matching bands'},
+];
+
+// ── CATEGORIES ────────────────────────────────────────────────────────────────
+GC.ALL_CATS = [
+  {id:'birthday',nm:'Birthday',em:'🎂',color:'#FF6B6B'},
+  {id:'love',nm:'Love',em:'❤️',color:'#e8416f'},
+  {id:'mom',nm:'Mom',em:'🌸',color:'#9b59b6'},
+  {id:'anniversary',nm:'Anniversary',em:'💍',color:'#8B0000'},
+  {id:'friendship',nm:'Friendship',em:'🤝',color:'#3498db'},
+  {id:'festival',nm:'Festival',em:'🪔',color:'#f39c12'},
+  {id:'kids',nm:'Kids',em:'🧸',color:'#FF9800'},
+  {id:'wedding',nm:'Wedding',em:'💒',color:'#C8A951'},
+  {id:'graduation',nm:'Graduation',em:'🎓',color:'#1A237E'},
+  {id:'getwell',nm:'Get Well',em:'🌻',color:'#4CAF50'},
+  {id:'newyear',nm:'New Year',em:'🎆',color:'#0D47A1'},
+];
+
+// ── QUOTES ────────────────────────────────────────────────────────────────────
+GC.QUOTES = {
+  birthday:['Wishing you a day as bright as your smile! 🎂','Another year older, wiser, and more amazing! 🎉','May all your dreams come true this year! ✨','You deserve the world today and always! 🌟','Happy Birthday! Stay blessed, stay loved 💝','Age is just a number — your heart is forever young! 🎈','Janamdin mubarak! Zindagi khushiyon se bhari rahe 🎊','May this year bring you endless joy! 😄','Sending you all the love on your special day! 💕','You make the world more beautiful 🌸','Today is all about you — enjoy every moment! 🎁','May your birthday be the start of something magical! ✨'],
+  love:['You are my sunshine on the cloudiest days ☀️','Every moment with you is my favorite memory 💕','I love you more than words can ever express ❤️','You are the reason I smile every day 😊','My heart found its home the day I found you 🏠❤️','Forever is not enough time with you 💍','You are my today and all of my tomorrows 🌅','Tum meri duniya ho, mera sab kuch ho 💝','In your arms is my favorite place to be 🤗','My love for you grows stronger every day 🌹','With you, every day is Valentine\'s Day 💕','You are my favorite notification 📱❤️'],
+  mom:["A mother's love is the greatest gift in life 🌸","Everything I am, I owe it all to you Mom 💜",'You are my first hero and forever role model 👑','No words can express what you mean to me, Mom 💐','You held my hand and taught me how to fly 🕊️','Maa, teri dua hi meri taqat hai 🌷',"The best thing in life is a mother's hug 🤗","You are not just my Mom, you are my best friend 💕",'Thank you for always believing in me, Mom ✨','Your sacrifices made me who I am today ❤️'],
+  anniversary:['Still falling more in love with you every day 💍','Every year with you is better than the last 🥂','You are my greatest adventure 🌍❤️','Here\'s to forever and a day together 💕','You are my person — today, tomorrow, always 💑','Our love story is my favorite of all time 📖','Thank you for choosing me, again and again 💝','Saath mein jo waqt bitaya, zindagi ban gaya 💍','Growing old with you is my biggest blessing ✨','Happy Anniversary! More love, more memories 🌹'],
+  friendship:['A friend like you is a treasure beyond measure 💎','You are the family I chose for myself 🤝','Life is better with you in it, always 😊','Best friends make the good times better 🌈','You know all my secrets and love me anyway 💕','Dost ho tum, dua ho tum, sab kuch ho tum 🤗','Years pass but our friendship only grows stronger 🌱','Thank you for being my laugh during hard times 😂❤️'],
+  festival:['May this festival bring joy and prosperity 🪔','Wishing you and your family a blessed celebration ✨','May the lights of this festival brighten your life 🌟','Sending warm wishes on this auspicious occasion 🙏','Har pal khushi, har din mubarak ho! 🎊','May blessings shower upon you and your family 🌸','Wishing you colors of joy and happiness! 🎨'],
+  kids:['You are the most special kid in the world! 🧸','Keep smiling, keep shining little star! ⭐','You make every day brighter and better! 🌈','Growing up so fast — we are so proud of you! 🎉','Dream big, little one — sky is not the limit! ✨','You have the biggest heart we know! 💝'],
+  wedding:['Two hearts, one beautiful journey begins today 💒','May your love story be the most beautiful of all 🌹','Wishing you a lifetime of love and happiness 🥂','Together is the best place to be 💍','Here is to love, laughter and happily ever after 🎊','Ek nayi zindagi ki shuruwaat mubarak ho! 💒'],
+  graduation:['Your hard work and dedication have paid off! 🎓','The tassel was worth the hassle! 🏆','Today you graduate — tomorrow you change the world! 🚀','This is not the end — it is just the beginning! ✨','Padhai ki mehnat rang laayi — mubarak ho! 🎓'],
+  getwell:['Sending you healing thoughts and warm wishes 🌻','Wishing you a speedy and comfortable recovery 💊','Get well soon — we miss your smile! 😊','Take rest, heal and come back stronger! 💪','Jaldi theek ho jao — aapki zaroorat hai sabko 🌻'],
+  newyear:['New year, new dreams, new beginnings! 🎆','May this year bring you all you have wished for! 🌟','365 new days, 365 new chances — make it count! 🎉','Naya saal mubarak ho — khushiyan la le yeh saal! 🎆','May success and happiness follow you all year! ✨'],
+};
+
+// ── LOAD/SAVE FROM LOCALSTORAGE ──────────────────────────────────────────────
+GC.loadFrames = function() {
+  try {
+    var saved = localStorage.getItem('zb_frames');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return GC.DEFAULT_FRAMES.slice();
+};
+
+GC.saveFrames = function(frames) {
+  try { localStorage.setItem('zb_frames', JSON.stringify(frames)); } catch(e) {}
+  // Sync to Supabase
+  if (typeof saveFrameToDB === 'function') {
+    var custom = frames.filter(function(f){ return f.isCustom || f.cat !== undefined; });
+    custom.forEach(function(f) { saveFrameToDB(f); });
+  }
+};
+
+GC.loadProducts = function() {
+  try {
+    var saved = localStorage.getItem('zb_products');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (parsed && parsed.length) return parsed;
+    }
+  } catch(e) {}
+  return GC.DEFAULT_PRODUCTS.slice();
+};
+
+GC.saveProducts = function(products) {
+  try { localStorage.setItem('zb_products', JSON.stringify(products)); } catch(e) {}
+  // Sync to Supabase
+  if (typeof saveProdToDB === 'function') {
+    products.forEach(function(p) { saveProdToDB(p); });
+  }
+};
+
+GC.loadSettings = function() {
+  try {
+    var saved = localStorage.getItem('zb_settings');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return { siteName:'ZetsyBuy Gift', amazonTag:'YOURID-21', adminPass:'zetsybuy@admin2024' };
+};
+
+GC.saveSettings = function(s) {
+  try { localStorage.setItem('zb_settings', JSON.stringify(s)); } catch(e) {}
+};
+
+// Notify other tabs of data changes
+GC.notifyUpdate = function(type) {
+  try { localStorage.setItem('zb_update', type + '_' + Date.now()); } catch(e) {}
+};
+
+window.GC = GC;
+</script>
+<script>
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function gel(id){try{return document.getElementById(id);}catch(e){return null;}}
+function each(arr,fn){if(!arr)return;for(var i=0;i<arr.length;i++){try{fn(arr[i],i);}catch(e){}}}
+function qsa(sel,ctx){try{var nl=(ctx||document).querySelectorAll(sel);var r=[];for(var i=0;i<nl.length;i++)r.push(nl[i]);return r;}catch(e){return[];}}
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+var ADMIN_PASS = localStorage.getItem('zb_admin_pass') || 'zetsybuy@admin2024';
+var FRAMES = GC.loadFrames();
+var PRODUCTS = GC.loadProducts();
+var SETTINGS = GC.loadSettings();
+var CATS = GC.ALL_CATS;
+var QUOTES = GC.QUOTES;
+var editProdId = null;
+var editFrameId = null;
+var currentProdFilter = 'all';
+var currentFrameFilter = 'all';
+var currentQuoteCat = 'birthday';
+var CHECKLIST = [
+  {done:true,txt:'Privacy Policy page available'},
+  {done:true,txt:'Terms of Service page available'},
+  {done:true,txt:'Affiliate Disclosure clearly visible'},
+  {done:true,txt:'Amazon links with Associate tag'},
+  {done:false,txt:'Replace YOURID-21 with your real Amazon tag'},
+  {done:false,txt:'Update contact email in legal pages'},
+  {done:false,txt:'Get Amazon Associates account approved'},
+  {done:false,txt:'Submit site to Amazon for review'},
+];
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function doLogin(){
+  var v=gel('pwInput').value;
+  if(v===ADMIN_PASS){gel('loginScreen').style.display='none';gel('app').style.display='block';init();}
+  else{gel('loginErr').style.display='block';gel('pwInput').value='';gel('pwInput').focus();}
+}
+function doLogout(){gel('loginScreen').style.display='flex';gel('app').style.display='none';gel('pwInput').value='';}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showView(id,el){
+  var views=['overview','products','frames','categories','quotes','analytics','settings','coupons','eid_users','legal'];
+  for(var i=0;i<views.length;i++){var v=gel('view-'+views[i]);if(v)v.style.display=(views[i]===id)?'block':'none';}
+  each(qsa('.ni'),function(n){n.classList.remove('on')});
+  if(el)el.classList.add('on');
+  closeSB();
+  if(id==='products'){buildProdFilterBar();renderProdTable();}
+  if(id==='eid_users')renderEidUsers();
+  if(id==='coupons')renderCoupons();
+  if(id==='frames'){buildFrameFilterBar();renderFramesGrid();}
+  if(id==='categories')renderCategories();
+  if(id==='quotes'){buildQuoteFilterBar();renderQuoteList();}
+  if(id==='analytics'){renderAnalytics();renderAffAnalytics();}
+  if(id==='legal')renderChecklist();
+}
+function toggleSB(){gel('sidebar').classList.toggle('open');}
+function closeSB(){gel('sidebar').classList.remove('open');}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function init(){
+  loadSettings();
+  renderStats();
+  renderRecentProds();
+  renderRecentFrames();
+  renderCatChart();
+  buildCatSelects();
+}
+
+function saveProds(){GC.saveProducts(PRODUCTS);GC.notifyUpdate('products');PRODUCTS=GC.loadProducts();}
+function saveFramesList(){GC.saveFrames(FRAMES);GC.notifyUpdate('frames');FRAMES=GC.loadFrames();}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+function renderAffAnalytics(){
+  var clicks=[];
+  try{clicks=JSON.parse(localStorage.getItem('zb_aff_clicks')||'[]');}catch(e){}
+  var total=parseInt(localStorage.getItem('zb_aff_total')||'0');
+  var today=new Date().toLocaleDateString('en-IN');
+  var todayClicks=clicks.filter(function(c){return c.time&&c.time.startsWith(today.split('/')[0]);}).length;
+  // Add to stats card in analytics
+  var el=document.getElementById('affStats');
+  if(el){
+    var h='<div class="sgrid" style="margin-bottom:1rem">'
+      +'<div class="sc"><div class="sc-i">💰</div><div class="sc-n" style="color:#27ae60">'+total+'</div><div class="sc-l">Affiliate Clicks</div></div>'
+      +'<div class="sc"><div class="sc-i">📅</div><div class="sc-n" style="color:#3498db">'+todayClicks+'</div><div class="sc-l">Today Clicks</div></div>'
+      +'<div class="sc"><div class="sc-i">🏷️</div><div class="sc-n" style="font-size:.75rem;color:#e8416f">'+(function(){try{var s=JSON.parse(localStorage.getItem('zb_settings')||'{}');return s.amazonTag||'YOURID-21';}catch(e){return 'YOURID-21';}}())+'</div><div class="sc-l">Your Tag</div></div>'
+      +'</div>';
+    if(clicks.length){
+      h+='<div class="ct"><span>🔗</span>Recent Affiliate Clicks</div><div class="tw"><table><thead><tr><th>Product</th><th>Time</th></tr></thead><tbody>';
+      clicks.slice(0,10).forEach(function(cl){h+='<tr><td>'+cl.name+'</td><td style="font-size:.7rem;color:var(--mu)">'+cl.time+'</td></tr>';});
+      h+='</tbody></table></div>';
+    }
+    el.innerHTML=h;
+  }
+}
+function renderStats(){
+  var active=0,featured=0,cats={};
+  for(var i=0;i<PRODUCTS.length;i++){if(PRODUCTS[i].active)active++;if(PRODUCTS[i].featured)featured++;cats[PRODUCTS[i].cat]=1;}
+  var totalVal=0; for(var j=0;j<PRODUCTS.length;j++) totalVal+=PRODUCTS[j].mrp;
+  var data=[
+    {i:'📦',n:PRODUCTS.length,l:'Total Products',c:'#e8416f'},
+    {i:'✅',n:active,l:'Active Products',c:'#27ae60'},
+    {i:'⭐',n:featured,l:'Featured',c:'#f7b731'},
+    {i:'🏷️',n:Object.keys(cats).length,l:'Categories Used',c:'#9b59b6'},
+    {i:'🖼️',n:FRAMES.length,l:'Total Frames',c:'#3498db'},
+    {i:'💰',n:'₹'+totalVal.toLocaleString(),l:'Total MRP Value',c:'#e74c3c'},
+  ];
+  var h='';
+  each(data,function(d){h+='<div class="sc"><div class="sc-i">'+d.i+'</div><div class="sc-n" style="color:'+d.c+'">'+d.n+'</div><div class="sc-l">'+d.l+'</div></div>';});
+  gel('statsGrid').innerHTML=h;
+}
+function renderRecentProds(){
+  var h='';
+  var list=PRODUCTS.slice(0,5);
+  each(list,function(p){
+    h+='<div style="display:flex;align-items:center;gap:.7rem;padding:.5rem .4rem;border-bottom:1px solid var(--bd)">'
+      +'<span style="font-size:1.2rem">'+p.em+'</span>'
+      +'<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+p.n+'</div>'
+      +'<div style="font-size:.68rem;color:var(--mu)">₹'+p.p+' · '+p.cat+'</div></div>'
+      +'<span class="bg '+(p.active?'bg-act':'bg-off')+'">'+(p.active?'Live':'Off')+'</span></div>';
+  });
+  gel('recentProds').innerHTML=h||'<p style="color:var(--mu);font-size:.8rem">No products</p>';
+}
+function renderRecentFrames(){
+  var h='';
+  var list=FRAMES.slice(0,6);
+  each(list,function(fr){
+    h+='<div style="display:flex;align-items:center;gap:.7rem;padding:.5rem .4rem;border-bottom:1px solid var(--bd)">'
+      +'<div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,'+fr.c1+','+fr.c2+');display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">'+fr.em+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:.8rem">'+fr.lbl+'</div>'
+      +'<div style="font-size:.68rem;color:var(--mu)">'+fr.cat+'</div></div>'
+      +(fr.isNew?'<span class="bg" style="background:rgba(39,174,96,.15);color:var(--green)">NEW</span>':'')+'</div>';
+  });
+  gel('recentFrames').innerHTML=h;
+}
+function renderCatChart(){
+  var counts={};
+  for(var i=0;i<PRODUCTS.length;i++) counts[PRODUCTS[i].cat]=(counts[PRODUCTS[i].cat]||0)+1;
+  var max=1; for(var k in counts) if(counts[k]>max) max=counts[k];
+  var h='';
+  each(CATS,function(cat){
+    var n=counts[cat.id]||0; var pct=Math.round(n/max*100);
+    h+='<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.45rem">'
+      +'<span style="min-width:72px;font-size:.75rem;font-weight:600;color:var(--mu)">'+cat.em+' '+cat.nm+'</span>'
+      +'<div style="flex:1;height:10px;background:var(--cr);border-radius:5px;overflow:hidden"><div style="height:100%;border-radius:5px;background:'+cat.color+';width:'+pct+'%;transition:width .5s ease"></div></div>'
+      +'<span style="font-size:.72rem;font-weight:700;color:var(--r);min-width:20px;text-align:right">'+n+'</span></div>';
+  });
+  gel('catChart').innerHTML=h;
+}
+
+// ── PRODUCT TABLE ─────────────────────────────────────────────────────────────
+function buildProdFilterBar(){
+  var h='<button class="btn bsm '+(currentProdFilter==='all'?'bp':'')+'" onclick="setProdFlt(\'all\')" style="'+(currentProdFilter==='all'?'':'border:2px solid var(--bd);background:transparent;color:var(--mu)')+'">All ('+PRODUCTS.length+')</button>';
+  each(CATS,function(c){
+    var cnt=0; for(var j=0;j<PRODUCTS.length;j++) if(PRODUCTS[j].cat===c.id) cnt++;
+    if(cnt) h+=' <button class="btn bsm" onclick="setProdFlt(\''+c.id+'\')" style="border:2px solid var(--bd);background:transparent;color:var(--mu)">'+c.em+' '+c.nm+' ('+cnt+')</button>';
+  });
+  gel('prodFilterBar').innerHTML=h;
+}
+function setProdFlt(cat){currentProdFilter=cat;buildProdFilterBar();renderProdTable();}
+function renderProdTable(){
+  var list=(function(){if(currentProdFilter==='all')return PRODUCTS;var r=[];for(var _i=0;_i<PRODUCTS.length;_i++)if(PRODUCTS[_i].cat===currentProdFilter)r.push(PRODUCTS[_i]);return r;}());
+  var h='';
+  each(list,function(p){
+    h+='<tr><td><div style="display:flex;align-items:center;gap:.55rem">'
+      +'<span style="font-size:1.25rem">'+p.em+'</span>'
+      +'<div><div style="font-weight:700;font-size:.8rem">'+p.n+'</div>'
+      +'<a href="'+p.l+'" target="_blank" rel="noopener" style="font-size:.63rem;color:var(--r)">🔗 Amazon Link</a></div></div></td>'
+      +'<td><span style="font-weight:700">₹'+p.p+'</span> <del style="color:var(--mu);font-size:.68rem">₹'+p.mrp+'</del></td>'
+      +'<td><span class="bg bg-ct">'+p.cat+'</span></td>'
+      +'<td><button onclick="toggleProdActive(\''+p.id+'\')" class="bg '+(p.active?'bg-act':'bg-off')+'" style="border:none;cursor:pointer">'+(p.active?'✅ Live':'⛔ Off')+'</button></td>'
+      +'<td><button onclick="toggleProdFt(\''+p.id+'\')" style="border:none;background:none;cursor:pointer;font-size:1rem">'+(p.featured?'⭐':'☆')+'</button></td>'
+      +'<td><div style="display:flex;gap:.3rem">'
+      +'<button class="btn bi bsm" onclick="openEditProd(\''+p.id+'\')">✏️ Edit</button>'
+      +'<button class="btn bd bsm" onclick="deleteProd(\''+p.id+'\')">🗑</button>'
+      +'</div></td></tr>';
+  });
+  gel('prodTBody').innerHTML=h||'<tr><td colspan="6" style="text-align:center;color:var(--mu);padding:2rem">No products found</td></tr>';
+}
+function toggleProdActive(id){
+  for(var i=0;i<PRODUCTS.length;i++) if(PRODUCTS[i].id===id){PRODUCTS[i].active=!PRODUCTS[i].active;break;}
+  saveProds();renderProdTable();renderStats();renderRecentProds();showToast('✅ Status updated! Site auto-synced 🔄');
+}
+function toggleProdFt(id){
+  for(var i=0;i<PRODUCTS.length;i++) if(PRODUCTS[i].id===id){PRODUCTS[i].featured=!PRODUCTS[i].featured;break;}
+  saveProds();renderProdTable();renderStats();showToast('⭐ Featured updated! Site auto-synced 🔄');
+}
+function deleteProd(id){
+  if(!confirm('Delete this product?')) return;
+  (function(){var r=[];for(var _i=0;_i<PRODUCTS.length;_i++)if(PRODUCTS[_i].id!==id)r.push(PRODUCTS[_i]);PRODUCTS=r;}());
+  saveProds();renderProdTable();renderStats();renderRecentProds();renderCatChart();showToast('🗑️ Product deleted! Site auto-synced 🔄');
+}
+
+// ── PRODUCT MODAL ─────────────────────────────────────────────────────────────
+function buildCatSelects(){
+  var h='';
+  each(CATS,function(c){h+='<option value="'+c.id+'">'+c.em+' '+c.nm+'</option>';});
+  var m=gel('m-cat'); if(m) m.innerHTML=h;
+  var f=gel('f-cat'); if(f) f.innerHTML=h;
+}
+function openAddProd(){
+  editProdId=null; gel('prodModalTitle').textContent='➕ Add New Product';
+  gel('m-n').value=''; gel('m-em').value='🎁'; gel('m-p').value=''; gel('m-mrp').value='';
+  gel('m-cat').value='birthday'; gel('m-st').value='active'; gel('m-l').value='';
+  var d=gel('m-desc'); if(d) d.value=''; gel('m-ft').checked=false;
+  gel('prodModal').classList.add('open');
+}
+function openEditProd(id){
+  var p=null; for(var i=0;i<PRODUCTS.length;i++) if(PRODUCTS[i].id===id){p=PRODUCTS[i];break;}
+  if(!p) return; editProdId=id;
+  gel('prodModalTitle').textContent='✏️ Edit Product';
+  gel('m-n').value=p.n; gel('m-em').value=p.em; gel('m-p').value=p.p; gel('m-mrp').value=p.mrp;
+  gel('m-cat').value=p.cat; gel('m-st').value=p.active?'active':'inactive'; gel('m-l').value=p.l;
+  var d=gel('m-desc'); if(d) d.value=p.desc||''; gel('m-ft').checked=p.featured;
+  gel('prodModal').classList.add('open');
+}
+function closeProdModal(){gel('prodModal').classList.remove('open');}
+function saveProd(){
+  var n=gel('m-n').value.trim(); var pr=parseInt(gel('m-p').value); var lk=gel('m-l').value.trim();
+  if(!n){showToast('⚠️ Product name required!');return;}
+  if(!pr||pr<1){showToast('⚠️ Valid price required!');return;}
+  if(!lk){showToast('⚠️ Amazon link required!');return;}
+  if(lk.indexOf('amazon')<0){showToast('⚠️ Valid Amazon link daalo');return;}
+  var prod={
+    id:editProdId||('p'+Date.now()), n:n,
+    em:gel('m-em').value||'🎁',
+    p:pr, mrp:parseInt(gel('m-mrp').value)||pr,
+    cat:gel('m-cat').value, l:lk,
+    active:gel('m-st').value==='active', featured:gel('m-ft').checked,
+    desc:(gel('m-desc')||{value:''}).value||''
+  };
+  if(editProdId){for(var i=0;i<PRODUCTS.length;i++) if(PRODUCTS[i].id===editProdId){PRODUCTS[i]=prod;break;}showToast('✅ Product updated! Site auto-synced 🔄');}
+  else{PRODUCTS.push(prod);showToast('✅ Product added! Site auto-synced 🔄');}
+  saveProds();closeProdModal();renderProdTable();renderStats();renderRecentProds();renderCatChart();
+}
+
+// ── FRAMES ────────────────────────────────────────────────────────────────────
+function buildFrameFilterBar(){
+  var h='<button class="btn bsm '+(currentFrameFilter==='all'?'bp':'')+'" onclick="setFrameFlt(\'all\')" style="'+(currentFrameFilter==='all'?'':'border:2px solid var(--bd);background:transparent;color:var(--mu)')+'">All ('+FRAMES.length+')</button>';
+  each(CATS,function(c){
+    var cnt=0; for(var j=0;j<FRAMES.length;j++) if(FRAMES[j].cat===c.id) cnt++;
+    if(cnt) h+=' <button class="btn bsm" onclick="setFrameFlt(\''+c.id+'\')" style="border:2px solid var(--bd);background:transparent;color:var(--mu)">'+c.em+' '+c.nm+' ('+cnt+')</button>';
+  });
+  gel('frameFilterBar').innerHTML=h;
+}
+function setFrameFlt(cat){currentFrameFilter=cat;buildFrameFilterBar();renderFramesGrid();}
+function renderFramesGrid(){
+  var list=(function(){if(currentFrameFilter==='all')return FRAMES;var r=[];for(var _i=0;_i<FRAMES.length;_i++)if(FRAMES[_i].cat===currentFrameFilter)r.push(FRAMES[_i]);return r;}());
+  var h='';
+  each(list,function(fr){
+    h+='<div style="background:#fff;border-radius:14px;border:2px solid var(--bd);overflow:hidden;transition:all .2s" onmouseover="this.style.borderColor=\'#e8416f\'" onmouseout="this.style.borderColor=\'#f0dde8\'">'
+      +'<div style="width:100%;height:80px;background:linear-gradient(135deg,'+fr.c1+','+fr.c2+');display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">'
+      +'<span style="font-size:2rem">'+fr.em+'</span>'
+      +'<span style="font-size:.55rem;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">'+fr.lbl+'</span>'
+      +(fr.isNew?'<span style="position:absolute;top:4px;left:4px;font-size:.55rem;background:#4CAF50;color:#fff;padding:1px 4px;border-radius:4px;font-weight:800">NEW</span>':'')+'</div>'
+      +'<div style="padding:.7rem">'
+      +'<div style="font-weight:700;font-size:.78rem;margin-bottom:.2rem">'+fr.lbl+'</div>'
+      +'<div style="font-size:.65rem;color:var(--mu);margin-bottom:.55rem">'+fr.cat+' · '+fr.border+'</div>'
+      +'<div style="display:flex;gap:.3rem">'
+      +'<button class="btn bi bsm" onclick="openEditFrame(\''+fr.id+'\')" style="flex:1;justify-content:center">✏️ Edit</button>'
+      +'<button class="btn bd bsm" onclick="deleteFrame(\''+fr.id+'\')">🗑</button>'
+      +'</div></div></div>';
+  });
+  gel('framesGrid').innerHTML=h||'<p style="color:var(--mu);font-size:.85rem;grid-column:1/-1">No frames found</p>';
+}
+function deleteFrame(id){
+  if(!confirm('Delete this frame template?')) return;
+  (function(){var r=[];for(var _i=0;_i<FRAMES.length;_i++)if(FRAMES[_i].id!==id)r.push(FRAMES[_i]);FRAMES=r;}());
+  saveFramesList();renderFramesGrid();buildFrameFilterBar();renderStats();renderRecentFrames();showToast('🗑️ Frame deleted! Site auto-synced 🔄');
+}
+function restoreDefaults(){
+  if(!confirm('Restore all 50 default frames? Custom frames will be replaced!')) return;
+  FRAMES=GC.DEFAULT_FRAMES.slice();
+  saveFramesList();buildFrameFilterBar();renderFramesGrid();renderStats();renderRecentFrames();showToast('🔄 Default frames restored! Site auto-synced 🔄');
+}
+
+// ── FRAME MODAL ───────────────────────────────────────────────────────────────
+function openAddFrame(){
+  editFrameId=null; gel('frameModalTitle').textContent='🖼️ Add New Frame Template';
+  gel('f-n').value=''; gel('f-em').value='✨';
+  gel('f-cat').value='birthday'; gel('f-border').value='gradient';
+  gel('f-c1').value='#e8416f'; gel('f-c2').value='#f7a548';
+  gel('f-top').value='✨ Special Wishes ✨';
+  gel('f-dec').value='sparkle'; gel('f-glow').checked=false;
+  gel('frameModal').classList.add('open');
+  setTimeout(updateFramePreview,100);
+}
+function openEditFrame(id){
+  var fr=null; for(var i=0;i<FRAMES.length;i++) if(FRAMES[i].id===id){fr=FRAMES[i];break;}
+  if(!fr) return; editFrameId=id;
+  gel('frameModalTitle').textContent='✏️ Edit Frame Template';
+  gel('f-n').value=fr.lbl.replace(/[^\w\s]/gi,'').trim()||fr.lbl;
+  gel('f-em').value=fr.em;
+  gel('f-cat').value=fr.cat; gel('f-border').value=fr.border||'gradient';
+  gel('f-c1').value=fr.c1; gel('f-c2').value=fr.c2;
+  gel('f-top').value=fr.top; gel('f-dec').value=fr.dec||'sparkle'; gel('f-glow').checked=fr.innerGlow||false;
+  gel('frameModal').classList.add('open');
+  setTimeout(updateFramePreview,100);
+}
+function closeFrameModal(){gel('frameModal').classList.remove('open');}
+function updateFramePreview(){
+  var cv=gel('framePreviewCv'); if(!cv) return;
+  var ctx=cv.getContext('2d'); var W=200,H=200;
+  cv.width=W; cv.height=H;
+  var c1=gel('f-c1')?gel('f-c1').value:'#e8416f';
+  var c2=gel('f-c2')?gel('f-c2').value:'#f7a548';
+  var em=gel('f-em')?gel('f-em').value:'✨';
+  var top=gel('f-top')?gel('f-top').value:'Special Frame';
+  var border=gel('f-border')?gel('f-border').value:'gradient';
+  var glow=gel('f-glow')&&gel('f-glow').checked;
+  ctx.fillStyle='#222'; ctx.fillRect(0,0,W,H);
+  // Border
+  var pad=12;
+  var gb=ctx.createLinearGradient(0,0,W,H); gb.addColorStop(0,c1); gb.addColorStop(1,c2);
+  if(border==='glow'){ctx.shadowColor=c1;ctx.shadowBlur=10;}
+  ctx.strokeStyle=gb; ctx.lineWidth=pad*2; ctx.strokeRect(0,0,W,H); ctx.shadowBlur=0;
+  if(border==='double'){ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1.5;ctx.strokeRect(pad+4,pad+4,W-pad*2-8,H-pad*2-8);}
+  // Top banner
+  var th=38; var gt=ctx.createLinearGradient(0,0,W,0);
+  gt.addColorStop(0,c1+'ee'); gt.addColorStop(1,c2+'ee');
+  ctx.fillStyle=gt; ctx.fillRect(0,0,W,th);
+  ctx.fillStyle='#fff'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=3;
+  var shortTop=top.length>20?top.substring(0,20)+'...':top;
+  ctx.fillText(shortTop,W/2,th/2); ctx.shadowBlur=0;
+  // Corners
+  ctx.font='12px serif';
+  each([[pad+5,th+10],[W-pad-5,th+10],[pad+5,H-pad-10],[W-pad-5,H-pad-10]],function(c){ctx.fillText(em,c[0],c[1]);});
+  if(glow){ctx.strokeStyle=c1+'44';ctx.lineWidth=1;ctx.strokeRect(pad+7,th+7,W-pad*2-14,H-th-pad-14);}
+}
+function saveFrame(){
+  var n=gel('f-n').value.trim(); var e=gel('f-em').value.trim(); var top=gel('f-top').value.trim();
+  if(!n){showToast('⚠️ Frame name required!');return;}
+  if(!e){showToast('⚠️ Emoji required!');return;}
+  if(!top){showToast('⚠️ Banner text required!');return;}
+  var frame={
+    id:editFrameId||('custom_'+Date.now()),
+    cat:gel('f-cat').value,
+    lbl:n+' '+e,
+    em:e,
+    pro:false,
+    c1:gel('f-c1').value,
+    c2:gel('f-c2').value,
+    top:top,
+    dec:gel('f-dec').value,
+    border:gel('f-border').value,
+    innerGlow:gel('f-glow').checked,
+    isNew:true
+  };
+  if(editFrameId){
+    for(var i=0;i<FRAMES.length;i++) if(FRAMES[i].id===editFrameId){FRAMES[i]=frame;break;}
+    showToast('✅ Frame updated! Site auto-synced 🔄');
+  } else {
+    FRAMES.push(frame);
+    showToast('✅ New frame added! Site auto-synced 🔄');
+  }
+  saveFramesList();closeFrameModal();buildFrameFilterBar();renderFramesGrid();renderStats();renderRecentFrames();
+}
+
+// ── CATEGORIES ────────────────────────────────────────────────────────────────
+function renderCategories(){
+  var h='';
+  each(CATS,function(c){
+    var pcnt=0,fcnt=0,qcnt=(QUOTES[c.id]||[]).length;
+    for(var i=0;i<PRODUCTS.length;i++) if(PRODUCTS[i].cat===c.id) pcnt++;
+    for(var j=0;j<FRAMES.length;j++) if(FRAMES[j].cat===c.id) fcnt++;
+    h+='<div class="card" style="text-align:center">'
+      +'<div style="font-size:2.2rem;margin-bottom:.4rem">'+c.em+'</div>'
+      +'<div style="font-weight:800;font-size:.9rem;margin-bottom:.5rem">'+c.nm+'</div>'
+      +'<div style="display:flex;justify-content:center;gap:.3rem;flex-wrap:wrap">'
+      +'<span class="bg" style="background:rgba(52,152,219,.12);color:var(--blue)">🛍️ '+pcnt+'</span>'
+      +'<span class="bg" style="background:rgba(232,65,111,.12);color:var(--r)">🖼️ '+fcnt+'</span>'
+      +'<span class="bg" style="background:rgba(155,89,182,.12);color:var(--purple)">💬 '+qcnt+'</span>'
+      +'</div></div>';
+  });
+  gel('catGrid').innerHTML=h;
+}
+
+// ── QUOTES ────────────────────────────────────────────────────────────────────
+function buildQuoteFilterBar(){
+  var h='';
+  each(CATS,function(c,i){
+    h+='<button class="btn bsm '+(currentQuoteCat===c.id?'bp':'')+'" onclick="setQFlt(\''+c.id+'\')" style="'+(currentQuoteCat===c.id?'':'border:2px solid var(--bd);background:transparent;color:var(--mu);')+'">'+c.em+' '+c.nm+'</button> ';
+  });
+  gel('quoteFilterBar').innerHTML=h;
+}
+function setQFlt(cat){currentQuoteCat=cat;buildQuoteFilterBar();renderQuoteList();}
+function renderQuoteList(){
+  var list=QUOTES[currentQuoteCat]||[];
+  var h='<div style="font-weight:800;font-size:.85rem;margin-bottom:.7rem">'+currentQuoteCat+' quotes ('+list.length+')</div>';
+  each(list,function(q,i){
+    h+='<div style="padding:.55rem .75rem;border-radius:10px;border:2px solid var(--bd);background:var(--cr);margin-bottom:.4rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem">'
+      +'<span style="font-size:.8rem;font-weight:600;line-height:1.5">'+q+'</span>'
+      +'<span style="font-size:.68rem;color:var(--mu);flex-shrink:0">#'+(i+1)+'</span></div>';
+  });
+  gel('quotesView').innerHTML=h;
+}
+
+// ── ANALYTICS ─────────────────────────────────────────────────────────────────
+// renderAnalytics replaced below
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function loadSettings(){
+  if(SETTINGS.siteName) gel('st-name').value=SETTINGS.siteName;
+  if(SETTINGS.siteUrl) gel('st-url').value=SETTINGS.siteUrl;
+  if(SETTINGS.email) gel('st-email').value=SETTINGS.email;
+  if(SETTINGS.whatsapp) gel('st-wa').value=SETTINGS.whatsapp;
+  if(SETTINGS.amazonTag) gel('st-tag').value=SETTINGS.amazonTag;
+}
+function saveSettings(){
+  SETTINGS={siteName:gel('st-name').value,siteUrl:gel('st-url').value,email:gel('st-email').value,whatsapp:gel('st-wa').value,amazonTag:gel('st-tag').value,adminPass:ADMIN_PASS};
+  GC.saveSettings(SETTINGS); showToast('✅ Settings saved!');
+}
+function changePass(){
+  var old=gel('st-old').value,nw=gel('st-new').value,cf=gel('st-cf').value;
+  if(old!==ADMIN_PASS){showToast('❌ Current password wrong!');return;}
+  if(!nw){showToast('⚠️ New password required!');return;}
+  if(nw!==cf){showToast('❌ Passwords do not match!');return;}
+  ADMIN_PASS=nw; localStorage.setItem('zb_admin_pass',nw);
+  gel('st-old').value=''; gel('st-new').value=''; gel('st-cf').value='';
+  showToast('✅ Password changed! Next login mein naya use karo.');
+}
+
+// ── LEGAL CHECKLIST ───────────────────────────────────────────────────────────
+function renderChecklist(){
+  var h='';
+  each(CHECKLIST,function(c){
+    h+='<div style="display:flex;align-items:center;gap:.7rem;padding:.45rem 0;border-bottom:1px solid var(--bd)">'
+      +'<span style="font-size:1rem">'+(c.done?'✅':'⬜')+'</span>'
+      +'<span style="font-size:.82rem;font-weight:600;color:'+(c.done?'var(--green)':'var(--mu)')+'">'+c.txt+'</span></div>';
+  });
+  gel('checkList').innerHTML=h;
+}
+
+// ── EXPORT / BACKUP ───────────────────────────────────────────────────────────
+function exportCSV(){
+  var h='ID,Name,Emoji,Price,MRP,Category,Amazon Link,Active,Featured\n';
+  each(PRODUCTS,function(p){h+=p.id+',"'+p.n+'",'+p.em+','+p.p+','+p.mrp+','+p.cat+',"'+p.l+'",'+p.active+','+p.featured+'\n';});
+  var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(h); a.download='giftcraft-products.csv'; a.click();
+  showToast('📥 CSV exported! ('+PRODUCTS.length+' products)');
+}
+function backupData(){
+  var data={products:PRODUCTS,frames:FRAMES,settings:SETTINGS,exported:new Date().toISOString()};
+  var a=document.createElement('a'); a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(data,null,2));
+  a.download='giftcraft-backup-'+Date.now()+'.json'; a.click(); showToast('💾 Full backup downloaded!');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+async function renderEidUsers(){
+  try {
+    // Try Supabase first
+    var dbUsers = typeof loadEidUsersFromDB === 'function' ? await loadEidUsersFromDB() : null;
+    var users = dbUsers || JSON.parse(localStorage.getItem('zb_eid_users')||'[]');
+    var stats=gel('eidUserStats');
+    if(stats) stats.innerHTML='<div style="display:flex;gap:1.5rem;flex-wrap:wrap"><div class="sc"><div class="sc-i">👥</div><div class="sc-n" style="color:#e8416f">'+users.length+'</div><div class="sc-l">Total Users</div></div><div class="sc"><div class="sc-i">📱</div><div class="sc-n" style="color:#27ae60">'+(users.filter(function(u){return u.phone&&u.phone!=="Not provided"}).length)+'</div><div class="sc-l">With Phone</div></div></div>';
+    var tbody=gel('eidUsersTBody');
+    if(!tbody)return;
+    if(!users.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--mu);padding:2rem">Abhi koi user nahi aaya. Eid poster link share karo!</td></tr>';return;}
+    var h='';
+    each(users,function(u,i){h+='<tr><td style="color:var(--mu);font-size:.75rem">'+(i+1)+'</td><td style="font-weight:700">'+u.name+'</td><td><a href="https://wa.me/91'+u.phone+'" target="_blank" style="color:var(--r);font-weight:600">'+u.phone+'</a></td><td style="font-size:.72rem;color:var(--mu)">'+u.time+'</td></tr>';});
+    tbody.innerHTML=h;
+  }catch(e){console.log(e);}
+}
+function exportEidCSV(){
+  try{
+    var users=JSON.parse(localStorage.getItem('zb_eid_users')||'[]');
+    var h='#,Name,Phone,Time\n';
+    each(users,function(u,i){h+=(i+1)+',"'+u.name+'","'+u.phone+'","'+u.time+'"\n';});
+    var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(h);a.download='eid-users-'+Date.now()+'.csv';a.click();
+    showToast('📥 CSV exported! ('+users.length+' users)');
+  }catch(e){}
+}
+function showToast(msg){var t=gel('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+
+// Modal close on overlay click
+gel('prodModal').addEventListener('click',function(e){if(e.target===this)closeProdModal();});
+gel('frameModal').addEventListener('click',function(e){if(e.target===this)closeFrameModal();});
+// Frame preview on input change
+each(['f-c1','f-c2','f-em','f-border','f-glow'],function(id){var el=gel(id);if(el)el.addEventListener('change',updateFramePreview);});
+
+gel('pwInput').focus();
+// ═══════════════════════════════════════════════════════════════
+// REAL ANALYTICS
+// ═══════════════════════════════════════════════════════════════
+function trackEvent(type, data) {
+  try {
+    var key = 'zb_events';
+    var events = JSON.parse(localStorage.getItem(key) || '[]');
+    events.push({ type: type, data: data || {}, date: new Date().toISOString().split('T')[0], ts: Date.now() });
+    if (events.length > 2000) events = events.slice(-2000);
+    localStorage.setItem(key, JSON.stringify(events));
+  } catch(e) {}
+}
+function getEvents() {
+  try { return JSON.parse(localStorage.getItem('zb_events') || '[]'); } catch(e) { return []; }
+}
+function renderAnalytics() {
+  var v = parseInt(localStorage.getItem('zb_visits') || '0') + 1;
+  localStorage.setItem('zb_visits', v);
+  var fr = parseInt(localStorage.getItem('zb_frames_created') || '0');
+  var dl = parseInt(localStorage.getItem('zb_downloads') || '0');
+  var eidU = [];
+  try { eidU = JSON.parse(localStorage.getItem('zb_eid_users') || '[]'); } catch(e) {}
+  var events = getEvents();
+  // Stats cards
+  var stats = [
+    {i:'👁️', n:v, l:'Total Visits', c:'#3498db'},
+    {i:'🖼️', n:fr, l:'Frames Created', c:'#e8416f'},
+    {i:'⬇️', n:dl, l:'Downloads', c:'#27ae60'},
+    {i:'🌙', n:eidU.length, l:'Eid Users', c:'#C9A84C'},
+    {i:'🛍️', n:(function(){var cnt=0;for(var i=0;i<PRODUCTS.length;i++)if(PRODUCTS[i].active)cnt++;return cnt;}()), l:'Active Products', c:'#9b59b6'},
+    {i:'📅', n:getTodayVisits(events), l:"Today's Activity", c:'#e74c3c'},
+  ];
+  var h=''; each(stats, function(d){h+='<div class="sc"><div class="sc-i">'+d.i+'</div><div class="sc-n" style="color:'+d.c+'">'+d.n+'</div><div class="sc-l">'+d.l+'</div></div>';});
+  gel('analyticsSt').innerHTML = h;
+  // Daily chart (last 7 days)
+  drawDailyChart(events);
+  // Template usage chart
+  drawTmplChart();
+  // Occasions chart
+  drawOccasionsChart(events);
+  // Eid users week chart
+  drawEidWeekChart(eidU);
+}
+function getTodayVisits(events) {
+  var today = new Date().toISOString().split('T')[0];
+  var cnt = 0;
+  for(var i=0;i<events.length;i++) if(events[i].date===today) cnt++;
+  return cnt + 1;
+}
+function getLast7Days() {
+  var days = [];
+  for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d.toISOString().split('T')[0]);}
+  return days;
+}
+function drawDailyChart(events) {
+  var cv = gel('dailyChart'); if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var days = getLast7Days();
+  var counts = days.map(function(d){ return events.filter(function(e){return e.date===d;}).length + (d===days[6]?1:0); });
+  var labels = days.map(function(d){ return d.split('-')[2]+'/'+d.split('-')[1]; });
+  var W=cv.offsetWidth||cv.width, H=160;
+  cv.width=W; cv.height=H;
+  var max=Math.max.apply(null,counts)||1, pad=28, bw=(W-pad*2)/days.length*.7, gap=(W-pad*2)/days.length;
+  ctx.clearRect(0,0,W,H);
+  // Grid lines
+  ctx.strokeStyle='#f0f0f0'; ctx.lineWidth=1;
+  for(var gi=0;gi<=4;gi++){var gy=H-pad-(gi*(H-pad*2)/4);ctx.beginPath();ctx.moveTo(pad,gy);ctx.lineTo(W-10,gy);ctx.stroke();}
+  // Bars
+  days.forEach(function(d,i){
+    var x=pad+i*gap, bh=(counts[i]/max)*(H-pad*2), y=H-pad-bh;
+    var g=ctx.createLinearGradient(0,y,0,y+bh);
+    g.addColorStop(0,'#e8416f'); g.addColorStop(1,'#f7a548');
+    ctx.fillStyle=g; ctx.fillRect(x,y,bw,bh);
+    ctx.fillStyle='#666'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i],x+bw/2,H-6);
+    if(counts[i]>0){ctx.fillStyle='#333';ctx.fillText(counts[i],x+bw/2,y-3);}
+  });
+}
+function drawTmplChart() {
+  var cv = gel('tmplChart'); if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var W=cv.offsetWidth||cv.width, H=160;
+  cv.width=W; cv.height=H;
+  var data=[
+    {l:'Birthday',v:35,c:'#e8416f'},{l:'Love',v:22,c:'#c0392b'},
+    {l:'Mom',v:18,c:'#9b59b6'},{l:'Islamic',v:15,c:'#1B5E20'},
+    {l:'Festival',v:10,c:'#f39c12'}
+  ];
+  try {
+    var saved = JSON.parse(localStorage.getItem('zb_tmpl_usage')||'{}');
+    if(Object.keys(saved).length>0){
+      data=[];
+      var sorted=Object.keys(saved).sort(function(a,b){return saved[b]-saved[a];}).slice(0,5);
+      var colors=['#e8416f','#c0392b','#9b59b6','#1B5E20','#f39c12'];
+      sorted.forEach(function(k,i){data.push({l:k,v:saved[k],c:colors[i%5]});});
+    }
+  } catch(e){}
+  var total=data.reduce(function(s,d){return s+d.v;},0)||1;
+  var cx=W/2, cy=H/2, r=Math.min(W,H)/2-20, start=-Math.PI/2;
+  ctx.clearRect(0,0,W,H);
+  data.forEach(function(d){
+    var sweep=(d.v/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,start+sweep); ctx.closePath();
+    ctx.fillStyle=d.c; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    // Label
+    var mid=start+sweep/2;
+    if(sweep>0.3){
+      ctx.fillStyle='#fff'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(d.l,cx+Math.cos(mid)*(r*.65),cy+Math.sin(mid)*(r*.65));
+    }
+    start+=sweep;
+  });
+}
+function drawOccasionsChart(events) {
+  var occ=['Birthday','Love','Mom','Anniversary','Festival','Islamic','Kids','Wedding','New Year','Graduation'];
+  var vals=[85,72,60,55,45,42,38,35,30,28];
+  try {
+    var saved = JSON.parse(localStorage.getItem('zb_occ_usage')||'{}');
+    if(Object.keys(saved).length>0){
+      occ=[]; vals=[];
+      var sorted=Object.keys(saved).sort(function(a,b){return saved[b]-saved[a];}).slice(0,10);
+      var maxV=saved[sorted[0]]||1;
+      sorted.forEach(function(k){occ.push(k);vals.push(Math.round(saved[k]/maxV*100));});
+    }
+  } catch(e){}
+  var el=gel('occChart'); if(!el)return;
+  var h='';
+  occ.forEach(function(nm,i){
+    h+='<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.38rem">'
+      +'<span style="min-width:75px;font-size:.72rem;font-weight:600;color:var(--mu)">'+nm+'</span>'
+      +'<div style="flex:1;height:9px;background:var(--cr);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:linear-gradient(135deg,#e8416f,#f7a548);width:'+vals[i]+'%;transition:width .6s ease"></div></div>'
+      +'<span style="font-size:.7rem;font-weight:700;color:var(--r);min-width:28px">'+vals[i]+'%</span></div>';
+  });
+  el.innerHTML=h;
+}
+function drawEidWeekChart(eidUsers) {
+  var days = getLast7Days();
+  var counts = days.map(function(d){
+    return eidUsers.filter(function(u){
+      return u.time && u.time.includes(d.split('-').reverse().join('/'));
+    }).length;
+  });
+  var el=gel('eidWeekChart'); if(!el)return;
+  var total=eidUsers.length;
+  var thisWeek=counts.reduce(function(s,n){return s+n;},0);
+  var h='<div style="display:flex;gap:1.5rem;margin-bottom:.8rem">'
+    +'<div class="sc"><div class="sc-i">🌙</div><div class="sc-n" style="color:#C9A84C">'+total+'</div><div class="sc-l">Total</div></div>'
+    +'<div class="sc"><div class="sc-i">📅</div><div class="sc-n" style="color:#27ae60">'+thisWeek+'</div><div class="sc-l">This Week</div></div>'
+    +'</div>';
+  var max=Math.max.apply(null,counts)||1;
+  days.forEach(function(d,i){
+    var pct=Math.round(counts[i]/max*100);
+    var label=d.split('-')[2]+'/'+d.split('-')[1];
+    h+='<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">'
+      +'<span style="min-width:38px;font-size:.68rem;color:var(--mu)">'+label+'</span>'
+      +'<div style="flex:1;height:8px;background:rgba(201,168,76,.1);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:#C9A84C;width:'+pct+'%"></div></div>'
+      +'<span style="font-size:.7rem;font-weight:700;color:#C9A84C;min-width:16px">'+counts[i]+'</span></div>';
+  });
+  el.innerHTML=h;
+}
+function exportAnalyticsCSV(){
+  var events=getEvents();
+  var h='Date,Type,Data\n';
+  events.forEach(function(e){h+=e.date+','+e.type+','+(JSON.stringify(e.data)||'')+'\n';});
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(h);a.download='analytics-'+Date.now()+'.csv';a.click();
+  showToast('📥 Analytics exported!');
+}
+function resetAnalytics(){
+  if(!confirm('Analytics data reset karein?'))return;
+  localStorage.removeItem('zb_events');localStorage.removeItem('zb_visits');
+  localStorage.removeItem('zb_frames_created');localStorage.removeItem('zb_downloads');
+  showToast('Analytics reset!');renderAnalytics();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// COUPON SYSTEM
+// ═══════════════════════════════════════════════════════════════
+var COUPONS=[];
+var CP_TYPE='flat';
+function loadCoupons(){try{COUPONS=JSON.parse(localStorage.getItem('zb_coupons')||'[]');}catch(e){COUPONS=[];}}
+function saveCouponsDB(){try{localStorage.setItem('zb_coupons',JSON.stringify(COUPONS));}catch(e){}}
+function openCouponModal(){gel('couponModal').style.display='flex';gel('cp-code').value='';gel('cp-value').value='';gel('cp-maxuses').value='0';gel('cp-desc').value='';gel('cp-expiry').value='';setCpType('flat',gel('cpTypeFlat'));}
+function closeCouponModal(){gel('couponModal').style.display='none';}
+function setCpType(t,btn){CP_TYPE=t;gel('cpTypeFlat').className='btn '+(t==='flat'?'bp':'bs');gel('cpTypePct').className='btn '+(t==='percent'?'bp':'bs');}
+function saveCoupon(){
+  var code=(gel('cp-code').value||'').trim().toUpperCase();
+  var val=parseFloat(gel('cp-value').value||0);
+  if(!code){showToast('Code daalo!');return;}
+  if(!val){showToast('Value daalo!');return;}
+  if(CP_TYPE==='percent'&&val>100){showToast('Percent 100 se zyada nahi!');return;}
+  var existing=COUPONS.findIndex(function(c){return c.code===code;});
+  var coupon={
+    code:code,type:CP_TYPE,value:val,
+    maxUses:parseInt(gel('cp-maxuses').value||0),
+    uses:0,expiry:gel('cp-expiry').value||'',
+    desc:gel('cp-desc').value||'',
+    active:true,created:new Date().toISOString().split('T')[0]
+  };
+  if(existing>=0)COUPONS[existing]=coupon;
+  else COUPONS.unshift(coupon);
+  saveCouponsDB();
+  closeCouponModal();
+  renderCoupons();
+  showToast('✅ Coupon "'+code+'" saved!');
+}
+function toggleCoupon(code){
+  var i=COUPONS.findIndex(function(c){return c.code===code;});
+  if(i>=0){COUPONS[i].active=!COUPONS[i].active;saveCouponsDB();renderCoupons();showToast(COUPONS[i].active?'Coupon activated!':'Coupon deactivated!');}
+}
+function deleteCoupon(code){
+  if(!confirm('Delete coupon "'+code+'"?'))return;
+  COUPONS=COUPONS.filter(function(c){return c.code!==code;});
+  saveCouponsDB();renderCoupons();showToast('Coupon deleted!');
+}
+function renderCoupons(){
+  loadCoupons();
+  var active=COUPONS.filter(function(c){return c.active;}).length;
+  var totalUses=COUPONS.reduce(function(s,c){return s+c.uses;},0);
+  var stats=gel('couponStats');
+  if(stats)stats.innerHTML='<div class="sgrid"><div class="sc"><div class="sc-i">🎟️</div><div class="sc-n" style="color:#e8416f">'+COUPONS.length+'</div><div class="sc-l">Total</div></div><div class="sc"><div class="sc-i">✅</div><div class="sc-n" style="color:#27ae60">'+active+'</div><div class="sc-l">Active</div></div><div class="sc"><div class="sc-i">📊</div><div class="sc-n" style="color:#3498db">'+totalUses+'</div><div class="sc-l">Total Uses</div></div></div>';
+  var tbody=gel('couponTable');if(!tbody)return;
+  if(!COUPONS.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--mu);padding:2rem">Koi coupon nahi hai. "New Coupon" se banao!</td></tr>';return;}
+  var h='';
+  COUPONS.forEach(function(cp){
+    var expired=cp.expiry&&new Date(cp.expiry)<new Date();
+    var badge=expired?'<span class="bg" style="background:#e74c3c;color:#fff">Expired</span>':cp.active?'<span class="bg bg-act">Active</span>':'<span class="bg">Inactive</span>';
+    var uses=(cp.maxUses>0)?(cp.uses+'/'+cp.maxUses):cp.uses;
+    h+='<tr>'
+      +'<td><strong style="font-family:monospace;font-size:.88rem;color:var(--r)">'+cp.code+'</strong><br><span style="font-size:.65rem;color:var(--mu)">'+cp.desc+'</span></td>'
+      +'<td>'+cp.type+'</td>'
+      +'<td>'+(cp.type==='flat'?'₹':'')+cp.value+(cp.type==='percent'?'%':'')+'</td>'
+      +'<td>'+uses+'</td>'
+      +'<td style="font-size:.72rem">'+(cp.expiry||'No expiry')+'</td>'
+      +'<td>'+badge+'</td>'
+      +'<td style="display:flex;gap:.3rem">'
+        +'<button class="btn bs bsm" onclick="toggleCoupon(\''+cp.code+'\')">'+(cp.active?'⏸':'▶️')+'</button>'
+        +'<button class="btn bd bsm" onclick="deleteCoupon(\''+cp.code+'\')">🗑</button>'
+      +'</td></tr>';
+  });
+  tbody.innerHTML=h;
+}
+// Validate coupon (used by main site)
+function validateCoupon(code,price){
+  loadCoupons();
+  var cp=COUPONS.find(function(c){return c.code===code.toUpperCase();});
+  if(!cp)return{valid:false,msg:'Invalid coupon'};
+  if(!cp.active)return{valid:false,msg:'Coupon inactive hai'};
+  if(cp.expiry&&new Date(cp.expiry)<new Date())return{valid:false,msg:'Coupon expire ho gaya'};
+  if(cp.maxUses>0&&cp.uses>=cp.maxUses)return{valid:false,msg:'Coupon limit khatam'};
+  var disc=cp.type==='flat'?cp.value:Math.round(price*cp.value/100);
+  return{valid:true,discount:disc,msg:'✅ '+disc+(cp.type==='percent'?'%':'')+'off!'};
+}
+
+</script>
+</body>
+</html>

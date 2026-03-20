@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Eid Mubarak Poster Creator 🌙 — ZetsyBuy Gift</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--dg:#1B5E20;--dk:#0D1B2A;--cr:#FFF8E7;--bd:#E8D5A3;--mt:#1a1a2e}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--dk);color:#fff;overflow-x:hidden}
+
+/* ── INFO MODAL ── */
+#infoModal{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#0D1B2A 0%,#1B3A2D 50%,#0D1B2A 100%);display:flex;align-items:center;justify-content:center;padding:1rem}
+.im-box{background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,.03) 100%);border:1.5px solid rgba(201,168,76,.3);border-radius:24px;padding:1.8rem 1.4rem;width:100%;max-width:380px;backdrop-filter:blur(20px);text-align:center}
+.im-stars{font-size:2.5rem;margin-bottom:.6rem;animation:starFloat 3s ease-in-out infinite}
+@keyframes starFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.im-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#C9A84C,#F5D080,#C9A84C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
+.im-sub{font-size:.8rem;color:rgba(255,255,255,.55);margin-bottom:1.4rem;line-height:1.6}
+.im-inp{width:100%;padding:.72rem 1rem;border-radius:12px;border:1.5px solid rgba(201,168,76,.3);background:rgba(255,255,255,.07);color:#fff;font-family:inherit;font-size:.9rem;outline:none;margin-bottom:.75rem;transition:border-color .2s}
+.im-inp:focus{border-color:var(--gold)}
+.im-inp::placeholder{color:rgba(255,255,255,.35)}
+.im-photo-upload{width:100%;padding:.72rem;border-radius:12px;border:2px dashed rgba(201,168,76,.4);background:rgba(201,168,76,.06);color:rgba(255,255,255,.65);font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.75rem;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.im-photo-upload:hover{border-color:var(--gold);background:rgba(201,168,76,.12)}
+.im-photo-preview{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2.5px solid var(--gold);margin:0 auto .75rem;display:none;box-shadow:0 0 20px rgba(201,168,76,.4)}
+.im-note{font-size:.68rem;color:rgba(255,255,255,.38);margin-bottom:.9rem;line-height:1.5}
+.im-btn{width:100%;padding:.82rem;border-radius:12px;background:linear-gradient(135deg,#C9A84C,#F5D080,#C9A84C);background-size:200% 100%;color:#0D1B2A;border:none;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.im-btn:hover{background-position:100% 0;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.4)}
+.im-skip{display:block;margin-top:.6rem;color:rgba(255,255,255,.38);font-size:.72rem;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:inherit;width:100%}
+
+/* ── MAIN APP ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+#app.show{display:flex}
+
+/* TOP BAR */
+.topbar{background:linear-gradient(135deg,#0D1B2A,#1B3A2D);padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.2);flex-shrink:0;position:sticky;top:0;z-index:90}
+.tb-logo{font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;background:linear-gradient(135deg,#C9A84C,#F5D080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tb-user{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.tb-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.tb-name{font-size:.75rem;font-weight:700;color:rgba(255,255,255,.8)}
+.tb-back{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.3rem .7rem;border-radius:8px;font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.3rem}
+
+/* CANVAS AREA */
+.cv-section{background:#050f14;display:flex;flex-direction:column;align-items:center;padding:.9rem;flex-shrink:0;position:relative}
+.cv-wrap{position:relative;display:inline-block}
+#eidCv{display:block;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);max-width:calc(100vw - 1.8rem);max-height:65vw}
+.cv-loading{position:absolute;inset:0;background:rgba(0,0,0,.7);border-radius:12px;display:none;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.7)}
+.cv-loading.show{display:flex}
+.cv-loading-spin{width:32px;height:32px;border:3px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* Action buttons */
+.cv-actions{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;justify-content:center}
+.cv-btn{padding:.5rem 1rem;border-radius:50px;border:none;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s}
+.cv-btn:hover{transform:translateY(-1px)}
+.cb-dl{background:linear-gradient(135deg,#C9A84C,#F5D080);color:#0D1B2A}
+.cb-wa{background:#25d366;color:#fff}
+.cb-ig{background:linear-gradient(135deg,#f09433,#dc2743);color:#fff}
+.cb-sh{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)}
+
+/* TEMPLATE GRID */
+.tmpl-section{flex:1;overflow-y:auto;background:#0a1520}
+.tmpl-header{padding:.8rem 1rem .5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#0a1520;z-index:10;border-bottom:1px solid rgba(201,168,76,.1)}
+.tmpl-title{font-size:.85rem;font-weight:800;color:#C9A84C}
+.tmpl-count{font-size:.68rem;color:rgba(255,255,255,.4);background:rgba(201,168,76,.12);padding:.18rem .55rem;border-radius:50px}
+/* Category tabs */
+.tmpl-cats{display:flex;gap:.4rem;padding:.6rem 1rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.tmpl-cats::-webkit-scrollbar{display:none}
+.tcat{padding:.3rem .75rem;border-radius:50px;border:1.5px solid rgba(201,168,76,.25);background:transparent;color:rgba(255,255,255,.5);font-family:inherit;font-size:.68rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s}
+.tcat.on{background:var(--gold);border-color:var(--gold);color:#0D1B2A}
+/* Template grid */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;padding:.6rem 1rem 5rem}
+.tc{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid rgba(201,168,76,.15);transition:all .2s;position:relative;aspect-ratio:.9}
+.tc:hover,.tc.sel{border-color:var(--gold);box-shadow:0 4px 18px rgba(201,168,76,.3)}
+.tc.sel::after{content:'✓';position:absolute;top:4px;right:4px;width:20px;height:20px;background:var(--gold);color:#0D1B2A;border-radius:50%;font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tc-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;padding:.5rem;position:relative;overflow:hidden}
+.tc-em{font-size:1.6rem;z-index:1;position:relative}
+.tc-lbl{font-size:.52rem;font-weight:800;color:rgba(255,255,255,.9);text-align:center;z-index:1;position:relative;text-shadow:0 1px 4px rgba(0,0,0,.8);line-height:1.3}
+
+/* EDIT PANEL (bottom sheet) */
+#editPanel{position:fixed;bottom:0;left:0;right:0;z-index:200;background:#101c28;border-radius:20px 20px 0 0;border-top:1px solid rgba(201,168,76,.2);transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.28,.64,1);max-height:75vh;display:flex;flex-direction:column}
+#editPanel.open{transform:translateY(0)}
+.ep-drag{width:40px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:.7rem auto .5rem;flex-shrink:0}
+.ep-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.ep-tab{flex:1;padding:.55rem;text-align:center;font-family:inherit;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.38);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent}
+.ep-tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ep-body{flex:1;overflow-y:auto;padding:.8rem .9rem;scrollbar-width:thin}
+.ep-pane{display:none}.ep-pane.on{display:block}
+.ep-label{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(201,168,76,.7);display:block;margin-bottom:.38rem}
+.ep-inp{width:100%;padding:.58rem .78rem;border-radius:9px;border:1.5px solid rgba(201,168,76,.25);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:.85rem;outline:none;margin-bottom:.6rem;transition:border-color .2s}
+.ep-inp:focus{border-color:var(--gold)}
+.ep-inp::placeholder{color:rgba(255,255,255,.28)}
+textarea.ep-inp{resize:none;min-height:64px;line-height:1.5}
+.ep-row{display:flex;gap:.4rem;margin-bottom:.6rem;flex-wrap:wrap}
+.ep-chip{padding:.28rem .7rem;border-radius:50px;border:1.5px solid rgba(201,168,76,.25);background:transparent;color:rgba(255,255,255,.55);font-family:inherit;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .18s}
+.ep-chip.on,.ep-chip:hover{background:var(--gold);border-color:var(--gold);color:#0D1B2A}
+.ep-slrow{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem}
+.ep-slrow label{font-size:.6rem;font-weight:800;text-transform:uppercase;color:rgba(201,168,76,.6);min-width:65px}
+.ep-slrow input[type=range]{flex:1;accent-color:var(--gold)}
+.ep-slrow span{font-size:.7rem;font-weight:700;color:var(--gold);min-width:28px;text-align:right}
+.qlist{display:flex;flex-direction:column;gap:.45rem}
+.q-item{background:rgba(255,255,255,.05);border:1.5px solid rgba(201,168,76,.15);border-radius:10px;padding:.55rem .75rem;font-size:.76rem;line-height:1.5;color:rgba(255,255,255,.8);cursor:pointer;transition:all .18s}
+.q-item:hover{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.ep-close-btn{position:absolute;top:.6rem;right:.9rem;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.6);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+.edit-fab{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#C9A84C,#F5D080);color:#0D1B2A;border:none;padding:.7rem 1.8rem;border-radius:50px;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;box-shadow:0 6px 24px rgba(201,168,76,.45);display:flex;align-items:center;gap:.4rem;z-index:100;white-space:nowrap}
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);background:#0D1B2A;color:#C9A84C;border:1.5px solid rgba(201,168,76,.3);padding:.55rem 1.2rem;border-radius:50px;font-size:.75rem;font-weight:600;z-index:99999;opacity:0;pointer-events:none;transition:opacity .28s;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ═══ USER INFO MODAL ═══ -->
+<div id="infoModal">
+  <div class="im-box">
+    <div class="im-stars">🌙⭐☪️</div>
+    <div class="im-title">Eid Mubarak Poster</div>
+    <div class="im-sub">Apna naam, photo aur number daalo — phir apna Eid poster banao! 🎁</div>
+    <img id="imPhotoPreview" class="im-photo-preview" src="" alt="Preview">
+    <button class="im-photo-upload" type="button" onclick="gel('imPhotoInput').click()">
+      <span>📷</span> <span id="imPhotoLabel">Photo Upload Karo (optional)</span>
+    </button>
+    <input type="file" id="imPhotoInput" accept="image/*" style="display:none" onchange="handleImPhoto(this)">
+    <input class="im-inp" id="userName" type="text" placeholder="Aapka Naam *" maxlength="30">
+    <input class="im-inp" id="userPhone" type="tel" placeholder="WhatsApp Number (10 digits)" maxlength="10" pattern="[0-9]{10}">
+    <div class="im-note">📌 Aapka number humse secure hai. Sirf ZetsyBuy Gift team ke paas jayega.</div>
+    <button class="im-btn" onclick="startEidMaker()">🌙 Eid Poster Banao →</button>
+    <button class="im-skip" onclick="skipInfo()">Sirf poster dekhna hai (skip)</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="tb-back" href="index.html">← Back</a>
+    <div class="tb-logo">🌙 Eid Poster</div>
+    <div class="tb-user" onclick="gel('infoModal').style.display='flex'">
+      <img id="tbAvatar" class="tb-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%231B3A2D'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='18' fill='%23C9A84C'%3E👤%3C/text%3E%3C/svg%3E" alt="User">
+      <span class="tb-name" id="tbName">Guest</span>
+    </div>
+  </div>
+
+  <!-- CANVAS PREVIEW -->
+  <div class="cv-section">
+    <div class="cv-wrap">
+      <canvas id="eidCv" width="500" height="500"></canvas>
+      <div class="cv-loading" id="cvLoading">
+        <div class="cv-loading-spin"></div>
+        <span>Loading...</span>
+      </div>
+    </div>
+    <div class="cv-actions">
+      <button class="cv-btn cb-dl" onclick="downloadEid()">⬇️ Save</button>
+      <button class="cv-btn cb-wa" onclick="shareEidWA()">📲 WhatsApp</button>
+      <button class="cv-btn cb-ig" onclick="saveEidIG()">📸 Instagram</button>
+      <button class="cv-btn cb-sh" onclick="shareEidNative()">📤 Share</button>
+    </div>
+  </div>
+
+  <!-- TEMPLATE SECTION -->
+  <div class="tmpl-section">
+    <div class="tmpl-header">
+      <span class="tmpl-title">🌙 Eid Templates</span>
+      <span class="tmpl-count" id="tmplCountBadge">70 Templates</span>
+    </div>
+    <!-- Category tabs -->
+    <div class="tmpl-cats">
+      <button class="tcat on" onclick="filterTmpl('all',this)">✨ All (70)</button>
+      <button class="tcat" onclick="filterTmpl('eid',this)">🌙 Eid Mubarak</button>
+      <button class="tcat" onclick="filterTmpl('ramadan',this)">🕌 Ramadan</button>
+      <button class="tcat" onclick="filterTmpl('premium',this)">👑 Premium</button>
+      <button class="tcat" onclick="filterTmpl('family',this)">👨‍👩‍👧 Family</button>
+      <button class="tcat" onclick="filterTmpl('kids',this)">🧒 Kids</button>
+      <button class="tcat" onclick="filterTmpl('couple',this)">💑 Couple</button>
+      <button class="tcat" onclick="filterTmpl('modern',this)">🎨 Modern</button>
+    </div>
+    <div class="tgrid" id="templateGrid"></div>
+  </div>
+
+  <!-- EDIT FAB -->
+  <button class="edit-fab" onclick="toggleEditPanel()">✏️ Edit Text & Quotes</button>
+</div>
+
+<!-- ═══ EDIT PANEL ═══ -->
+<div id="editPanel">
+  <div class="ep-drag"></div>
+  <button class="ep-close-btn" onclick="toggleEditPanel()">✕</button>
+  <div class="ep-tabs">
+    <button class="ep-tab on" onclick="epTab('text',this)">✏️ Text</button>
+    <button class="ep-tab" onclick="epTab('quotes',this)">💬 Quotes</button>
+    <button class="ep-tab" onclick="epTab('style',this)">🎨 Style</button>
+  </div>
+  <div class="ep-body">
+    <!-- TEXT -->
+    <div class="ep-pane on" id="ep-text">
+      <span class="ep-label">Your Name</span>
+      <input class="ep-inp" id="epName" type="text" placeholder="Aapka naam..." maxlength="28" oninput="EU.name=this.value;renderEid()">
+      <span class="ep-label">Eid Message</span>
+      <textarea class="ep-inp" id="epMsg" placeholder="Eid Mubarak message..." maxlength="100" oninput="EU.msg=this.value;renderEid()"></textarea>
+      <span class="ep-label">Sub Line</span>
+      <input class="ep-inp" id="epSub" type="text" placeholder="e.g. With love & duas" maxlength="50" oninput="EU.sub=this.value;renderEid()">
+      <span class="ep-label">Text Position</span>
+      <div class="ep-row">
+        <button class="ep-chip on" onclick="EU.pos='bottom';setChip(this,'epos');renderEid()">⬇️ Bottom</button>
+        <button class="ep-chip" onclick="EU.pos='top';setChip(this,'epos');renderEid()">⬆️ Top</button>
+        <button class="ep-chip" onclick="EU.pos='center';setChip(this,'epos');renderEid()">⏺ Center</button>
+      </div>
+      <span class="ep-label">Text Color</span>
+      <div class="ep-row" id="epColors"></div>
+    </div>
+    <!-- QUOTES -->
+    <div class="ep-pane" id="ep-quotes">
+      <div class="qlist" id="eidQuotesList"></div>
+    </div>
+    <!-- STYLE -->
+    <div class="ep-pane" id="ep-style">
+      <div class="ep-slrow"><label>Brightness</label><input type="range" min="50" max="160" value="100" oninput="EU.brightness=+this.value;this.nextElementSibling.textContent=this.value+'%';renderEid()"><span>100%</span></div>
+      <div class="ep-slrow"><label>Contrast</label><input type="range" min="50" max="160" value="100" oninput="EU.contrast=+this.value;this.nextElementSibling.textContent=this.value+'%';renderEid()"><span>100%</span></div>
+      <div class="ep-slrow"><label>Name Size</label><input type="range" min="14" max="42" value="26" oninput="EU.nameSize=+this.value;this.nextElementSibling.textContent=this.value;renderEid()"><span>26</span></div>
+      <div class="ep-slrow"><label>Msg Size</label><input type="range" min="10" max="28" value="15" oninput="EU.msgSize=+this.value;this.nextElementSibling.textContent=this.value;renderEid()"><span>15</span></div>
+      <span class="ep-label">Border Style</span>
+      <div class="ep-row">
+        <button class="ep-chip on" onclick="EU.border='gold';setChip(this,'ebdr');renderEid()">⭐ Gold</button>
+        <button class="ep-chip" onclick="EU.border='green';setChip(this,'ebdr');renderEid()">🌿 Green</button>
+        <button class="ep-chip" onclick="EU.border='double';setChip(this,'ebdr');renderEid()">🔲 Double</button>
+        <button class="ep-chip" onclick="EU.border='glow';setChip(this,'ebdr');renderEid()">✨ Glow</button>
+        <button class="ep-chip" onclick="EU.border='none';setChip(this,'ebdr');renderEid()">🚫 None</button>
+      </div>
+      <span class="ep-label">Photo Shape</span>
+      <div class="ep-row">
+        <button class="ep-chip on" onclick="EU.photoShape='circle';setChip(this,'eph');renderEid()">⬤ Circle</button>
+        <button class="ep-chip" onclick="EU.photoShape='rounded';setChip(this,'eph');renderEid()">▢ Rounded</button>
+        <button class="ep-chip" onclick="EU.photoShape='rect';setChip(this,'eph');renderEid()">▭ Rectangle</button>
+      </div>
+      <div class="ep-slrow"><label>Vignette</label><input type="range" min="0" max="100" value="25" oninput="EU.vignette=+this.value;this.nextElementSibling.textContent=this.value;renderEid()"><span>25</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function gel(id){try{return document.getElementById(id)}catch(e){return null}}
+function each(a,f){if(!a)return;for(var i=0;i<a.length;i++)try{f(a[i],i)}catch(e){}}
+function showToast(m){var t=gel('toast');if(!t)return;t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2600)}
+
+// ═══════════════════════════════════════════════════════════════════
+// 70 EID TEMPLATES
+// ═══════════════════════════════════════════════════════════════════
+var TEMPLATES = [
+// EID MUBARAK (20)
+{id:'e1',cat:'eid',lbl:'Eid Classic',em:'🌙',bg:'#0D1B2A',c1:'#C9A84C',c2:'#F5D080',pat:'arabian',banner:'🌙 Eid Mubarak 🌙'},
+{id:'e2',cat:'eid',lbl:'Golden Night',em:'⭐',bg:'#1A1200',c1:'#D4AF37',c2:'#FFF',pat:'stars',banner:'⭐ Eid Mubarak ⭐'},
+{id:'e3',cat:'eid',lbl:'Emerald Eid',em:'💚',bg:'#0A2E0A',c1:'#4CAF50',c2:'#C9A84C',pat:'geometric',banner:'💚 Eid Ul Fitr 💚'},
+{id:'e4',cat:'eid',lbl:'Royal Purple',em:'🔮',bg:'#1A0A2E',c1:'#9C27B0',c2:'#C9A84C',pat:'floral',banner:'☪️ Eid Mubarak ☪️'},
+{id:'e5',cat:'eid',lbl:'Desert Gold',em:'🏜️',bg:'#2E1A00',c1:'#FF9800',c2:'#FFEB3B',pat:'dunes',banner:'🌙 Khushiyon Bhari Eid 🌙'},
+{id:'e6',cat:'eid',lbl:'Night Sky',em:'🌠',bg:'#070B20',c1:'#3F51B5',c2:'#C9A84C',pat:'stars',banner:'🌠 Eid Mubarak 🌠'},
+{id:'e7',cat:'eid',lbl:'Marble Gold',em:'✦',bg:'#F5F0E8',c1:'#8B6914',c2:'#C9A84C',pat:'marble',banner:'✦ Eid Mubarak ✦'},
+{id:'e8',cat:'eid',lbl:'Green Crescent',em:'☪️',bg:'#1B5E20',c1:'#C9A84C',c2:'#E8F5E9',pat:'arabian',banner:'☪️ Eid Mubarak ☪️'},
+{id:'e9',cat:'eid',lbl:'Crimson Eid',em:'🌹',bg:'#3B0000',c1:'#E91E63',c2:'#C9A84C',pat:'floral',banner:'🌹 Eid Mubarak 🌹'},
+{id:'e10',cat:'eid',lbl:'Teal Mosque',em:'🕌',bg:'#00252E',c1:'#00BCD4',c2:'#C9A84C',pat:'mosque',banner:'🕌 Eid Ul Fitr Mubarak 🕌'},
+{id:'e11',cat:'eid',lbl:'Sunset Eid',em:'🌅',bg:'#2E1000',c1:'#FF6F00',c2:'#FFEB3B',pat:'geometric',banner:'🌅 Eid Mubarak 🌅'},
+{id:'e12',cat:'eid',lbl:'Blue Pearl',em:'💎',bg:'#0A1A30',c1:'#1976D2',c2:'#90CAF9',pat:'arabian',banner:'💎 Eid Mubarak 💎'},
+{id:'e13',cat:'eid',lbl:'Pink Blossom',em:'🌸',bg:'#2E0020',c1:'#E91E63',c2:'#F8BBD0',pat:'floral',banner:'🌸 Eid Mubarak 🌸'},
+{id:'e14',cat:'eid',lbl:'Silver Moon',em:'🌕',bg:'#1A1A2E',c1:'#9E9E9E',c2:'#E0E0E0',pat:'stars',banner:'🌕 Eid Mubarak 🌕'},
+{id:'e15',cat:'eid',lbl:'Violet Dream',em:'💜',bg:'#1A0A2E',c1:'#673AB7',c2:'#C9A84C',pat:'geometric',banner:'💜 Eid Mubarak 💜'},
+{id:'e16',cat:'eid',lbl:'Olive Garden',em:'🌿',bg:'#1A2010',c1:'#8BC34A',c2:'#C9A84C',pat:'floral',banner:'🌿 Eid Mubarak 🌿'},
+{id:'e17',cat:'eid',lbl:'Fire Gold',em:'🔥',bg:'#1A0800',c1:'#FF5722',c2:'#FFC107',pat:'arabian',banner:'🔥 Eid Mubarak 🔥'},
+{id:'e18',cat:'eid',lbl:'Navy Royal',em:'⚓',bg:'#0A0A2E',c1:'#283593',c2:'#C9A84C',pat:'geometric',banner:'⚓ Eid Ul Fitr ⚓'},
+{id:'e19',cat:'eid',lbl:'Coral Bliss',em:'🪸',bg:'#2E0A00',c1:'#FF7043',c2:'#FFCC02',pat:'floral',banner:'🪸 Eid Mubarak 🪸'},
+{id:'e20',cat:'eid',lbl:'Mint Fresh',em:'🍃',bg:'#001A0D',c1:'#00897B',c2:'#C9A84C',pat:'arabian',banner:'🍃 Eid Mubarak 🍃'},
+// RAMADAN (12)
+{id:'r1',cat:'ramadan',lbl:'Ramadan Kareem',em:'🌙',bg:'#0A0A1A',c1:'#C9A84C',c2:'#1B5E20',pat:'arabian',banner:'🌙 Ramadan Kareem 🌙'},
+{id:'r2',cat:'ramadan',lbl:'Sehri Time',em:'⭐',bg:'#0A1020',c1:'#3F51B5',c2:'#C9A84C',pat:'stars',banner:'⭐ Ramadan Mubarak ⭐'},
+{id:'r3',cat:'ramadan',lbl:'Iftar Joy',em:'🍽️',bg:'#1A0800',c1:'#FF9800',c2:'#C9A84C',pat:'dunes',banner:'🍽️ Ramadan Kareem 🍽️'},
+{id:'r4',cat:'ramadan',lbl:'Green Mosque',em:'🕌',bg:'#0A2010',c1:'#388E3C',c2:'#C9A84C',pat:'mosque',banner:'🕌 Ramadan Mubarak 🕌'},
+{id:'r5',cat:'ramadan',lbl:'Taraweeh Night',em:'🌃',bg:'#050520',c1:'#512DA8',c2:'#C9A84C',pat:'stars',banner:'🌃 Ramadan Kareem 🌃'},
+{id:'r6',cat:'ramadan',lbl:'Laylat al Qadr',em:'🌠',bg:'#020510',c1:'#7B1FA2',c2:'#C9A84C',pat:'stars',banner:'🌠 Laylat al Qadr 🌠'},
+{id:'r7',cat:'ramadan',lbl:'Fajr Sunrise',em:'🌄',bg:'#1A0500',c1:'#E65100',c2:'#FFF9C4',pat:'geometric',banner:'🌄 Ramadan Kareem 🌄'},
+{id:'r8',cat:'ramadan',lbl:'Quran Time',em:'📖',bg:'#0A1800',c1:'#2E7D32',c2:'#C9A84C',pat:'arabian',banner:'📖 Ramadan Mubarak 📖'},
+{id:'r9',cat:'ramadan',lbl:'Blue Ramadan',em:'💙',bg:'#050A20',c1:'#0277BD',c2:'#C9A84C',pat:'geometric',banner:'💙 Ramadan Kareem 💙'},
+{id:'r10',cat:'ramadan',lbl:'Rose Garden',em:'🌹',bg:'#1A0010',c1:'#C2185B',c2:'#C9A84C',pat:'floral',banner:'🌹 Ramadan Mubarak 🌹'},
+{id:'r11',cat:'ramadan',lbl:'Teal Crescent',em:'☪️',bg:'#001A18',c1:'#00695C',c2:'#C9A84C',pat:'arabian',banner:'☪️ Ramadan Kareem ☪️'},
+{id:'r12',cat:'ramadan',lbl:'Golden Dua',em:'🤲',bg:'#1A1000',c1:'#F57F17',c2:'#C9A84C',pat:'arabian',banner:'🤲 Ramadan Mubarak 🤲'},
+// PREMIUM (10)
+{id:'p1',cat:'premium',lbl:'Luxury Black',em:'👑',bg:'#050505',c1:'#C9A84C',c2:'#8B6914',pat:'premium',banner:'👑 Eid Mubarak 👑'},
+{id:'p2',cat:'premium',lbl:'Diamond Gold',em:'💎',bg:'#0A0800',c1:'#FFD700',c2:'#FFF8DC',pat:'premium',banner:'💎 Eid Mubarak 💎'},
+{id:'p3',cat:'premium',lbl:'Royal Velvet',em:'🎭',bg:'#0A001A',c1:'#7B1FA2',c2:'#C9A84C',pat:'premium',banner:'🎭 Eid Mubarak 🎭'},
+{id:'p4',cat:'premium',lbl:'Onyx & Gold',em:'🌑',bg:'#000000',c1:'#C9A84C',c2:'#E5C77E',pat:'premium',banner:'🌑 Eid Ul Fitr 🌑'},
+{id:'p5',cat:'premium',lbl:'Sapphire Night',em:'💠',bg:'#000A1A',c1:'#1565C0',c2:'#C9A84C',pat:'premium',banner:'💠 Eid Mubarak 💠'},
+{id:'p6',cat:'premium',lbl:'Emerald Elite',em:'🟢',bg:'#001A05',c1:'#1B5E20',c2:'#C9A84C',pat:'premium',banner:'🟢 Eid Mubarak 🟢'},
+{id:'p7',cat:'premium',lbl:'Rose Gold',em:'🌹',bg:'#1A0505',c1:'#B71C1C',c2:'#C9A84C',pat:'premium',banner:'🌹 Eid Mubarak 🌹'},
+{id:'p8',cat:'premium',lbl:'Pearl White',em:'🤍',bg:'#F0EDE6',c1:'#8B6914',c2:'#C9A84C',pat:'premium',banner:'🤍 Eid Mubarak 🤍'},
+{id:'p9',cat:'premium',lbl:'Platinum',em:'⚡',bg:'#0A0A0A',c1:'#9E9E9E',c2:'#E0E0E0',pat:'premium',banner:'⚡ Eid Mubarak ⚡'},
+{id:'p10',cat:'premium',lbl:'Cosmic Gold',em:'🌌',bg:'#020510',c1:'#311B92',c2:'#C9A84C',pat:'premium',banner:'🌌 Eid Mubarak 🌌'},
+// FAMILY (8)
+{id:'f1',cat:'family',lbl:'Family Joy',em:'👨‍👩‍👧',bg:'#0A1820',c1:'#00897B',c2:'#C9A84C',pat:'floral',banner:'👨‍👩‍👧 Eid Mubarak 👨‍👩‍👧'},
+{id:'f2',cat:'family',lbl:'Together Eid',em:'🤗',bg:'#1A0A00',c1:'#E65100',c2:'#C9A84C',pat:'geometric',banner:'🤗 Eid Mubarak 🤗'},
+{id:'f3',cat:'family',lbl:'Home Blessed',em:'🏡',bg:'#0A1500',c1:'#388E3C',c2:'#FFF8E7',pat:'floral',banner:'🏡 Eid Mubarak 🏡'},
+{id:'f4',cat:'family',lbl:'Grandparents',em:'👴👵',bg:'#10080A',c1:'#6A1B9A',c2:'#C9A84C',pat:'arabian',banner:'👴 Eid Mubarak 👵'},
+{id:'f5',cat:'family',lbl:'Love & Blessings',em:'💞',bg:'#1A0010',c1:'#AD1457',c2:'#C9A84C',pat:'floral',banner:'💞 Eid Mubarak 💞'},
+{id:'f6',cat:'family',lbl:'Parent Duo',em:'💑',bg:'#0A0A20',c1:'#1A237E',c2:'#C9A84C',pat:'stars',banner:'💑 Eid Mubarak 💑'},
+{id:'f7',cat:'family',lbl:'Siblings',em:'👫',bg:'#0A1800',c1:'#1B5E20',c2:'#C9A84C',pat:'geometric',banner:'👫 Eid Mubarak 👫'},
+{id:'f8',cat:'family',lbl:'Reunion',em:'🎉',bg:'#1A0800',c1:'#BF360C',c2:'#C9A84C',pat:'arabian',banner:'🎉 Eid Mubarak 🎉'},
+// KIDS (8)
+{id:'k1',cat:'kids',lbl:'Kids Eid Fun',em:'🧒',bg:'#0A0A2E',c1:'#7C4DFF',c2:'#FFEB3B',pat:'cartoon',banner:'🧒 Eid Mubarak 🧒'},
+{id:'k2',cat:'kids',lbl:'Colourful Eid',em:'🌈',bg:'#0A0A0A',c1:'#E91E63',c2:'#FFEB3B',pat:'cartoon',banner:'🌈 Eid Mubarak 🌈'},
+{id:'k3',cat:'kids',lbl:'Candy Moon',em:'🍬',bg:'#0A001A',c1:'#F06292',c2:'#C9A84C',pat:'cartoon',banner:'🍬 Eid Mubarak 🍬'},
+{id:'k4',cat:'kids',lbl:'Star Kid',em:'⭐',bg:'#0A0820',c1:'#FFC107',c2:'#3F51B5',pat:'stars',banner:'⭐ Eid Mubarak ⭐'},
+{id:'k5',cat:'kids',lbl:'Balloon Eid',em:'🎈',bg:'#1A0A00',c1:'#FF5722',c2:'#FFEB3B',pat:'cartoon',banner:'🎈 Eid Mubarak 🎈'},
+{id:'k6',cat:'kids',lbl:'Teddy Eid',em:'🧸',bg:'#1A0800',c1:'#FF9800',c2:'#FFF9C4',pat:'cartoon',banner:'🧸 Eid Mubarak 🧸'},
+{id:'k7',cat:'kids',lbl:'Moon & Stars',em:'🌙⭐',bg:'#050515',c1:'#3949AB',c2:'#FFC107',pat:'stars',banner:'🌙 Eid Mubarak ⭐'},
+{id:'k8',cat:'kids',lbl:'Gift Eid',em:'🎁',bg:'#0A1800',c1:'#2E7D32',c2:'#FFC107',pat:'cartoon',banner:'🎁 Eid Mubarak 🎁'},
+// COUPLE (6)
+{id:'c1',cat:'couple',lbl:'Love Eid',em:'💕',bg:'#1A0010',c1:'#E91E63',c2:'#C9A84C',pat:'floral',banner:'💕 Eid Mubarak 💕'},
+{id:'c2',cat:'couple',lbl:'Romantic Night',em:'🌙💑',bg:'#050515',c1:'#7B1FA2',c2:'#C9A84C',pat:'stars',banner:'💑 Eid Mubarak 💑'},
+{id:'c3',cat:'couple',lbl:'Our Eid',em:'👫',bg:'#0A1010',c1:'#00695C',c2:'#C9A84C',pat:'arabian',banner:'👫 Eid Mubarak 👫'},
+{id:'c4',cat:'couple',lbl:'Husband Wife',em:'💍',bg:'#1A0800',c1:'#BF360C',c2:'#C9A84C',pat:'floral',banner:'💍 Eid Mubarak 💍'},
+{id:'c5',cat:'couple',lbl:'Heart Moon',em:'❤️🌙',bg:'#1A0005',c1:'#C62828',c2:'#C9A84C',pat:'geometric',banner:'❤️ Eid Mubarak 🌙'},
+{id:'c6',cat:'couple',lbl:'Together Forever',em:'💞',bg:'#0A0020',c1:'#4527A0',c2:'#C9A84C',pat:'arabian',banner:'💞 Eid Mubarak 💞'},
+// MODERN (6)
+{id:'m1',cat:'modern',lbl:'Minimal Gold',em:'✦',bg:'#0F0F0F',c1:'#C9A84C',c2:'#E5C77E',pat:'minimal',banner:'✦ Eid Mubarak ✦'},
+{id:'m2',cat:'modern',lbl:'Neon Eid',em:'💡',bg:'#000000',c1:'#00E5FF',c2:'#E040FB',pat:'neon',banner:'💡 Eid Mubarak 💡'},
+{id:'m3',cat:'modern',lbl:'Gradient Glow',em:'🌈',bg:'#050525',c1:'#6200EA',c2:'#00E5FF',pat:'gradient',banner:'🌈 Eid Mubarak 🌈'},
+{id:'m4',cat:'modern',lbl:'Dark Luxe',em:'🖤',bg:'#080808',c1:'#C9A84C',c2:'#fff',pat:'minimal',banner:'🖤 Eid Mubarak 🖤'},
+{id:'m5',cat:'modern',lbl:'Gradient Moon',em:'🌙',bg:'#0A0020',c1:'#7C4DFF',c2:'#E040FB',pat:'gradient',banner:'🌙 Eid Mubarak 🌙'},
+{id:'m6',cat:'modern',lbl:'Cyber Gold',em:'⚡',bg:'#050510',c1:'#FFC400',c2:'#00E5FF',pat:'neon',banner:'⚡ Eid Mubarak ⚡'},
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// EID QUOTES
+// ═══════════════════════════════════════════════════════════════════
+var EID_QUOTES = [
+  'Eid Mubarak! May Allah shower His blessings on you ☪️',
+  'Chand raat mubarak! Eid ki bahut bahut mubarkbaad 🌙',
+  'May this Eid bring joy, peace and prosperity to your life 🌟',
+  'Eid Mubarak to you and your family! Khushiyan hamesha rahe 💚',
+  'Aaj ka ye din bahut khubsoorat hai, Eid Mubarak ho 🌙',
+  'Taqabbal Allahu minna wa minkum — Eid Mubarak! ☪️',
+  'May Allah accept our prayers and deeds this Eid 🤲',
+  'Eid ki raat ka chand mubarak, khushiyan laya hai 🌙⭐',
+  'Jumma Mubarak aur Eid Mubarak! Double khushi 🕌🌙',
+  'May your Eid be filled with love, laughter and lots of duas 💕',
+  'Eid Mubarak dear friend! Stay blessed always ✨',
+  'Khushiyon bhari Eid ho aapki! Allah ka shukr hai 🌹',
+  'Milte hain khushiyon ke is jashn mein — Eid Mubarak 🎉',
+  'May Allah fulfill all your duas this Eid 🤲💚',
+  'Wishing you the choicest blessings of Allah on Eid ⭐',
+];
+
+var TEXT_COLORS_EID = ['#C9A84C','#ffffff','#000000','#4CAF50','#E91E63','#2196F3','#FF9800','#9C27B0'];
+
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+var EU = {
+  name: '', msg: '', sub: '', pos: 'bottom',
+  nameSize: 26, msgSize: 15,
+  textColor: '#C9A84C',
+  border: 'gold', photoShape: 'circle',
+  brightness: 100, contrast: 100, vignette: 25,
+  photoImg: null, selTmpl: null,
+};
+var EID_CV = null, EID_CTX = null;
+
+// ═══════════════════════════════════════════════════════════════════
+// INFO MODAL
+// ═══════════════════════════════════════════════════════════════════
+function handleImPhoto(input) {
+  var f = input.files[0]; if (!f) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      EU.photoImg = img;
+      var prev = gel('imPhotoPreview');
+      if (prev) { prev.src = ev.target.result; prev.style.display = 'block'; }
+      gel('imPhotoLabel').textContent = 'Photo Ready! ✅';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(f);
+}
+
+function startEidMaker() {
+  var name = (gel('userName').value || '').trim();
+  var phone = (gel('userPhone').value || '').trim();
+  if (!name) { showToastInfo('Apna naam daalo!'); return; }
+  EU.name = name;
+  // Save to admin (localStorage)
+  saveUserToAdmin(name, phone);
+  // Update UI
+  if (name) { gel('tbName').textContent = name; gel('epName').value = name; }
+  showApp();
+}
+function skipInfo() {
+  EU.name = 'Guest';
+  showApp();
+}
+function showToastInfo(m) {
+  var inp = gel('userName');
+  if (inp) { inp.style.borderColor = '#e8416f'; setTimeout(function(){ inp.style.borderColor = 'rgba(201,168,76,.3)'; }, 1500); }
+  alert(m);
+}
+function saveUserToAdmin(name, phone) {
+  try {
+    var users = JSON.parse(localStorage.getItem('zb_eid_users') || '[]');
+    users.unshift({
+      name: name,
+      phone: phone || 'Not provided',
+      time: new Date().toLocaleString('en-IN'),
+      id: Date.now()
+    });
+    if (users.length > 500) users = users.slice(0, 500);
+    localStorage.setItem('zb_eid_users', JSON.stringify(users));
+  } catch(e) {}
+}
+function showApp() {
+  gel('infoModal').style.display = 'none';
+  var app = gel('app'); if (app) app.classList.add('show');
+  initCanvas();
+  buildTemplates('all');
+  buildQuotesList();
+  buildEpColors();
+  // Auto-select first template
+  setTimeout(function() {
+    var first = TEMPLATES[0];
+    EU.selTmpl = first;
+    renderEid();
+    // Highlight first
+    var cards = document.querySelectorAll('.tc');
+    if (cards.length) cards[0].classList.add('sel');
+  }, 200);
+  // Update topbar avatar
+  if (EU.photoImg) {
+    var tb = gel('tbAvatar');
+    var cv2 = document.createElement('canvas'); cv2.width = 40; cv2.height = 40;
+    var cx = cv2.getContext('2d');
+    cx.beginPath(); cx.arc(20,20,20,0,Math.PI*2); cx.clip();
+    cx.drawImage(EU.photoImg, 0, 0, 40, 40);
+    if (tb) tb.src = cv2.toDataURL();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CANVAS
+// ═══════════════════════════════════════════════════════════════════
+function initCanvas() {
+  EID_CV = gel('eidCv'); if (!EID_CV) return;
+  EID_CTX = EID_CV.getContext('2d');
+  EID_CV.width = 500; EID_CV.height = 500;
+}
+function renderEid() {
+  if (!EID_CTX || !EU.selTmpl) return;
+  var cv = EID_CV, ctx = EID_CTX;
+  var W = cv.width, H = cv.height;
+  var t = EU.selTmpl;
+  ctx.clearRect(0,0,W,H);
+
+  // ── Background ──
+  ctx.fillStyle = t.bg; ctx.fillRect(0,0,W,H);
+
+  // ── Pattern overlay ──
+  drawEidPattern(ctx, W, H, t);
+
+  // ── Photo ──
+  if (EU.photoImg) {
+    var ph = H * 0.38, pw = ph;
+    var py = H * 0.14, px = W/2 - pw/2;
+    drawEidPhoto(ctx, EU.photoImg, px, py, pw, ph, EU.photoShape, EU.brightness, EU.contrast);
+    // Gold ring around photo
+    ctx.save();
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 3;
+    ctx.shadowColor = t.c1; ctx.shadowBlur = 10;
+    if (EU.photoShape === 'circle') {
+      ctx.beginPath(); ctx.arc(W/2, py+ph/2, pw/2+4, 0, Math.PI*2); ctx.stroke();
+    } else {
+      ctx.strokeRect(px-4, py-4, pw+8, ph+8);
+    }
+    ctx.restore();
+  }
+
+  // ── Banner text (template) ──
+  var bannerH = 52;
+  var bg2 = ctx.createLinearGradient(0,0,W,0);
+  bg2.addColorStop(0, t.c1+'ee'); bg2.addColorStop(0.5, t.c2+'cc'); bg2.addColorStop(1, t.c1+'ee');
+  ctx.fillStyle = bg2; ctx.fillRect(0, 0, W, bannerH);
+  ctx.fillStyle = isDark(t.c1) ? '#fff' : '#0D1B2A';
+  ctx.font = 'bold 14px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 4;
+  ctx.fillText(t.banner, W/2, bannerH/2); ctx.shadowBlur = 0;
+
+  // ── Islamic geometric corners ──
+  drawIslamicCorners(ctx, W, H, t.c1, 18);
+
+  // ── Border ──
+  drawEidBorder(ctx, W, H, t, EU.border);
+
+  // ── User text overlay ──
+  var nm = EU.name || '', ms = gel('epMsg') ? gel('epMsg').value : '', sb = EU.sub || '';
+  if (nm || ms || sb) {
+    var tH = 80;
+    var tY = EU.pos === 'top' ? bannerH + 2 : EU.pos === 'center' ? (H/2 - tH/2) : (H - tH);
+    var tg = ctx.createLinearGradient(0,tY,0,tY+tH);
+    tg.addColorStop(0,'rgba(0,0,0,0)'); tg.addColorStop(0.3,'rgba(0,0,0,.6)'); tg.addColorStop(1,'rgba(0,0,0,.85)');
+    ctx.fillStyle = tg; ctx.fillRect(0, tY, W, tH);
+    if (nm) {
+      ctx.font = 'bold '+EU.nameSize+'px serif';
+      ctx.fillStyle = EU.textColor;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0,0,0,.8)'; ctx.shadowBlur = 6;
+      ctx.fillText(nm, W/2, tY + (ms?EU.nameSize+4:tH/2));
+      ctx.shadowBlur = 0;
+    }
+    if (ms) {
+      ctx.font = EU.msgSize+'px sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.fillText(ms, W/2, tY + tH - 16);
+    }
+    if (sb && !ms) {
+      ctx.font = 'italic '+(EU.msgSize-2)+'px serif';
+      ctx.fillStyle = t.c1;
+      ctx.fillText(sb, W/2, tY + tH - 12);
+    }
+  }
+
+  // ── Vignette ──
+  if (EU.vignette > 0) {
+    var vg = ctx.createRadialGradient(W/2,H/2,W*0.28,W/2,H/2,W*0.85);
+    vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,'+(EU.vignette/200)+')');
+    ctx.fillStyle = vg; ctx.fillRect(0,0,W,H);
+  }
+}
+
+function drawEidPhoto(ctx, img, x, y, w, h, shape, br, ct) {
+  ctx.save();
+  ctx.filter = 'brightness('+br+'%) contrast('+ct+'%)';
+  var iw=img.width, ih=img.height, sx=0, sy=0, sw=iw, sh=ih;
+  if (iw/ih > w/h) { sw = ih*(w/h); sx = (iw-sw)/2; }
+  else { sh = iw*(h/w); sy = (ih-sh)/2; }
+  if (shape === 'circle') {
+    ctx.beginPath(); ctx.arc(x+w/2, y+h/2, Math.min(w,h)/2, 0, Math.PI*2); ctx.clip();
+  } else if (shape === 'rounded') {
+    var r = Math.min(w,h)*0.1;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath(); ctx.clip();
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+  ctx.filter = 'none'; ctx.restore();
+}
+
+function drawEidPattern(ctx, W, H, t) {
+  var pat = t.pat;
+  ctx.save(); ctx.globalAlpha = 0.15;
+  if (pat === 'stars' || pat === 'premium') {
+    ctx.fillStyle = t.c1; ctx.font = '14px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (var x2 = 20; x2 < W; x2 += 40) for (var y2 = 20; y2 < H; y2 += 40) ctx.fillText('✦', x2, y2);
+  } else if (pat === 'arabian' || pat === 'geometric') {
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 0.8;
+    for (var i = 0; i < 8; i++) {
+      var ang = i * Math.PI / 4;
+      ctx.beginPath(); ctx.moveTo(W/2, H/2);
+      ctx.lineTo(W/2 + Math.cos(ang)*W, H/2 + Math.sin(ang)*H); ctx.stroke();
+    }
+    ctx.beginPath(); ctx.arc(W/2,H/2,W*0.35,0,Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(W/2,H/2,W*0.48,0,Math.PI*2); ctx.stroke();
+  } else if (pat === 'floral') {
+    ctx.fillStyle = t.c1; ctx.font = '18px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    var fems = ['🌸','✿','❀','🌹'];
+    for (var fx = 25; fx < W; fx += 55) for (var fy = 25; fy < H; fy += 55) ctx.fillText(fems[Math.floor((fx+fy)/10)%4], fx, fy);
+  } else if (pat === 'mosque') {
+    ctx.fillStyle = t.c1; ctx.font = '20px serif'; ctx.textAlign = 'center';
+    ctx.fillText('🕌', W*0.15, H*0.5); ctx.fillText('🕌', W*0.85, H*0.5);
+    ctx.fillText('🌙', W/2, H*0.12);
+  } else if (pat === 'neon' || pat === 'gradient') {
+    var ng = ctx.createLinearGradient(0,0,W,H);
+    ng.addColorStop(0,t.c1+'44'); ng.addColorStop(0.5,t.c2+'22'); ng.addColorStop(1,t.c1+'44');
+    ctx.fillStyle = ng; ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha = 0.08;
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 1;
+    for (var ni=0;ni<12;ni++){ctx.beginPath();ctx.arc(W/2,H/2,ni*25,0,Math.PI*2);ctx.stroke();}
+  } else if (pat === 'dunes') {
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 1;
+    for (var di=0;di<6;di++){
+      ctx.beginPath(); ctx.moveTo(0,H*(0.3+di*0.12));
+      for(var dj=0;dj<=W;dj+=20) ctx.lineTo(dj, H*(0.3+di*0.12)+Math.sin(dj/30)*15);
+      ctx.stroke();
+    }
+  } else if (pat === 'cartoon') {
+    ctx.fillStyle = t.c1; ctx.font = '16px serif'; ctx.textAlign='center';
+    var cems=['⭐','🌙','✨','💫','🎁'];
+    for(var ci=0;ci<5;ci++) for(var cj=0;cj<4;cj++) ctx.fillText(cems[(ci+cj)%5], ci*W/4+W/8, cj*H/3+H/6);
+  } else if (pat === 'minimal') {
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 0.5;
+    ctx.strokeRect(12,12,W-24,H-24);
+    ctx.strokeRect(20,20,W-40,H-40);
+  }
+  ctx.restore();
+}
+
+function drawIslamicCorners(ctx, W, H, color, size) {
+  ctx.save(); ctx.fillStyle = color; ctx.globalAlpha = 0.6;
+  ctx.font = size+'px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('✦', size, size); ctx.fillText('✦', W-size, size);
+  ctx.fillText('✦', size, H-size); ctx.fillText('✦', W-size, H-size);
+  ctx.restore();
+}
+
+function drawEidBorder(ctx, W, H, t, bStyle) {
+  if (bStyle === 'none') return;
+  var pad = 8;
+  ctx.save();
+  if (bStyle === 'gold') {
+    var gb = ctx.createLinearGradient(0,0,W,H);
+    gb.addColorStop(0, t.c1); gb.addColorStop(0.5, t.c2||'#F5D080'); gb.addColorStop(1, t.c1);
+    ctx.strokeStyle = gb; ctx.lineWidth = 6; ctx.strokeRect(pad,pad,W-pad*2,H-pad*2);
+    ctx.strokeStyle = t.c1+'66'; ctx.lineWidth = 1.5; ctx.strokeRect(pad+6,pad+6,W-pad*2-12,H-pad*2-12);
+  } else if (bStyle === 'green') {
+    ctx.strokeStyle = '#1B5E20'; ctx.lineWidth = 6; ctx.strokeRect(pad,pad,W-pad*2,H-pad*2);
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 2; ctx.strokeRect(pad+6,pad+6,W-pad*2-12,H-pad*2-12);
+  } else if (bStyle === 'double') {
+    ctx.strokeStyle = t.c1; ctx.lineWidth = 8; ctx.strokeRect(4,4,W-8,H-8);
+    ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 2; ctx.strokeRect(14,14,W-28,H-28);
+  } else if (bStyle === 'glow') {
+    ctx.shadowColor = t.c1; ctx.shadowBlur = 15;
+    var gg = ctx.createLinearGradient(0,0,W,H); gg.addColorStop(0,t.c1); gg.addColorStop(1,t.c2||'#F5D080');
+    ctx.strokeStyle = gg; ctx.lineWidth = 6; ctx.strokeRect(pad,pad,W-pad*2,H-pad*2);
+    ctx.shadowBlur = 0;
+  }
+  ctx.restore();
+}
+
+function isDark(hex) {
+  if (!hex) return true;
+  var h = hex.replace('#','');
+  if (h.length < 6) return true;
+  return (parseInt(h.substr(0,2),16)*.299 + parseInt(h.substr(2,2),16)*.587 + parseInt(h.substr(4,2),16)*.114) < 128;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TEMPLATE GRID
+// ═══════════════════════════════════════════════════════════════════
+function buildTemplates(cat) {
+  var grid = gel('templateGrid'); if (!grid) return;
+  grid.innerHTML = '';
+  var list = cat === 'all' ? TEMPLATES : TEMPLATES.filter(function(t){return t.cat===cat;});
+  var badge = gel('tmplCountBadge'); if (badge) badge.textContent = list.length + ' Templates';
+  for (var i = 0; i < list.length; i++) {
+    var t = list[i];
+    var div = document.createElement('div');
+    div.className = 'tc' + (EU.selTmpl && EU.selTmpl.id === t.id ? ' sel' : '');
+    div.innerHTML = '<div class="tc-inner" style="background:linear-gradient(135deg,'+t.bg+','+t.c1+'22)">'
+      + '<span class="tc-em">'+t.em+'</span>'
+      + '<span class="tc-lbl">'+t.lbl+'</span>'
+      + '</div>';
+    (function(tmpl, el) {
+      el.addEventListener('click', function(){
+        EU.selTmpl = tmpl;
+        var all = document.querySelectorAll('.tc');
+        for (var j=0;j<all.length;j++) all[j].classList.remove('sel');
+        el.classList.add('sel');
+        renderEid();
+      });
+    })(t, div);
+    grid.appendChild(div);
+  }
+}
+function filterTmpl(cat, btn) {
+  var cats = document.querySelectorAll('.tcat');
+  for(var i=0;i<cats.length;i++) cats[i].classList.remove('on');
+  btn.classList.add('on');
+  buildTemplates(cat);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EDIT PANEL
+// ═══════════════════════════════════════════════════════════════════
+function toggleEditPanel() {
+  var p = gel('editPanel');
+  p.classList.toggle('open');
+}
+function epTab(id, btn) {
+  var panes = document.querySelectorAll('.ep-pane');
+  for(var i=0;i<panes.length;i++) panes[i].classList.remove('on');
+  var tabs = document.querySelectorAll('.ep-tab');
+  for(var j=0;j<tabs.length;j++) tabs[j].classList.remove('on');
+  var p = gel('ep-'+id); if(p) p.classList.add('on');
+  if(btn) btn.classList.add('on');
+}
+function setChip(el, grp) {
+  var parent = el.parentElement;
+  if (parent) { var all = parent.querySelectorAll('.ep-chip'); for(var i=0;i<all.length;i++) all[i].classList.remove('on'); }
+  el.classList.add('on');
+}
+function buildQuotesList() {
+  var el = gel('eidQuotesList'); if (!el) return;
+  el.innerHTML = '';
+  for (var i=0; i<EID_QUOTES.length; i++) {
+    var div = document.createElement('div');
+    div.className = 'q-item';
+    div.textContent = EID_QUOTES[i];
+    (function(q) {
+      div.addEventListener('click', function(){
+        var mi = gel('epMsg'); if (mi) { mi.value = q; EU.msg = q; renderEid(); }
+        toggleEditPanel();
+        showToast('Quote applied!');
+      });
+    })(EID_QUOTES[i]);
+    el.appendChild(div);
+  }
+}
+function buildEpColors() {
+  var el = gel('epColors'); if (!el) return;
+  el.innerHTML = '';
+  for (var i=0; i<TEXT_COLORS_EID.length; i++) {
+    var d = document.createElement('div');
+    d.style.cssText = 'width:26px;height:26px;border-radius:50%;background:'+TEXT_COLORS_EID[i]+';cursor:pointer;border:3px solid '+(EU.textColor===TEXT_COLORS_EID[i]?'#fff':'transparent')+';transition:transform .15s;flex-shrink:0';
+    if (TEXT_COLORS_EID[i]==='#ffffff') d.style.border='3px solid #ccc';
+    (function(col, elem) {
+      elem.addEventListener('click', function(){
+        EU.textColor = col;
+        var all = el.querySelectorAll('div');
+        for(var j=0;j<all.length;j++) all[j].style.borderColor='transparent';
+        elem.style.borderColor = '#fff';
+        renderEid();
+      });
+    })(TEXT_COLORS_EID[i], d);
+    el.appendChild(d);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DOWNLOAD & SHARE
+// ═══════════════════════════════════════════════════════════════════
+function downloadEid() {
+  if (!EID_CV) return;
+  renderEid();
+  var fname = 'EidMubarak-ZetsyBuy-'+Date.now()+'.png';
+  if (EID_CV.toBlob) {
+    EID_CV.toBlob(function(blob){
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = url; a.download = fname;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 800);
+      showToast('✅ Eid poster gallery mein save ho gaya!');
+    }, 'image/png', 1.0);
+  } else {
+    var a = document.createElement('a'); a.href = EID_CV.toDataURL('image/png',1); a.download = fname;
+    document.body.appendChild(a); a.click(); setTimeout(function(){ document.body.removeChild(a); }, 600);
+    showToast('✅ Downloaded!');
+  }
+}
+function shareEidWA() {
+  downloadEid();
+  var msg = '🌙 Eid Mubarak! '+(EU.name?'From '+EU.name+' ':'')+'☪️\n'+(gel('epMsg')&&gel('epMsg').value?gel('epMsg').value+'\n':'')+'\nZetsyBuy Gift se banaya! https://zetsybuy.in';
+  setTimeout(function(){ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank'); }, 700);
+}
+function saveEidIG() {
+  downloadEid();
+  showToast('Saved! Instagram pe manually share karo 📸');
+}
+function shareEidNative() {
+  renderEid();
+  if (!EID_CV) return;
+  EID_CV.toBlob(function(blob){
+    if (navigator.share && navigator.canShare) {
+      var file = new File([blob], 'eid-poster.png', {type:'image/png'});
+      if (navigator.canShare({files:[file]})) {
+        navigator.share({files:[file], title:'Eid Mubarak!', text:'🌙 Eid Mubarak! ZetsyBuy Gift se banaya!'});
+        return;
+      }
+    }
+    // Fallback
+    downloadEid();
+  }, 'image/png');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+window.addEventListener('load', function() {
+  // Pre-fill name from main site if available
+  try {
+    var saved = localStorage.getItem('zb_eid_users');
+    if (saved) {
+      var users = JSON.parse(saved);
+      if (users && users.length && users[0].name) {
+        gel('userName').value = users[0].name;
+      }
+    }
+  } catch(e) {}
+});
+</script>
+</body>
+</html>
