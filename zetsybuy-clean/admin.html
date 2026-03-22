@@ -975,18 +975,21 @@ function openEditProd(id){
 function closeProdModal(){gel('prodModal').classList.remove('open');}
 function showImgPreview(url){
   var prev=gel('m-img-preview'); if(!prev) return;
-  if(url&&url.length>10){
-    prev.innerHTML='<img src="'+url+'" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--bd);margin-top:.3rem" onerror="this.parentNode.innerHTML=\'<span style=\"color:#e8416f;font-size:.72rem\">❌ Image load nahi hui — URL check karo</span>\'">';
-  } else {
-    prev.innerHTML='';
-  }
+  prev.innerHTML='';
+  if(!url||url.length<10) return;
+  var img=document.createElement('img');
+  img.src=url; img.style.width='80px'; img.style.height='80px';
+  img.style.objectFit='cover'; img.style.borderRadius='10px';
+  img.style.border='2px solid #eee'; img.style.marginTop='.3rem';
+  img.onerror=function(){ prev.innerHTML='<span style="color:#f57c00;font-size:.7rem">⚠️ Preview nahi dikh raha — URL sahi hai to save hoga</span>'; };
+  prev.appendChild(img);
 }
 function saveProd(){
   var n=gel('m-n').value.trim(); var pr=parseInt(gel('m-p').value); var lk=gel('m-l').value.trim();
   if(!n){showToast('⚠️ Product name required!');return;}
   if(!pr||pr<1){showToast('⚠️ Valid price required!');return;}
   if(!lk){showToast('⚠️ Amazon link required!');return;}
-  if(lk.indexOf('amazon')<0){showToast('⚠️ Valid Amazon link daalo');return;}
+  if(lk.indexOf('amazon')<0 && lk.indexOf('amzn.to')<0 && lk.indexOf('amzn.in')<0){showToast('⚠️ Valid Amazon link daalo (amazon.in ya amzn.to)');return;}
   var imgUrl=(gel('m-img')||{value:''}).value.trim();
   var prod={
     id:editProdId||('p'+Date.now()), n:n,
