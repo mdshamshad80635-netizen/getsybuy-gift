@@ -93,7 +93,52 @@ nav{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(255,248,240,.
 .bnav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;background:rgba(255,255,255,.18);border:none;width:26px;height:26px;border-radius:50%;color:#fff;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center}
 .bnav.prev{left:.5rem}.bnav.next{right:.5rem}
 /* Hero text */
-.hbadge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(232,65,111,.1);border:1px solid rgba(232,65,111,.2);color:var(--r);padding:.3rem .85rem;border-radius:50px;font-size:.7rem;font-weight:700;margin-bottom:.9rem}
+.hbadge{display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,rgba(232,65,111,.15),rgba(247,183,49,.1));border:1px solid rgba(232,65,111,.35);color:var(--r);padding:.35rem 1rem;border-radius:50px;font-size:.72rem;font-weight:800;margin-bottom:1rem;letter-spacing:.02em;box-shadow:0 2px 12px rgba(232,65,111,.2)}
+/* Gift showcase slideshow */
+.gift-showcase{background:linear-gradient(180deg,#fff 0%,#fdf5f8 100%);padding:2.5rem 5% 3rem;overflow:hidden;position:relative}
+.gift-showcase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),#f7a548,#e8416f)}
+.gs-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.15em;color:var(--r);margin-bottom:.4rem;text-align:center}
+.gs-title{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,1.9rem);font-weight:900;text-align:center;color:#1a1a2e;margin-bottom:.4rem;line-height:1.2}
+.gs-sub{font-size:.82rem;color:#888;text-align:center;margin-bottom:1.5rem}
+.gs-track{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;padding:.5rem .2rem 1rem;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+.gs-track::-webkit-scrollbar{display:none}
+.gs-card{flex-shrink:0;width:min(220px,62vw);border-radius:20px;overflow:hidden;position:relative;cursor:pointer;transition:transform .25s,box-shadow .25s;scroll-snap-align:start;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.gs-card:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(0,0,0,.15)}
+.gs-card-img{width:100%;aspect-ratio:.85;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:5rem;background:linear-gradient(135deg,var(--bg1),var(--bg2))}
+.gs-card-info{padding:.8rem;background:#fff}
+.gs-card-name{font-weight:700;font-size:.82rem;color:#1a1a2e;margin-bottom:.2rem}
+.gs-card-price{font-size:.78rem;color:var(--r);font-weight:800}
+.gs-card-badge{position:absolute;top:.6rem;right:.6rem;background:var(--r);color:#fff;font-size:.55rem;font-weight:800;padding:.2rem .5rem;border-radius:50px;text-transform:uppercase;letter-spacing:.06em}
+/* Physical vs Digital tabs */
+.prod-tabs{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;flex-wrap:wrap}
+.prod-tab{padding:.45rem 1.2rem;border-radius:50px;border:2px solid var(--bd);background:#fff;color:#888;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.35rem}
+.prod-tab.on{background:linear-gradient(135deg,var(--r),#f7a548);border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(232,65,111,.35)}
+.prod-tab-desc{text-align:center;font-size:.75rem;color:#aaa;margin-bottom:1rem}
+/* Slideshow dots */
+.slideshow-dots{display:flex;gap:.4rem;justify-content:center;margin-top:.8rem}
+.s-dot{width:7px;height:7px;border-radius:50%;background:rgba(232,65,111,.25);cursor:pointer;transition:all .3s}
+.s-dot.on{width:20px;border-radius:4px;background:var(--r)}
+/* Birthday reminder widget */
+.reminder-section{background:linear-gradient(135deg,#fff5f7,#fff9f0);padding:2.5rem 5%;border-top:1px solid rgba(232,65,111,.1)}
+.reminder-card{background:#fff;border-radius:20px;padding:1.2rem 1rem;border:1.5px solid rgba(232,65,111,.12);display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;cursor:pointer;transition:all .2s;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.reminder-card:hover{border-color:var(--r);transform:translateX(3px);box-shadow:0 4px 16px rgba(232,65,111,.12)}
+.rc-avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid rgba(232,65,111,.3);background:linear-gradient(135deg,#fce4ec,#fff3e0);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.rc-info{flex:1}
+.rc-name{font-weight:700;font-size:.85rem;color:#1a1a2e}
+.rc-date{font-size:.7rem;color:#aaa;margin-top:.1rem}
+.rc-days{background:linear-gradient(135deg,var(--r),#f7a548);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:.82rem;flex-shrink:0;text-align:right}
+.rc-days-num{font-size:1.1rem;display:block}
+.rc-days-lbl{font-size:.58rem;color:#ccc;-webkit-text-fill-color:#ccc;display:block}
+.add-reminder-btn{width:100%;padding:.75rem;border-radius:14px;background:linear-gradient(135deg,#e8416f,#f7a548);color:#fff;border:none;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.5rem;transition:all .2s;box-shadow:0 4px 16px rgba(232,65,111,.3)}
+.add-reminder-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,65,111,.4)}
+/* Reminder modal */
+#reminderModal{position:fixed;inset:0;z-index:990;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center}
+#reminderModal.open{display:flex}
+.rm-sheet{background:#fff;border-radius:24px 24px 0 0;padding:1.4rem 1.2rem 2rem;width:100%;max-width:480px}
+.rm-handle{width:40px;height:4px;background:#eee;border-radius:2px;margin:0 auto .9rem}
+.rm-inp{width:100%;padding:.65rem .9rem;border-radius:12px;border:1.5px solid #eee;font-family:inherit;font-size:.88rem;outline:none;margin-bottom:.7rem;transition:border-color .2s}
+.rm-inp:focus{border-color:var(--r)}
+.rm-save{width:100%;padding:.78rem;border-radius:12px;background:linear-gradient(135deg,var(--r),#f7a548);color:#fff;border:none;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
 .hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,3.4rem);font-weight:900;line-height:1.15;margin-bottom:.7rem}
 .hero h1 em{font-style:italic;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero p{color:var(--mu);font-size:.9rem;line-height:1.7;margin-bottom:1.3rem;max-width:480px}
@@ -125,7 +170,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:90;background:rgba(255,248,240,.
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:.9rem;max-width:1000px;margin:0 auto}
 .pcard{background:#fff;border-radius:14px;border:2px solid var(--bd);overflow:hidden;display:flex;flex-direction:column;transition:all .18s}
 .pcard:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.08);border-color:var(--r)}
-.pimg{width:100%;aspect-ratio:1.1;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:linear-gradient(135deg,rgba(232,65,111,.06),rgba(247,183,49,.06))}
+.pimg{width:100%;aspect-ratio:1.1;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:linear-gradient(135deg,rgba(232,65,111,.06),rgba(247,183,49,.06));overflow:hidden;position:relative}
 .pbody{padding:.75rem .85rem .85rem;flex:1;display:flex;flex-direction:column}
 .ptag{display:inline-block;padding:.1rem .42rem;border-radius:50px;font-size:.58rem;font-weight:800;text-transform:uppercase;margin-bottom:.3rem;background:rgba(232,65,111,.1);color:var(--r)}
 .pname{font-weight:700;font-size:.8rem;margin-bottom:.2rem;line-height:1.4;flex:1}
@@ -148,60 +193,68 @@ footer a:hover{color:var(--r)}
 footer p{color:rgba(255,255,255,.22);font-size:.7rem;margin-top:.35rem}
 
 /* ═══ EDITOR ═══ */
-#editor{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:var(--dk);display:none;flex-direction:column;overflow:hidden}
+/* ═══ FRAME EDITOR — UPGRADED STYLE ═══ */
+#editor{position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:#0d0f14;display:none;flex-direction:column;overflow:hidden}
 #editor.open{display:flex}
 body.no-scroll{overflow:hidden!important;position:fixed!important;width:100%!important;top:0!important;left:0!important;right:0!important}
-.etop{background:#111;padding:.55rem .85rem;display:flex;align-items:center;gap:.5rem;flex-shrink:0}
-.ecls{background:rgba(255,255,255,.1);border:none;color:#fff;width:33px;height:33px;border-radius:50%;font-size:.95rem;cursor:pointer}
-.etitle{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:#fff;flex:1;text-align:center}
-.szb{padding:.24rem .5rem;border-radius:6px;border:1.5px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.5);font-size:.58rem;font-weight:700;cursor:pointer;font-family:inherit}
-.szb.on{border-color:var(--r);color:#fff;background:rgba(232,65,111,.2)}
-.esave{background:var(--g);color:#fff;border:none;padding:.34rem .9rem;border-radius:50px;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
-/* Canvas area */
-#cvwrap{flex-shrink:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;padding:.8rem;position:relative;min-height:220px}
-#mainCv{display:block;box-shadow:0 8px 28px rgba(0,0,0,.5);position:relative;z-index:1;max-height:min(75vw,420px);max-width:calc(100vw - 1.3rem)}
-#drawCv{position:absolute;border-radius:6px;pointer-events:none;z-index:2}
-#stkLayer{position:absolute;border-radius:6px;z-index:3;pointer-events:none;overflow:hidden}
-#animCv{position:absolute;pointer-events:none;z-index:4;border-radius:6px}
-#uph{position:absolute;inset:0;margin:auto;width:min(42vw,210px);height:min(42vw,210px);background:rgba(255,255,255,.05);border-radius:6px;border:2px dashed rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.45rem;cursor:pointer;z-index:5}
-#uph span:first-child{font-size:2rem}
-#uph .ut{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.6)}
-#uph .us{font-size:.62rem;color:rgba(255,255,255,.3)}
-#undoBtn{position:absolute;top:.45rem;left:.45rem;background:rgba(0,0,0,.5);color:#fff;border:none;padding:.25rem .55rem;border-radius:7px;font-size:.65rem;font-weight:700;cursor:pointer;z-index:10;display:none}
-/* Tabs */
-.etabs{display:flex;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+/* Top bar */
+.etop{background:linear-gradient(135deg,#131620,#1a1d26);padding:.6rem .9rem;display:flex;align-items:center;gap:.55rem;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.07)}
+.ecls{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);width:34px;height:34px;border-radius:50%;font-size:.9rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ecls:hover{background:rgba(232,65,111,.3);border-color:var(--r)}
+.etitle{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:#fff;flex:1;text-align:center;letter-spacing:.02em}
+.szb{padding:.26rem .55rem;border-radius:8px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);font-size:.6rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s}
+.szb.on{border-color:var(--r);color:#fff;background:rgba(232,65,111,.22)}
+.esave{background:linear-gradient(135deg,var(--r),#f7a548);color:#fff;border:none;padding:.38rem 1rem;border-radius:50px;font-size:.75rem;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 3px 12px rgba(232,65,111,.35)}
+/* Canvas area - dark premium */
+#cvwrap{flex-shrink:0;background:radial-gradient(ellipse at center,#1a1d26 0%,#0d0f14 100%);display:flex;align-items:center;justify-content:center;padding:.9rem;position:relative;min-height:240px}
+#mainCv{display:block;box-shadow:0 12px 40px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05);position:relative;z-index:1;max-height:min(75vw,440px);max-width:calc(100vw - 1.6rem);border-radius:8px}
+#drawCv{position:absolute;border-radius:8px;pointer-events:none;z-index:2}
+#stkLayer{position:absolute;border-radius:8px;z-index:3;pointer-events:none;overflow:hidden}
+#animCv{position:absolute;pointer-events:none;z-index:4;border-radius:8px}
+#uph{position:absolute;inset:0;margin:auto;width:min(44vw,220px);height:min(44vw,220px);background:rgba(255,255,255,.04);border-radius:16px;border:2px dashed rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;z-index:5;transition:all .2s}
+#uph:hover{background:rgba(232,65,111,.08);border-color:rgba(232,65,111,.5)}
+#uph span:first-child{font-size:2.2rem}
+#uph .ut{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.65)}
+#uph .us{font-size:.63rem;color:rgba(255,255,255,.3)}
+#undoBtn{position:absolute;top:.5rem;left:.5rem;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);color:#fff;border:none;padding:.28rem .6rem;border-radius:8px;font-size:.65rem;font-weight:700;cursor:pointer;z-index:10;display:none}
+/* Tabs - icon + label style */
+.etabs{display:flex;background:#131620;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;overflow-x:auto;scrollbar-width:none;padding:0 .3rem}
 .etabs::-webkit-scrollbar{display:none}
-.etab{flex-shrink:0;padding:.55rem .75rem;font-family:inherit;font-size:.67rem;font-weight:700;color:rgba(255,255,255,.32);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.etab{flex-shrink:0;padding:.5rem .7rem;font-family:inherit;font-size:.63rem;font-weight:700;color:rgba(255,255,255,.3);border:none;background:transparent;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.etab .tab-ic{font-size:1rem}
 .etab.on{color:#fff;border-bottom-color:var(--r)}
-/* Panel */
-.epanel{flex:1;overflow-y:auto;background:#fff;border-radius:16px 16px 0 0;padding:.85rem .8rem .75rem;scrollbar-width:thin}
+.etab:hover:not(.on){color:rgba(255,255,255,.6)}
+/* Panel - dark theme */
+.epanel{flex:1;overflow-y:auto;background:#1a1d26;padding:.85rem .85rem .75rem;scrollbar-width:thin}
 .epanel::-webkit-scrollbar{width:3px}
-.epanel::-webkit-scrollbar-thumb{background:var(--bd)}
+.epanel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
 .pane{display:none}.pane.on{display:block}
-.plbl{font-size:.61rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--mu);display:block;margin-bottom:.42rem}
-.upbtn{display:flex;align-items:center;justify-content:center;gap:.38rem;width:100%;padding:.68rem;border-radius:10px;border:2px dashed var(--bd);background:var(--cr);font-family:inherit;font-size:.8rem;font-weight:700;color:var(--mu);cursor:pointer;margin-bottom:.6rem}
-.upbtn:hover{border-color:var(--r);color:var(--r)}
-.inp{width:100%;padding:.54rem .75rem;border-radius:9px;border:2px solid var(--bd);font-family:inherit;font-size:.8rem;color:var(--mt);background:var(--cr);outline:none;margin-bottom:.58rem;transition:border-color .18s}
-.inp:focus{border-color:var(--r)}
+.plbl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);display:block;margin-bottom:.4rem}
+.upbtn{display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;padding:.7rem;border-radius:12px;border:2px dashed rgba(255,255,255,.15);background:rgba(255,255,255,.04);font-family:inherit;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.5);cursor:pointer;margin-bottom:.65rem;transition:all .2s}
+.upbtn:hover{border-color:var(--r);color:var(--r);background:rgba(232,65,111,.08)}
+.inp{width:100%;padding:.55rem .8rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);font-family:inherit;font-size:.82rem;color:#fff;background:rgba(255,255,255,.06);outline:none;margin-bottom:.6rem;transition:border-color .18s}
+.inp:focus{border-color:var(--r);background:rgba(232,65,111,.06)}
+.inp::placeholder{color:rgba(255,255,255,.25)}
 textarea.inp{resize:none;min-height:58px;line-height:1.5}
 .slrow{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
-.slrow label{font-size:.6rem;font-weight:800;text-transform:uppercase;color:var(--mu);min-width:66px;flex-shrink:0}
+.slrow label{font-size:.6rem;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.35);min-width:66px;flex-shrink:0}
 input[type=range]{flex:1;accent-color:var(--r);cursor:pointer}
 .slval{font-size:.7rem;font-weight:700;color:var(--r);min-width:28px;text-align:right}
 .pillrow{display:flex;gap:.32rem;flex-wrap:wrap;margin-bottom:.6rem}
-.pill{padding:.26rem .68rem;border-radius:50px;border:2px solid var(--bd);background:transparent;font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu)}
+.pill{padding:.26rem .7rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.5);transition:all .18s}
 .pill.on,.pill:hover{background:var(--r);border-color:var(--r);color:#fff}
-.crow{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.68rem}
-.cdot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s;flex-shrink:0}
-.cdot.on{transform:scale(1.3);border-color:var(--dk)}
-.bgtn{padding:.4rem .2rem;border-radius:8px;border:2px solid var(--bd);background:var(--cr);font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu);text-align:center}
-.bgtn.on,.bgtn:hover{border-color:var(--r);color:var(--r);background:rgba(232,65,111,.06)}
-.tmtabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.6rem}
-.tmt{padding:.24rem .62rem;border-radius:50px;border:2px solid var(--bd);background:transparent;font-size:.64rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu)}
+.crow{display:flex;gap:.42rem;flex-wrap:wrap;margin-bottom:.7rem}
+.cdot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s,border-color .15s;flex-shrink:0}
+.cdot.on{transform:scale(1.3);border-color:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)}
+.bgtn{padding:.4rem .2rem;border-radius:9px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.5);text-align:center;transition:all .18s}
+.bgtn.on,.bgtn:hover{border-color:var(--r);color:var(--r);background:rgba(232,65,111,.12)}
+.tmtabs{display:flex;gap:.32rem;flex-wrap:wrap;margin-bottom:.65rem}
+.tmt{padding:.26rem .65rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);font-size:.65rem;font-weight:700;cursor:pointer;font-family:inherit;color:rgba(255,255,255,.45);transition:all .18s}
 .tmt.on{background:var(--r);border-color:var(--r);color:#fff}
-.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.42rem;margin-bottom:.6rem}
-.tc{border-radius:9px;overflow:hidden;cursor:pointer;border:3px solid transparent;transition:all .18s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}
-.tc.sel{border-color:var(--r);box-shadow:0 0 0 2px var(--r)}
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-bottom:.65rem}
+.tc{border-radius:12px;overflow:hidden;cursor:pointer;border:2.5px solid rgba(255,255,255,.08);transition:all .2s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;background:rgba(255,255,255,.04)}
+.tc:hover{border-color:rgba(232,65,111,.5);transform:scale(1.04)}
+.tc.sel{border-color:var(--r);box-shadow:0 0 0 2px var(--r),0 4px 16px rgba(232,65,111,.3)}
 .tcem{font-size:1.45rem}.tclb{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:.46rem;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .secDiv{height:1px;background:var(--bd);margin:.7rem 0}
 /* Draw */
@@ -281,11 +334,11 @@ input[type=range]{flex:1;accent-color:var(--r);cursor:pointer}
 @media(max-width:400px){.tgrid{grid-template-columns:repeat(3,1fr)}.agrid{grid-template-columns:repeat(3,1fr)}}
 
 /* ═══ FLOATING BUTTONS ═══ */
-.fab-wrap{position:fixed;bottom:1.4rem;right:1.3rem;z-index:800;display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.fab-wrap{position:fixed;bottom:1.6rem;right:1.2rem;z-index:900;display:flex;flex-direction:column;align-items:center;gap:.65rem}
 .fab-wa{width:54px;height:54px;border-radius:50%;background:#25d366;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 18px rgba(37,211,102,.45);transition:transform .2s;text-decoration:none}
 .fab-wa:hover{transform:scale(1.12)}
 .fab-wa svg{width:28px;height:28px;fill:#fff}
-.fab-chat{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#e8416f);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 20px rgba(124,58,237,.5);transition:transform .2s;animation:fabPulse 2.8s infinite;position:relative}
+.fab-chat{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#e8416f);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(124,58,237,.6),0 0 0 3px rgba(124,58,237,.2);transition:transform .2s;animation:fabPulse 2.8s infinite;position:relative}
 .fab-chat:hover{transform:scale(1.12);animation:none}
 @keyframes fabPulse{0%,100%{box-shadow:0 5px 18px rgba(124,58,237,.45)}55%{box-shadow:0 6px 30px rgba(232,65,111,.65)}}
 .fab-chat svg{width:26px;height:26px;fill:#fff}
@@ -563,6 +616,11 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
 .aff-tag{font-size:.58rem;color:rgba(255,255,255,.3);margin-bottom:.4rem;font-family:monospace}
 .aff-btn{display:block;width:100%;padding:.45rem;border-radius:9px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:all .18s}
 .aff-btn:hover{background:linear-gradient(135deg,#2ecc71,#27ae60);transform:translateY(-1px)}
+
+
+/* Floating moon particles */
+.eb-particle{position:absolute;font-size:.9rem;opacity:.4;pointer-events:none;animation:ebFloat linear infinite}
+@keyframes ebFloat{0%{transform:translateY(100%) rotate(0deg);opacity:0}20%{opacity:.6}80%{opacity:.4}100%{transform:translateY(-100%) rotate(360deg);opacity:0}}
 </style>
 </head>
 <body>
@@ -670,9 +728,22 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
     <button class="bnav prev" onclick="bgo(-1)">‹</button>
     <button class="bnav next" onclick="bgo(1)">›</button>
   </div>
-  <div class="hbadge" id="heroBadge">🇮🇳 India's #1 Free Gift Frame Creator</div>
-  <h1 id="heroTitle">Send Gifts that <em id="heroEm">Touch Hearts</em></h1>
-  <p id="heroSub">50+ frames, animated borders, device frames, stickers, drawing tools &amp; 100+ quotes — for every occasion! 💕</p>
+  <!-- Trust badges -->
+  <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:.85rem">
+    <div class="hbadge">🎁 Free Forever</div>
+    <div class="hbadge" style="border-color:rgba(247,183,49,.4);color:#b8860b;background:rgba(247,183,49,.08)">⭐ 50K+ Gifts Created</div>
+    <div class="hbadge" style="border-color:rgba(27,94,32,.4);color:#1B5E20;background:rgba(27,94,32,.06)">🇮🇳 Made for India</div>
+  </div>
+  <h1 id="heroTitle">Gifts that Make them <em id="heroEm">Smile Forever</em></h1>
+  <p id="heroSub">Create beautiful photo frames, digital gifts, Eid posters & more — personalized with love, shared in seconds! 💕</p>
+  <!-- Feature pills -->
+  <div style="display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.1rem">
+    <span style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);padding:.22rem .65rem;border-radius:50px;font-size:.65rem;font-weight:600">📷 Photo Frames</span>
+    <span style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);padding:.22rem .65rem;border-radius:50px;font-size:.65rem;font-weight:600">🎁 Gift Cards</span>
+    <span style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);padding:.22rem .65rem;border-radius:50px;font-size:.65rem;font-weight:600">🌙 Eid Posters</span>
+    <span style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);padding:.22rem .65rem;border-radius:50px;font-size:.65rem;font-weight:600">📤 4K Download</span>
+    <span style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);padding:.22rem .65rem;border-radius:50px;font-size:.65rem;font-weight:600">🛍️ Amazon Gifts</span>
+  </div>
   <div class="hbtns">
     <button class="bp" style="background:linear-gradient(135deg,#C9A84C,#1B5E20);font-size:.88rem;animation:eidPulse 2.5s infinite" onclick="openEidMaker()">🌙 Eid Poster</button>
     <button class="bp" onclick="openEditor()">🖼️ Create Frame</button>
@@ -742,6 +813,72 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
 <style>
 .eid-prev-scroll::-webkit-scrollbar{display:none}
 </style>
+
+<!-- ═══ GIFT SHOWCASE SLIDESHOW ═══ -->
+<section class="gift-showcase">
+  <p class="gs-label">✨ What You Can Create</p>
+  <h2 class="gs-title">Everything a Gift Needs 🎁</h2>
+  <p class="gs-sub">Photo frames, digital gifts, Eid posters — all free!</p>
+  <div class="gs-track" id="gsTrack">
+    <div class="gs-card" style="--bg1:#fce4ec;--bg2:#f8bbd0" onclick="openEditor()">
+      <div class="gs-card-img">🖼️</div>
+      <div class="gs-card-badge">Free</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Birthday Photo Frame</div>
+        <div class="gs-card-price">Create Free → Share</div>
+      </div>
+    </div>
+    <div class="gs-card" style="--bg1:#e8f5e9;--bg2:#c8e6c9" onclick="openGiftMaker('card')">
+      <div class="gs-card-img">💌</div>
+      <div class="gs-card-badge">Digital</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Greeting Card</div>
+        <div class="gs-card-price">Personalized → WhatsApp</div>
+      </div>
+    </div>
+    <div class="gs-card" style="--bg1:#e3f2fd;--bg2:#bbdefb" onclick="openEidMaker()">
+      <div class="gs-card-img">🌙</div>
+      <div class="gs-card-badge" style="background:#C9A84C">Eid</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Eid Mubarak Poster</div>
+        <div class="gs-card-price">70+ Templates Free</div>
+      </div>
+    </div>
+    <div class="gs-card" style="--bg1:#f3e5f5;--bg2:#e1bee7" onclick="openGiftMaker('voucher')">
+      <div class="gs-card-img">🎟️</div>
+      <div class="gs-card-badge" style="background:#9c27b0">Gift</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Gift Voucher</div>
+        <div class="gs-card-price">Custom Design</div>
+      </div>
+    </div>
+    <div class="gs-card" style="--bg1:#fff8e1;--bg2:#ffecb3" onclick="gel('shop').scrollIntoView({behavior:'smooth'})">
+      <div class="gs-card-img">📦</div>
+      <div class="gs-card-badge" style="background:#f57c00">Shop</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Physical Gifts</div>
+        <div class="gs-card-price">Amazon Delivery</div>
+      </div>
+    </div>
+    <div class="gs-card" style="--bg1:#e8eaf6;--bg2:#c5cae9" onclick="openEditorCat('islamic',document.createElement('div'),{preventDefault:function(){},stopPropagation:function(){}})">
+      <div class="gs-card-img">☪️</div>
+      <div class="gs-card-badge" style="background:#1B5E20">Islamic</div>
+      <div class="gs-card-info">
+        <div class="gs-card-name">Islamic Frames</div>
+        <div class="gs-card-price">Eid • Hajj • Ramadan</div>
+      </div>
+    </div>
+  </div>
+  <!-- Dots -->
+  <div class="slideshow-dots" id="gsDots">
+    <div class="s-dot on"></div>
+    <div class="s-dot"></div>
+    <div class="s-dot"></div>
+    <div class="s-dot"></div>
+    <div class="s-dot"></div>
+    <div class="s-dot"></div>
+  </div>
+</section>
 
 <div class="stats">
   <div class="stat"><strong>52+</strong><span id="stat1">Frame Templates</span></div>
@@ -870,11 +1007,59 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
 </section>
 
 <section class="sec" style="background:var(--cr)" id="shop">
-  <p class="sl">Shop by Amazon</p>
-  <h2 class="sh" id="shopTitle">Shop by Amazon 🛍️</h2>
-  <p class="ss" id="shopSub">Best Amazon gifts for every occasion — curated with love!</p>
-  <div class="frow" id="shopFilters"></div>
-  <div class="pgrid" id="pgrid"></div>
+  <p class="sl">Gift Store</p>
+  <h2 class="sh" id="shopTitle">Shop Perfect Gifts 🛍️</h2>
+  <p class="ss" id="shopSub">Physical gifts delivered + Digital gifts instantly!</p>
+  <!-- Product type tabs -->
+  <div class="prod-tabs">
+    <button class="prod-tab on" id="tabPhysical" onclick="switchProdTab('physical',this)">
+      📦 Physical Gifts <span style="font-size:.6rem;opacity:.7">(Amazon)</span>
+    </button>
+    <button class="prod-tab" id="tabDigital" onclick="switchProdTab('digital',this)">
+      ✨ Digital Gifts <span style="font-size:.6rem;opacity:.7">(Create Free)</span>
+    </button>
+  </div>
+  <!-- Physical products -->
+  <div id="physicalProds">
+    <div class="frow" id="shopFilters"></div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+  <!-- Digital products -->
+  <div id="digitalProds" style="display:none">
+    <p class="prod-tab-desc">Instantly create aur share karo — bilkul free!</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.8rem;padding:.5rem 0">
+      <div onclick="openEditor()" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #fce4ec;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#e8416f';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#fce4ec';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🖼️</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Photo Frame</div>
+        <div style="font-size:.68rem;color:#e8416f;font-weight:700;margin-top:.2rem">Create Free →</div>
+      </div>
+      <div onclick="openGiftMaker('card')" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #e8f5e9;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#4CAF50';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e8f5e9';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">💌</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Greeting Card</div>
+        <div style="font-size:.68rem;color:#4CAF50;font-weight:700;margin-top:.2rem">Create Free →</div>
+      </div>
+      <div onclick="openEidMaker()" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #fff8e1;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#C9A84C';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#fff8e1';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🌙</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Eid Poster</div>
+        <div style="font-size:.68rem;color:#C9A84C;font-weight:700;margin-top:.2rem">70+ Templates →</div>
+      </div>
+      <div onclick="openGiftMaker('voucher')" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #f3e5f5;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#9c27b0';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#f3e5f5';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🎟️</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Gift Voucher</div>
+        <div style="font-size:.68rem;color:#9c27b0;font-weight:700;margin-top:.2rem">Create Free →</div>
+      </div>
+      <div onclick="openGiftMaker('envelope')" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #e3f2fd;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#1976D2';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e3f2fd';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">✉️</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Gift Envelope</div>
+        <div style="font-size:.68rem;color:#1976D2;font-weight:700;margin-top:.2rem">Create Free →</div>
+      </div>
+      <div onclick="openGiftMaker('wish')" style="background:#fff;border-radius:16px;padding:1.1rem .8rem;text-align:center;border:2px solid #fce4ec;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)" onmouseover="this.style.borderColor='#e91e63';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#fce4ec';this.style.transform='none'">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🌟</div>
+        <div style="font-weight:700;font-size:.82rem;color:#1a1a2e">Wish Card</div>
+        <div style="font-size:.68rem;color:#e91e63;font-weight:700;margin-top:.2rem">Create Free →</div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ EID MUBARAK SPECIAL SECTION ═══ -->
@@ -971,6 +1156,42 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
     <div class="stp"><div class="snum">4</div><h3>4K HD Share!</h3><p>WhatsApp, Instagram</p></div>
   </div>
 </section>
+
+<!-- ═══ BIRTHDAY REMINDER ═══ -->
+<section class="reminder-section" id="reminderSection">
+  <p class="sl">🔔 Never Miss a Celebration!</p>
+  <h2 class="sh" style="text-align:center">Birthday Reminders 🎂</h2>
+  <p class="ss" style="text-align:center;margin-bottom:1.2rem">Apne pyaaron ke birthday save karo — reminder milega!</p>
+  <div id="reminderList">
+    <div style="text-align:center;color:#ccc;padding:1.5rem;font-size:.85rem">
+      🎂 Koi reminder nahi hai abhi<br><span style="font-size:.75rem">Neeche button se add karo!</span>
+    </div>
+  </div>
+  <button class="add-reminder-btn" onclick="openReminderModal()">
+    📅 Add Birthday Reminder
+  </button>
+</section>
+<!-- Reminder Modal -->
+<div id="reminderModal">
+  <div class="rm-sheet">
+    <div class="rm-handle"></div>
+    <h3 style="font-weight:800;margin-bottom:1rem;color:#1a1a2e">🎂 Add Birthday Reminder</h3>
+    <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#aaa;display:block;margin-bottom:.3rem">Name *</label>
+    <input class="rm-inp" id="rm-name" placeholder="e.g. Mom, Rahul bhai..." maxlength="30">
+    <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#aaa;display:block;margin-bottom:.3rem">Birthday *</label>
+    <input class="rm-inp" id="rm-date" type="date">
+    <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;color:#aaa;display:block;margin-bottom:.3rem">Relation</label>
+    <select class="rm-inp" id="rm-rel">
+      <option value="👨‍👩‍👧">👨‍👩‍👧 Family</option>
+      <option value="👫">👫 Friend</option>
+      <option value="💑">💑 Partner/Spouse</option>
+      <option value="👔">👔 Colleague</option>
+      <option value="🎓">🎓 Student</option>
+    </select>
+    <button class="rm-save" onclick="saveReminder()">💾 Save Reminder</button>
+    <button onclick="closeReminderModal()" style="width:100%;padding:.6rem;background:none;border:none;color:#aaa;font-family:inherit;font-size:.85rem;cursor:pointer;margin-top:.5rem">Cancel</button>
+  </div>
+</div>
 
 <footer>
   <div class="logo" style="display:block;margin-bottom:.35rem">🎀 ZetsyBuy Gift</div>
@@ -1334,10 +1555,12 @@ textarea.ectext-inp{resize:none;min-height:52px;line-height:1.5}
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
   <!-- AI Chat -->
-  <button class="fab-chat" onclick="window.toggleChat&&window.toggleChat()" title="AI Gift Suggestions">
+  <button class="fab-chat" onclick="window.toggleChat&&window.toggleChat()" title="AI Gift Chat">
     <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.5-.838A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" fill="white" opacity=".95"/><circle cx="8.5" cy="12" r="1.3" fill="#7c3aed"/><circle cx="12" cy="12" r="1.3" fill="#7c3aed"/><circle cx="15.5" cy="12" r="1.3" fill="#7c3aed"/></svg>
     <span class="fab-notif" id="chatBadge">AI</span>
   </button>
+  <!-- Chat label -->
+  <div style="background:rgba(0,0,0,.7);color:#fff;font-size:.58rem;font-weight:700;padding:.2rem .5rem;border-radius:50px;white-space:nowrap;pointer-events:none" id="chatLabel">Gift AI 🤖</div>
 </div>
 
 <!-- ═══ CHAT OVERLAY (dimmed bg) ═══ -->
@@ -1405,17 +1628,20 @@ function initSupabase() {
 async function loadProductsFromDB() {
   if (!_sb) return false;
   try {
-    var res = await _sb.from('products').select('*').eq('active', true).order('id');
-    if (res.data && res.data.length) {
-      PRODUCTS = res.data.map(function(p) {
-        return { id: p.id, n: p.name, em: p.emoji, p: p.price,
-                 mrp: p.mrp, cat: p.category, l: p.link,
-                 active: p.active, featured: p.featured };
+    var res = await _sb.from('products').select('*').order('id');
+    if (!res.error) {
+      // Use DB data even if empty — respect admin's deletions!
+      PRODUCTS = (res.data || []).map(function(p) {
+        return { id: p.id, n: p.name, em: p.emoji||'🎁', p: p.price||0,
+                 mrp: p.mrp||0, cat: p.category||'birthday', l: p.link||'#',
+                 img: p.img||'', active: p.active!==false, featured: !!p.featured };
       });
+      // Also update localStorage
+      try { localStorage.setItem('zb_products', JSON.stringify(PRODUCTS)); } catch(e) {}
       buildShopFilters(); renderProds();
       return true;
     }
-  } catch(e) { console.log('DB products fallback to default'); }
+  } catch(e) { console.log('DB load error:', e); }
   return false;
 }
 
@@ -1580,7 +1806,7 @@ var QUOTES={
   ],
 };
 
-var PRODUCTS=JSON.parse(localStorage.getItem('zb_products')||'null')||[
+var PRODUCTS=(function(){try{var s=localStorage.getItem('zb_products');if(s!==null){var p=JSON.parse(s);if(Array.isArray(p))return p;}return null;}catch(e){return null;}})() || [
   {id:'p1',n:'Personalized Photo Frame',em:'🖼️',p:599,mrp:999,cat:'birthday',l:'https://www.amazon.in/s?k=personalized+photo+frame&tag=YOURID-21',active:true,featured:true},
   {id:'p2',n:'Scented Candle Gift Set',em:'🕯️',p:849,mrp:1299,cat:'love',l:'https://www.amazon.in/s?k=scented+candle+gift+set&tag=YOURID-21',active:true,featured:true},
   {id:'p3',n:'Spa Hamper for Mom',em:'🛁',p:1199,mrp:1799,cat:'mom',l:'https://www.amazon.in/s?k=spa+gift+hamper+mom&tag=YOURID-21',active:true,featured:true},
@@ -1635,7 +1861,15 @@ var S={
 // CANVAS VARS
 // ═══════════════════════════════════════════════════════════════════
 var MC,DC,AC,MCX,DCX,ACX,RAF=null,TICK=0;
-var MODES={square:{w:500,h:500},story:{w:500,h:889}};
+var MODES={square:{w:1000,h:1000},story:{w:1080,h:1920},portrait:{w:1080,h:1350},landscape:{w:1920,h:1080}};
+// HiDPI canvas helper
+function setupHiDPI(canvas, ctx, w, h){
+  var dpr=window.devicePixelRatio||1;
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  canvas.style.width=w+'px'; canvas.style.height=h+'px';
+  ctx.scale(dpr,dpr);
+  return dpr;
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // PARTICLE BACKGROUND
@@ -1749,7 +1983,13 @@ function renderProds(){
 
 // localStorage sync from admin
 window.addEventListener('storage',function(e){
-  if(e.key==='zb_products'){PRODUCTS=JSON.parse(e.newValue||'[]');buildShopFilters();renderProds();}
+  if(e.key==='zb_products'||e.key==='zb_update'){
+    try{
+      var fresh=localStorage.getItem('zb_products');
+      if(fresh!==null){ var p=JSON.parse(fresh); if(Array.isArray(p)) PRODUCTS=p; }
+    }catch(err){}
+    buildShopFilters(); renderProds();
+  }
   if(e.key==='zb_frames'){var f=JSON.parse(e.newValue||'null');if(f&&f.length){FRAMES=f;buildTmplUI();}}
 });
 
@@ -2370,7 +2610,10 @@ function goTab(id,btn){
   var ub=gel('undoBtn');
   if(ub)ub.style.display=(id==='draw'&&S.paths.length)?'block':'none';
 }
-function setMode(m,el){S.mode=m;each(qsa('.szb'),function(b){b.classList.remove('on')});el.classList.add('on');syncCV();renderMain();}
+function setMode(m,el){
+  // Add portrait/landscape if not in MODES yet
+  if(m==='portrait' && !MODES.portrait) MODES.portrait={w:1080,h:1350};
+  if(m==='landscape' && !MODES.landscape) MODES.landscape={w:1920,h:1080};S.mode=m;each(qsa('.szb'),function(b){b.classList.remove('on')});el.classList.add('on');syncCV();renderMain();}
 function setFilter(f,el){S.filter=f;each(qsa('#pane-style .bgtn'),function(b){b.classList.remove('on')});el.classList.add('on');renderMain();}
 function setFx(f,el){S.fx=f;each(qsa('.bgtn[onclick*="setFx"]'),function(b){b.classList.remove('on')});el.classList.add('on');renderMain();}
 function setPos(p,el){S.pos=p;each(qsa('.bgtn[onclick*="setPos"]'),function(b){b.classList.remove('on')});el.classList.add('on');renderMain();}
@@ -3557,7 +3800,7 @@ function ecResizeCanvas(){
   var aw=area.clientWidth,ah=area.clientHeight;
   var size=Math.min(aw,ah,520);
   EC_CV.style.width=size+'px';EC_CV.style.height=size+'px';
-  EC_CV.width=600;EC_CV.height=600;
+  EC_CV.width=1080;EC_CV.height=1080;
   // Also resize sticker layer
   var sl=document.getElementById('ecStickerLayer');
   if(sl){sl.style.width=size+'px';sl.style.height=size+'px';sl.style.position='absolute';sl.style.top='0';sl.style.left='0';}
@@ -4153,43 +4396,50 @@ window.sendChat = function() {
     'Always suggest 2-3 gift options. Be enthusiastic about helping them find the perfect gift!'
   ].join(' ');
 
-  fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 350,
-      system: sysPrompt,
-      messages: CHAT_MSGS
-    })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(d) {
-    if(window._chatShowTyping) window._chatShowTyping(false);
-    var reply = (d.content && d.content[0] && d.content[0].text) ? d.content[0].text : null;
-    if (!reply) reply = buildFallbackReply(text);
-    if(window._chatPush) window._chatPush({ role: 'assistant', content: reply });
-    addBotWithAffiliate(reply, text);
-    if(window._chatShowSuggs) window._chatShowSuggs(window._chatFOLLOW||[]);
-  })
-  .catch(function() {
-    if(window._chatShowTyping) window._chatShowTyping(false);
-    var reply = buildFallbackReply(text);
-    CHAT_MSGS.push({ role: 'assistant', content: reply });
-    addBotWithAffiliate(reply, text);
-    showSuggs(['Budget gift batao', 'Mom ke liye', 'Eid gift', 'Wedding gift']);
-  });
+  // Smart offline chatbot - works without internet!
+  setTimeout(function() {
+    try {
+      if(window._chatShowTyping) window._chatShowTyping(false);
+      var reply = buildSmartReply(text);
+      if(window._chatPush) window._chatPush({ role: 'assistant', content: reply });
+      addBotWithAffiliate(reply, text);
+      if(window._chatShowSuggs) window._chatShowSuggs(window._chatFOLLOW||['Birthday gift','Mom ke liye','Wedding gift','Eid gift']);
+    } catch(err) {
+      if(window._chatShowTyping) window._chatShowTyping(false);
+      var el = gel('chatMsgs');
+      if(el) { var d=document.createElement('div'); d.className='msg bot'; d.innerHTML='<div class="msg-av">🤖</div><div><div class="msg-bubble">Gift ke baare mein poochho! Birthday, Mom, Wedding, Eid — sab ke liye suggestions dunga! 🎁</div></div>'; el.appendChild(d); el.scrollTop=el.scrollHeight; }
+    }
+  }, 700 + Math.random()*500);
 };
 
-function buildFallbackReply(text) {
+function buildSmartReply(text) {
   var t = text.toLowerCase();
-  if (/birthday|janamdin/.test(t)) return 'Birthday ke liye yeh products perfect hain! [AFF:birthday gift box]';
-  if (/mom|maa|mother/.test(t)) return 'Mom ke liye yeh dekhein! [AFF:spa gift hamper mom][FRAME:mom]';
-  if (/wedding|shaadi/.test(t)) return 'Wedding gift ke liye yeh best hai! [AFF:luxury wedding gift hamper]';
-  if (/eid|ramadan/.test(t)) return 'Eid ke liye yeh special gifts hain! [AFF:eid gift box premium][FRAME:islamic]';
-  if (/budget|sasta|500/.test(t)) return 'Budget mein yeh amazing gifts hain! [AFF:budget gift under 500]';
-  return 'Aapke liye yeh gifts perfect rahenge! [AFF:personalized gift set]';
+  // Budget detection
+  var budget = '';
+  var m500 = t.match(/(\d+)\s*(rs|rupee|₹)/i);
+  if(m500) budget = ' Budget: ₹'+m500[1];
+  // Responses
+  if(/birthday|janamdin|bday/.test(t)) return 'Birthday gift ke liye yeh best options hain! 🎂'+budget+' [AFF:birthday gift box premium][FRAME:birthday]';
+  if(/mom|maa|mother|mummy|amma/.test(t)) return 'Mom ke liye kuch special banate hain! 💐'+budget+' [AFF:spa gift hamper mom][FRAME:mom]';
+  if(/wife|biwi|girlfriend|gf/.test(t)) return 'Uske liye yeh romantic gifts perfect hain! 💕'+budget+' [AFF:romantic gift set girlfriend][FRAME:love]';
+  if(/husband|boyfriend|bf/.test(t)) return 'Unke liye yeh amazing gifts hain! 💙'+budget+' [AFF:gift set for him premium][FRAME:love]';
+  if(/wedding|shaadi|marriage/.test(t)) return 'Wedding gift ke liye yeh luxury options dekho! 💒'+budget+' [AFF:luxury wedding gift hamper][FRAME:wedding]';
+  if(/eid|ramadan/.test(t)) return 'Eid ke liye yeh special gifts hain! 🌙 [AFF:eid gift box premium][FRAME:islamic]';
+  if(/baby|newborn|naya baccha/.test(t)) return 'Cute baby gifts yahan hain! 👶 [AFF:newborn baby gift set][FRAME:kids]';
+  if(/kids|child|bachha|beta|beti/.test(t)) return 'Bachon ke liye yeh fun gifts hain! 🧒 [AFF:kids educational gift set][FRAME:kids]';
+  if(/anniversary|saalgirah/.test(t)) return 'Anniversary ke liye kuch special! ❤️'+budget+' [AFF:anniversary couple gift set][FRAME:anniversary]';
+  if(/diwali|festival/.test(t)) return 'Diwali pe yeh gifts diya jaata hai! 🪔 [AFF:diwali premium gift hamper]';
+  if(/graduation|pass|degree/.test(t)) return 'Congratulations! Yeh graduation gifts best hain! 🎓 [AFF:graduation gift set][FRAME:graduation]';
+  if(/200|300|400|500|sasta|budget|cheap|affordable/.test(t)) return 'Budget mein yeh amazing gifts hain! ✨ [AFF:gift under 500 rupees]';
+  if(/1000|2000|premium|luxury/.test(t)) return 'Premium gifts ke liye yeh dekho! 👑 [AFF:luxury premium gift hamper 1000]';
+  if(/frame|photo|picture/.test(t)) return 'Bilkul! Main frame editor kholta hoon! 🖼️ [FRAME:birthday]';
+  if(/card|greeting|message/.test(t)) return 'Greeting card banate hain! 💌 Neeche button hai!';
+  if(/amazon|order|buy|khareed/.test(t)) return 'Amazon pe yeh best gifts available hain! 🛍️ [AFF:best gift set amazon india]';
+  // Default
+  return 'Kiske liye gift chahiye? Batao main help karunga! 🎁 Birthday, Anniversary, Wedding, Mom, Kids — sab ke liye options hain!';
 }
+function buildFallbackReply(text) {
+  return buildSmartReply(text);
 
 // Enhanced addBot that handles [AFF:keyword] tags
 function addBotWithAffiliate(text, userQuery) {
@@ -4265,6 +4515,152 @@ function addBotWithAffiliate(text, userQuery) {
 
   msgs.scrollTop = msgs.scrollHeight;
 }
+}
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// UPGRADED FEATURES JS
+// ═══════════════════════════════════════════════════════════════
+
+// ── SLIDESHOW DOTS SYNC ──────────────────────────────────────
+(function(){
+  var track = document.getElementById('gsTrack');
+  var dots = document.querySelectorAll('.s-dot');
+  if(!track||!dots.length) return;
+  track.addEventListener('scroll', function(){
+    var cards = track.querySelectorAll('.gs-card');
+    if(!cards.length) return;
+    var cw = cards[0].offsetWidth + 16;
+    var idx = Math.round(track.scrollLeft / cw);
+    idx = Math.max(0, Math.min(idx, dots.length-1));
+    for(var i=0;i<dots.length;i++) dots[i].classList.toggle('on', i===idx);
+  }, {passive:true});
+  // dot click scroll
+  for(var i=0;i<dots.length;i++){
+    (function(i){
+      dots[i].addEventListener('click', function(){
+        var cards = track.querySelectorAll('.gs-card');
+        if(!cards.length) return;
+        var cw = cards[0].offsetWidth + 16;
+        track.scrollTo({left: cw*i, behavior:'smooth'});
+      });
+    })(i);
+  }
+})();
+
+// ── PHYSICAL vs DIGITAL TAB SWITCH ──────────────────────────
+function switchProdTab(type, btn){
+  var tabs = document.querySelectorAll('.prod-tab');
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove('on');
+  if(btn) btn.classList.add('on');
+  var phys = document.getElementById('physicalProds');
+  var digi = document.getElementById('digitalProds');
+  if(phys) phys.style.display = type==='physical' ? 'block' : 'none';
+  if(digi) digi.style.display = type==='digital' ? 'block' : 'none';
+}
+
+// ── BIRTHDAY REMINDER SYSTEM ─────────────────────────────────
+function loadReminders(){
+  try{ return JSON.parse(localStorage.getItem('zb_reminders')||'[]'); }catch(e){ return []; }
+}
+function saveReminders(list){
+  try{ localStorage.setItem('zb_reminders', JSON.stringify(list)); }catch(e){}
+}
+function getDaysUntilBirthday(dateStr){
+  var now = new Date(); now.setHours(0,0,0,0);
+  var parts = dateStr.split('-');
+  var bday = new Date(now.getFullYear(), parseInt(parts[1])-1, parseInt(parts[2]));
+  if(bday < now) bday.setFullYear(now.getFullYear()+1);
+  return Math.ceil((bday-now)/(1000*60*60*24));
+}
+function renderReminders(){
+  var el = document.getElementById('reminderList'); if(!el) return;
+  var list = loadReminders();
+  if(!list.length){
+    el.innerHTML='<div style="text-align:center;color:#ccc;padding:1.5rem;font-size:.85rem">🎂 Koi reminder nahi hai abhi<br><span style="font-size:.75rem">Neeche button se add karo!</span></div>';
+    return;
+  }
+  // Sort by days
+  list = list.map(function(r){ return Object.assign({},r,{days:getDaysUntilBirthday(r.date)}); })
+             .sort(function(a,b){ return a.days-b.days; });
+  var h='';
+  list.forEach(function(r,i){
+    var label = r.days===0?'🎉 Aaj!':r.days===1?'Kal':r.days+' din';
+    var urgentStyle = r.days<=7 ? 'border-color:rgba(232,65,111,.35);background:linear-gradient(135deg,#fff5f7,#fff)' : '';
+    h+='<div class="reminder-card" style="'+urgentStyle+'" onclick="quickGiftForReminder(\''+r.name+'\')">'
+      +'<div class="rc-avatar">'+r.rel+'</div>'
+      +'<div class="rc-info">'
+        +'<div class="rc-name">'+r.name+'</div>'
+        +'<div class="rc-date">'+new Date(r.date.replace(/-/g,'/')).toLocaleDateString('en-IN',{day:'numeric',month:'long'})+'</div>'
+      +'</div>'
+      +'<div class="rc-days"><span class="rc-days-num">'+label+'</span><span class="rc-days-lbl">birthday</span></div>'
+      +'<button onclick="event.stopPropagation();deleteReminder('+i+')" style="background:none;border:none;color:#ddd;cursor:pointer;padding:.2rem;font-size:.8rem;margin-left:.3rem">🗑</button>'
+      +'</div>';
+  });
+  el.innerHTML=h;
+}
+function quickGiftForReminder(name){
+  // Open editor with birthday category
+  openEditorCat('birthday', document.createElement('div'), {preventDefault:function(){},stopPropagation:function(){}});
+  showToast('🎂 '+name+' ke liye birthday frame banao!');
+}
+function openReminderModal(){
+  var m=document.getElementById('reminderModal'); if(m) m.classList.add('open');
+  document.body.style.overflow='hidden';
+  var d=document.getElementById('rm-date');
+  if(d&&!d.value){ var now=new Date(); d.value=now.toISOString().split('T')[0]; }
+}
+function closeReminderModal(){
+  var m=document.getElementById('reminderModal'); if(m) m.classList.remove('open');
+  document.body.style.overflow='';
+}
+function saveReminder(){
+  var name=(document.getElementById('rm-name').value||'').trim();
+  var date=document.getElementById('rm-date').value||'';
+  var rel=document.getElementById('rm-rel').value||'👨‍👩‍👧';
+  if(!name){ showToast('Naam daalo!'); return; }
+  if(!date){ showToast('Date daalo!'); return; }
+  var list=loadReminders();
+  list.push({name:name,date:date,rel:rel,id:Date.now()});
+  saveReminders(list);
+  closeReminderModal();
+  renderReminders();
+  showToast('✅ '+name+' ka birthday save ho gaya! 🎂');
+  // Clear inputs
+  document.getElementById('rm-name').value='';
+}
+function deleteReminder(idx){
+  if(!confirm('Remove this reminder?')) return;
+  var list=loadReminders();
+  list.splice(idx,1);
+  saveReminders(list);
+  renderReminders();
+  showToast('Reminder removed!');
+}
+// Close reminder modal on overlay click
+document.getElementById('reminderModal') && document.getElementById('reminderModal').addEventListener('click',function(e){
+  if(e.target===this) closeReminderModal();
+});
+
+// ── MOBILE MENU - Add reminder link ──────────────────────────
+// Add to mobile menu if needed
+(function(){
+  var mmBody = document.querySelector('.mm-body');
+  if(!mmBody) return;
+  // Already has navigate section - add reminder link
+  var sep = document.createElement('div'); sep.className='mm-sep';
+  var item = document.createElement('button');
+  item.className='mm-item';
+  item.innerHTML='<span class="mi-icon">🎂</span><span class="mi-txt">Birthday Reminders</span><span class="mi-badge">New</span>';
+  item.onclick = function(){ closeMobileMenu(); gel('reminderSection')&&gel('reminderSection').scrollIntoView({behavior:'smooth'}); };
+  mmBody.appendChild(sep);
+  mmBody.appendChild(item);
+})();
+
+// ── INIT ─────────────────────────────────────────────────────
+window.addEventListener('load', function(){
+  renderReminders();
+});
 
 </script>
 </body>

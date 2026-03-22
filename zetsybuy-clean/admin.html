@@ -163,7 +163,12 @@ async function saveProdToDB(prod) {
 // ── DELETE PRODUCT from Supabase ──────────────────────────────────────
 async function deleteProdFromDB(id) {
   if (!_sb) return;
-  try { await _sb.from('products').delete().eq('id', id); } catch(e) {}
+  try {
+    var res = await _sb.from('products').delete().eq('id', id);
+    if (!res.error) {
+      showToast('🗑️ Supabase se bhi delete ho gaya!');
+    }
+  } catch(e) { console.log('DB delete error:', e); }
 }
 
 // ── SAVE FRAME to Supabase ────────────────────────────────────────────
@@ -812,9 +817,27 @@ function init(){
 function saveProds(){
   try{ localStorage.setItem('zb_products', JSON.stringify(PRODUCTS)); }catch(e){}
   try{ localStorage.setItem('zb_update', 'products_' + Date.now()); }catch(e){}
-  if(typeof saveProdToDB === 'function'){
-    PRODUCTS.forEach(function(p){ saveProdToDB(p); });
-  }
+  // Sync to Supabase
+  if(typeof syncAllProductsToDB === 'function') syncAllProductsToDB();
+}
+async function syncAllProductsToDB(){
+  if(!_sb) return;
+  try {
+    // Delete all existing + insert current list
+    if(PRODUCTS.length === 0){
+      await _sb.from('products').delete().neq('id','__never__');
+    } else {
+      var rows = PRODUCTS.map(function(p){
+        return {id:p.id, name:p.n, emoji:p.em||'🎁', price:p.p||0,
+                mrp:p.mrp||0, category:p.cat||'birthday', link:p.l||'#',
+                img:p.img||'', active:p.active!==false, featured:!!p.featured};
+      });
+      await _sb.from('products').upsert(rows, {onConflict:'id'});
+      // Delete products not in current list
+      var ids = PRODUCTS.map(function(p){return p.id;});
+      await _sb.from('products').delete().not('id','in','('+ids.map(function(i){return "'"+i+"'";}).join(',')+')');
+    }
+  } catch(e){ console.log('Sync error:',e); }
 }
 function saveFramesList(){GC.saveFrames(FRAMES);GC.notifyUpdate('frames');FRAMES=GC.loadFrames();}
 
