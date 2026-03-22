@@ -429,8 +429,21 @@ window.addEventListener('load', function() { initSB(); });
       <div><label>Category *</label><select class="fi" id="m-cat" style="width:100%"></select></div>
       <div><label>Status</label><select class="fi" id="m-st"><option value="active">✅ Active</option><option value="inactive">⛔ Inactive</option></select></div>
     </div>
-    <div style="margin-top:.8rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Amazon Affiliate Link *</label><input class="fi" id="m-l" placeholder="https://www.amazon.in/dp/XXXXX?tag=YOURID-21"></div>
-    <div style="margin-top:.5rem"><label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Description (optional)</label><textarea class="fi" id="m-desc" placeholder="Short description..."></textarea></div>
+    <div style="margin-top:.8rem">
+      <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Amazon Affiliate Link *</label>
+      <input class="fi" id="m-l" placeholder="https://www.amazon.in/dp/XXXXXXXX?tag=YOURID-21">
+      <div style="font-size:.68rem;color:var(--mu);margin-top:.3rem">💡 Amazon product page pe jaao → SiteStripe se "Text" link copy karo</div>
+    </div>
+    <div style="margin-top:.6rem">
+      <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Product Image URL (optional)</label>
+      <input class="fi" id="m-img" placeholder="https://m.media-amazon.com/images/I/XXXXX.jpg" oninput="showImgPreview(this.value)">
+      <div style="font-size:.68rem;color:var(--mu);margin-top:.3rem">💡 Amazon pe product image pe right-click → "Copy image address" paste karo</div>
+      <div id="m-img-preview" style="margin-top:.5rem"></div>
+    </div>
+    <div style="margin-top:.5rem">
+      <label style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);display:block;margin-bottom:.3rem">Description (optional)</label>
+      <textarea class="fi" id="m-desc" placeholder="Short product description..."></textarea>
+    </div>
     <label class="fck" style="margin-top:.6rem"><input type="checkbox" id="m-ft"> ⭐ Featured — homepage pe prominently dikhao</label>
     <div class="fa">
       <button class="btn bp" onclick="saveProd()">💾 Save Product</button>
@@ -603,6 +616,7 @@ GC.ALL_CATS = [
   {id:'graduation',nm:'Graduation',em:'🎓',color:'#1A237E'},
   {id:'getwell',nm:'Get Well',em:'🌻',color:'#4CAF50'},
   {id:'newyear',nm:'New Year',em:'🎆',color:'#0D47A1'},
+  {id:'islamic',nm:'Islamic',em:'🎆',color:'#0D47A1'},
 ];
 
 // ── QUOTES ────────────────────────────────────────────────────────────────────
@@ -880,6 +894,7 @@ function openAddProd(){
   editProdId=null; gel('prodModalTitle').textContent='➕ Add New Product';
   gel('m-n').value=''; gel('m-em').value='🎁'; gel('m-p').value=''; gel('m-mrp').value='';
   gel('m-cat').value='birthday'; gel('m-st').value='active'; gel('m-l').value='';
+  var mi=gel('m-img'); if(mi){mi.value='';} showImgPreview('');
   var d=gel('m-desc'); if(d) d.value=''; gel('m-ft').checked=false;
   gel('prodModal').classList.add('open');
 }
@@ -889,21 +904,32 @@ function openEditProd(id){
   gel('prodModalTitle').textContent='✏️ Edit Product';
   gel('m-n').value=p.n; gel('m-em').value=p.em; gel('m-p').value=p.p; gel('m-mrp').value=p.mrp;
   gel('m-cat').value=p.cat; gel('m-st').value=p.active?'active':'inactive'; gel('m-l').value=p.l;
+  var mi=gel('m-img'); if(mi){mi.value=p.img||'';showImgPreview(p.img||'');}
   var d=gel('m-desc'); if(d) d.value=p.desc||''; gel('m-ft').checked=p.featured;
   gel('prodModal').classList.add('open');
 }
 function closeProdModal(){gel('prodModal').classList.remove('open');}
+function showImgPreview(url){
+  var prev=gel('m-img-preview'); if(!prev) return;
+  if(url&&url.length>10){
+    prev.innerHTML='<img src="'+url+'" style="width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--bd);margin-top:.3rem" onerror="this.parentNode.innerHTML=\'<span style=\"color:#e8416f;font-size:.72rem\">❌ Image load nahi hui — URL check karo</span>\'">';
+  } else {
+    prev.innerHTML='';
+  }
+}
 function saveProd(){
   var n=gel('m-n').value.trim(); var pr=parseInt(gel('m-p').value); var lk=gel('m-l').value.trim();
   if(!n){showToast('⚠️ Product name required!');return;}
   if(!pr||pr<1){showToast('⚠️ Valid price required!');return;}
   if(!lk){showToast('⚠️ Amazon link required!');return;}
   if(lk.indexOf('amazon')<0){showToast('⚠️ Valid Amazon link daalo');return;}
+  var imgUrl=(gel('m-img')||{value:''}).value.trim();
   var prod={
     id:editProdId||('p'+Date.now()), n:n,
     em:gel('m-em').value||'🎁',
     p:pr, mrp:parseInt(gel('m-mrp').value)||pr,
     cat:gel('m-cat').value, l:lk,
+    img:imgUrl||'',
     active:gel('m-st').value==='active', featured:gel('m-ft').checked,
     desc:(gel('m-desc')||{value:''}).value||''
   };
