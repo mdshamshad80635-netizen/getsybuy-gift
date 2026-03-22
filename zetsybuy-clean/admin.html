@@ -104,14 +104,49 @@ function initSB() {
   try {
     if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && window.supabase) {
       _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      var ind = document.getElementById('sbStatus');
-      if (ind) { ind.textContent = '🟢 Supabase Connected'; ind.style.color = '#27ae60'; }
+      updateDBStatus(true, 'Supabase Connected! ✅', 'Data cloud mein save ho raha hai — sab users ko dikhega!');
       return true;
     }
   } catch(e) {}
-  var ind = document.getElementById('sbStatus');
-  if (ind) { ind.textContent = '🔴 Supabase Not Connected (localStorage mode)'; ind.style.color = '#e8416f'; }
+  updateDBStatus(false, 'Database Connected Nahi Hai ❌', 'Sirf is browser mein data save hoga. Supabase SQL tables banao!');
   return false;
+}
+function updateDBStatus(ok, title, msg) {
+  var ic = document.getElementById('dbStatusIcon');
+  var tt = document.getElementById('dbStatusTitle');
+  var mm = document.getElementById('dbStatusMsg');
+  var sb = document.getElementById('sbStatus');
+  var card = document.getElementById('dbStatusCard');
+  if(ok) {
+    if(ic) ic.textContent = '🟢';
+    if(tt) { tt.textContent = title; tt.style.color = '#27ae60'; }
+    if(mm) mm.textContent = msg;
+    if(card) { card.style.borderColor = '#c8e6c9'; card.style.background = '#f1f8f4'; }
+    if(sb) { sb.textContent = '🟢 Database Connected'; sb.style.background = '#e8f5e9'; sb.style.color = '#27ae60'; }
+  } else {
+    if(ic) ic.textContent = '🔴';
+    if(tt) { tt.textContent = title; tt.style.color = '#e8416f'; }
+    if(mm) mm.textContent = msg;
+    if(card) { card.style.borderColor = '#ffcdd2'; card.style.background = '#fff5f5'; }
+    if(sb) { sb.textContent = '🔴 localStorage Only'; sb.style.background = '#ffeaea'; sb.style.color = '#e8416f'; }
+  }
+}
+async function testDBConnection() {
+  var tt = document.getElementById('dbStatusTitle');
+  if(tt) tt.textContent = '⏳ Testing...';
+  if(!_sb) { updateDBStatus(false, 'Supabase Not Connected ❌', 'URL ya Key galat hai. Check karo!'); return; }
+  try {
+    var res = await _sb.from('products').select('id').limit(1);
+    if(res.error && res.error.code === '42P01') {
+      updateDBStatus(false, 'Tables Nahi Bane Hain ⚠️', 'supabase-setup.sql run karo SQL Editor mein!');
+    } else if(res.error) {
+      updateDBStatus(false, 'Error: ' + res.error.message, 'Check karo Supabase settings');
+    } else {
+      updateDBStatus(true, 'Database Fully Working! 🎉', 'Products: ' + (res.data ? res.data.length : 0) + ' found. Sab connected hai!');
+    }
+  } catch(e) {
+    updateDBStatus(false, 'Connection Failed ❌', e.message || 'Network error');
+  }
 }
 
 // ── SAVE PRODUCT to Supabase ───────────────────────────────────────────
@@ -209,14 +244,27 @@ window.addEventListener('load', function() { initSB(); });
   <!-- OVERVIEW -->
   <div id="view-overview">
     <div class="topbar">
-      <div><h1>Dashboard Overview 📊</h1><p id="greet">Welcome back!</p></div>
+      <div>
+        <h1>Dashboard Overview 📊</h1>
+        <p id="greet">Welcome back!</p>
+        <div id="sbStatus" style="font-size:.72rem;font-weight:700;margin-top:.3rem;padding:.2rem .6rem;border-radius:50px;display:inline-block;background:rgba(0,0,0,.06)">⏳ Database check ho raha hai...</div>
+      </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
         <button class="btn bi" onclick="exportCSV()">📥 Export CSV</button>
         <button class="btn bp" onclick="openAddProd()">+ Add Product</button>
       </div>
     </div>
     <div class="sync-note">🔄 Admin changes auto-sync to main site! Jab bhi product ya frame update karo, main site automatically update ho jaata hai.</div>
-    <div class="sgrid" id="statsGrid"></div>
+    <!-- DB Status Card -->
+<div id="dbStatusCard" style="background:#fff;border-radius:16px;border:2px solid #eee;padding:1rem 1.2rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem">
+  <div id="dbStatusIcon" style="font-size:2rem">⏳</div>
+  <div style="flex:1">
+    <div id="dbStatusTitle" style="font-weight:800;font-size:.9rem;color:#1a1a2e">Database Check ho raha hai...</div>
+    <div id="dbStatusMsg" style="font-size:.75rem;color:#aaa;margin-top:.2rem">Kuch seconds wait karo</div>
+  </div>
+  <button onclick="testDBConnection()" style="background:#f5f5f5;border:none;padding:.4rem .8rem;border-radius:8px;font-size:.72rem;font-weight:700;cursor:pointer;color:#666">🔄 Test</button>
+</div>
+<div class="sgrid" id="statsGrid"></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem">
       <div class="card"><div class="ct"><span>🛍️</span>Recent Products</div><div id="recentProds"></div></div>
       <div class="card"><div class="ct"><span>🖼️</span>Recent Frames</div><div id="recentFrames"></div></div>
@@ -616,7 +664,6 @@ GC.ALL_CATS = [
   {id:'graduation',nm:'Graduation',em:'🎓',color:'#1A237E'},
   {id:'getwell',nm:'Get Well',em:'🌻',color:'#4CAF50'},
   {id:'newyear',nm:'New Year',em:'🎆',color:'#0D47A1'},
-  {id:'islamic',nm:'Islamic',em:'🎆',color:'#0D47A1'},
 ];
 
 // ── QUOTES ────────────────────────────────────────────────────────────────────
@@ -658,12 +705,15 @@ GC.saveFrames = function(frames) {
 GC.loadProducts = function() {
   try {
     var saved = localStorage.getItem('zb_products');
-    if (saved) {
+    if (saved !== null) {              // null = never saved. '[]' = saved empty
       var parsed = JSON.parse(saved);
-      if (parsed && parsed.length) return parsed;
+      if (Array.isArray(parsed)) return parsed;  // return even if empty!
     }
   } catch(e) {}
-  return GC.DEFAULT_PRODUCTS.slice();
+  // First time only - copy defaults and save them
+  var defaults = GC.DEFAULT_PRODUCTS.slice();
+  try { localStorage.setItem('zb_products', JSON.stringify(defaults)); } catch(e) {}
+  return defaults;
 };
 
 GC.saveProducts = function(products) {
@@ -759,7 +809,13 @@ function init(){
   buildCatSelects();
 }
 
-function saveProds(){GC.saveProducts(PRODUCTS);GC.notifyUpdate('products');PRODUCTS=GC.loadProducts();}
+function saveProds(){
+  try{ localStorage.setItem('zb_products', JSON.stringify(PRODUCTS)); }catch(e){}
+  try{ localStorage.setItem('zb_update', 'products_' + Date.now()); }catch(e){}
+  if(typeof saveProdToDB === 'function'){
+    PRODUCTS.forEach(function(p){ saveProdToDB(p); });
+  }
+}
 function saveFramesList(){GC.saveFrames(FRAMES);GC.notifyUpdate('frames');FRAMES=GC.loadFrames();}
 
 // ── STATS ─────────────────────────────────────────────────────────────────────
@@ -878,9 +934,17 @@ function toggleProdFt(id){
   saveProds();renderProdTable();renderStats();showToast('⭐ Featured updated! Site auto-synced 🔄');
 }
 function deleteProd(id){
-  if(!confirm('Delete this product?')) return;
-  (function(){var r=[];for(var _i=0;_i<PRODUCTS.length;_i++)if(PRODUCTS[_i].id!==id)r.push(PRODUCTS[_i]);PRODUCTS=r;}());
-  saveProds();renderProdTable();renderStats();renderRecentProds();renderCatChart();showToast('🗑️ Product deleted! Site auto-synced 🔄');
+  if(!confirm('Delete karein? Wapas nahi aayega!')) return;
+  PRODUCTS = PRODUCTS.filter(function(p){ return p.id !== id; });
+  // Direct save - no reload
+  try{
+    localStorage.setItem('zb_products', JSON.stringify(PRODUCTS));
+    localStorage.setItem('zb_deleted_prods', (localStorage.getItem('zb_deleted_prods')||'') + id + ',');
+    localStorage.setItem('zb_update', 'products_' + Date.now());
+  }catch(e){}
+  if(typeof deleteProdFromDB === 'function') deleteProdFromDB(id);
+  buildProdFilterBar(); renderProdTable(); renderStats(); renderRecentProds(); renderCatChart();
+  showToast('🗑️ Deleted! Wapas nahi aayega!');
 }
 
 // ── PRODUCT MODAL ─────────────────────────────────────────────────────────────
